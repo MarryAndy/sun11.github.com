@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2012/01 | 11zHexo</title>
+  <meta name="author" content="E. Sununs">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="11zHexo"/>
+
+  <link rel="alternate" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31707826-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">11zHexo</a></h1>
+  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+
+<h2 class="archive-title">2012/01</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-06T16:00:00.000Z"><a href="/blog/100/">Jan 7 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/100/">TL-WR703n挂载USB摄像头</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>首先刷OpenWrt,我用的是<a title="http://www.right.com.cn/forum/thread-71042-1-2.html" href="http://www.right.com.cn/forum/thread-71042-1-2.html" target="_blank">这个帖子</a>里的<a title="http://ishare.iask.sina.com.cn/f/22200677.html" href="http://ishare.iask.sina.com.cn/f/22200677.html" target="_blank">这个版本</a>，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。
+
+</p>
+<p>我是按<a title="http://www.unxmail.com/read.php?187" href="http://www.unxmail.com/read.php?187" target="_blank">这个帖子</a>来操作的，把u盘分成两个区，一个ext3格式（据说比较稳定？），一个ext4格式。按照帖子成功挂载以后点开luci的System里的Software，发现空间已经是u盘那个指定分区的空间了，啊哈，想装啥就装啥。
+
+</p>
+<p>接下来就是摄像头了。由于路由器只有一个usb口，所以得用hub。（废话）
+
+</p>
+<p>我看到了<a title="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" href="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" target="_blank">这个帖子</a>,软件源是不用改的，所以直接：
+
+</p>
+<p>opkg update
+
+</p>
+<p>opkg install usbutils
+
+</p>
+<p>由于我的摄像头是杂牌的，芯片貌似不是301的，所以这跟多数人用的301方案不同。
+
+</p>
+<p>首先在win7的设备管理器查到了我的摄像头的设备信息，搜到了型号。发现和帖子里的芯片型号一样，大喜呀。
+
+</p>
+<p>然后我装了kmod-video-gspca-zc3xx（可能不用装的）和kmod-video-uvc。
+
+</p>
+<p>结果竟然很快成功了。
+
+</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/blog/100/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sun11.me">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+  
+    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+  
+    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+  
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+  
+    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+  
+    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+  
+    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+  
+    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+  
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+  
+    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 E. Sununs
+  
+</div>
+<div class="alignright" style="margin-right:300px">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC BY-NC-SA</a>.
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = '11zhexo';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

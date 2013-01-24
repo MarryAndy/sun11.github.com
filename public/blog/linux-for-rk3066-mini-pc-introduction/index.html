@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ROS on ARM--Linux For RK3066 Mini PC简介 | 11zHexo</title>
+  <meta name="author" content="E. Sununs">
+  
+  <meta name="description" content="去年6月左右国内厂商（瑞科美 Rikomagic）推出了一款叫做MK802的Mini PC。采用Allwinner A10/ 1GHz Cortex-A8做处理器，运行Android 4.0系统，内存512MB或1G。实际上相当于一个没有触摸屏和电池的平板，不过可以用USB OTG连接鼠标键盘，通过HDMI接口输出音视频。
+
+
+“少即是多”，正因为它小，靠外部供电而非电池，有很多扩展的可能性，上市以后很火。到现在淘宝一搜MK802，会出现各种各样厂商（比如酷优乐，联力胜）的也叫做MK802或者UG802,MK803,MK808,MK809的之类的产品。可以给它刷上Linux，然后把它当成一个普通PC使用（因为驱动的原因，用自带的Android可能是更好的选择）。或者，不接显示器，做一个Headless Server？接移动硬盘做一个BT下载机？又或者，加上Arduino，连接上各种传感器，作为机器人的主控制器？总之可以做到很多平板做不到的事情。这里有一个简易对照表：http://bluefox.com.tw/2012/11/22/%E5%AE%89%E5%8D%93-android-mini-pc-%E7%B0%A1%E6%98%93%E5%B0%8D%E7%85%A7%E8%A1%A8/#more-2654
+
+
+MK802的第一代产品是使用全志A10芯片的，在半年后看来这个芯片性能不够强了，运行桌面Ubuntu不是很流畅，但是它的Android ROM和Linux的支持已经比较完善了。后面有一个MK802 II是它的升级版，改动不大，系统基本也可以通用。
+
+
+接下来出现了一个UG802,它不是由原来MK802的厂商瑞科美生产的，而是一个叫做酷优乐的公司。在搜索引擎上搜索“酷优乐”这个词都搜不到这个公司的网站。我是问淘宝客服才知道这个公司的网站的（kuyoule.cn），它是第一个使用RK3066芯片（1.66GHz,双核A9）的Mini PC。然后又出现了一个MK808（不知道是哪个产商的）ROM提升到8G，后来的MK808B增加了蓝牙，改进了WiFi天线（原来的好像WiFi信号不太好）。然后瑞科美才推出MK802 III，同样是使用RK3066芯片，不过个人感觉可能质量和ROM支持好一些。然后就是去年12月份推出的MK802 IIIS了，我买的就是这个。">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  <meta property="og:title" content="ROS on ARM--Linux For RK3066 Mini PC简介"/>
+  <meta property="og:site_name" content="11zHexo"/>
+
+  <link rel="alternate" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31707826-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">11zHexo</a></h1>
+  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-01-24T09:27:26.000Z"><a href="/blog/linux-for-rk3066-mini-pc-introduction/">Jan 24 2013</a></time>
+      
+      
+  
+    <h1 class="title">ROS on ARM--Linux For RK3066 Mini PC简介</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://www.cnbeta.com/articles/188613.htm">去年6月左右</a>国内厂商（瑞科美 Rikomagic）推出了一款叫做MK802的Mini PC。采用Allwinner A10/ 1GHz Cortex-A8做处理器，运行Android 4.0系统，内存512MB或1G。实际上相当于一个没有触摸屏和电池的平板，不过可以用USB OTG连接鼠标键盘，通过HDMI接口输出音视频。
+
+</p>
+<p>“少即是多”，正因为它小，靠外部供电而非电池，有很多扩展的可能性，上市以后很火。到现在淘宝一搜MK802，会出现各种各样厂商（比如酷优乐，联力胜）的也叫做MK802或者UG802,MK803,MK808,MK809的之类的产品。可以给它刷上Linux，然后把它当成一个普通PC使用（因为驱动的原因，用自带的Android可能是更好的选择）。或者，不接显示器，做一个Headless Server？接移动硬盘做一个BT下载机？又或者，加上Arduino，连接上各种传感器，作为机器人的主控制器？总之可以做到很多平板做不到的事情。这里有一个简易对照表：<a href="http://bluefox.com.tw/2012/11/22/%E5%AE%89%E5%8D%93-android-mini-pc-%E7%B0%A1%E6%98%93%E5%B0%8D%E7%85%A7%E8%A1%A8/#more-2654">http://bluefox.com.tw/2012/11/22/%E5%AE%89%E5%8D%93-android-mini-pc-%E7%B0%A1%E6%98%93%E5%B0%8D%E7%85%A7%E8%A1%A8/#more-2654</a>
+
+</p>
+<p>MK802的第一代产品是使用全志A10芯片的，在半年后看来这个芯片性能不够强了，运行桌面Ubuntu不是很流畅，但是它的Android ROM和Linux的支持已经比较完善了。后面有一个MK802 II是它的升级版，改动不大，系统基本也可以通用。
+
+</p>
+<p>接下来出现了一个UG802,它不是由原来MK802的厂商瑞科美生产的，而是一个叫做酷优乐的公司。在搜索引擎上搜索“酷优乐”这个词都搜不到这个公司的网站。我是问淘宝客服才知道这个公司的网站的（kuyoule.cn），它是第一个使用RK3066芯片（1.66GHz,双核A9）的Mini PC。然后又出现了一个MK808（不知道是哪个产商的）ROM提升到8G，后来的MK808B增加了蓝牙，改进了WiFi天线（原来的好像WiFi信号不太好）。然后瑞科美才推出MK802 III，同样是使用RK3066芯片，不过个人感觉可能质量和ROM支持好一些。然后就是去年12月份推出的MK802 IIIS了，我买的就是这个。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/7f826aef8756ce136c0262bd5a49a17f.jpg" alt="">
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/eccbaf8ff5d4a416e546a1f2e18401b7.jpg" alt="">
+
+</p>
+<span id="more"></span>
+
+<p>RK3066的linux源码从一个西班牙的公司释出，然后AndrewDB开始开发，成功跑上了Ubuntu 12.10: <a href="http://www.slatedroid.com/topic/40717-ubuntu-linux-for-the-ug802/">http://www.slatedroid.com/topic/40717-ubuntu-linux-for-the-ug802/</a>
+
+</p>
+<p>AndrewDB开发了一段时间，放出了kernel镜像和rootfs，最后的版本是Pre-Alpha 0.3,在MK802 III/UG802/MK808/UG007/iMito MX1等RK3066芯片的设备上都测试正常。然后他放出了一个Roadmap，就在论坛里神秘消失了==，再也没有出现。。。大神们都是神龙见首不见尾么。。。
+
+</p>
+<p>AndrewDB在Google Code上创建了一个叫做<a href="https://code.google.com/p/rk3066-linux/">rk3066-linux</a>的项目,现在主要由AlokSinha2001接手了。他用<a href="http://ubuntu.g8.net/">MK808做了一个服务器</a>，现在已经持续运行一个月了。1月15号正式发布了PicUntu，主要对服务器的用途做了一些改进，做了一个安装脚本还有一个apk的安装导引。目前（2013年1月24日）最新的版本是0.9 RC 2.2，google code不让放那么大的文件下载，于是直接转到了那个用MK808做的网站上提供下载。
+
+</p>
+<p>运行起来还算流畅，使用Chromium没有什么问题，用ports.ubuntu.com的软件源安装软件也很方便，只是速度有点慢(似乎没有其它镜像？)。<a href="http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/page__st__380">Mali 400的驱动有人正在尝试中...</a>
+
+</p>
+<p>Picuntu的安装在下一篇文章里介绍。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/Linux/">Linux</a>, <a href="/tags/Android/">Android</a>, <a href="/tags/Embedded-Linux/">Embedded Linux</a>, <a href="/tags/ARM/">ARM</a>, <a href="/tags/Robot/">Robot</a>, <a href="/tags/Ubuntu/">Ubuntu</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sun11.me">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+  
+    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+  
+    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+  
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+  
+    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+  
+    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+  
+    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+  
+    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+  
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+  
+    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 E. Sununs
+  
+</div>
+<div class="alignright" style="margin-right:300px">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC BY-NC-SA</a>.
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = '11zhexo';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

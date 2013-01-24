@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>一个Quick and Dirty的记事本程序 | 11zHexo</title>
+  <meta name="author" content="E. Sununs">
+  
+  <meta name="description" content="最近在学QT编程，总算是能做出一个图形界面程序了。
+
+
+我用的书是《C++ GUI Qt 4 编程（第二版）》(C++ GUI Programming with Qt4,Second Edition)。书上给我的第一个有主窗口的完整应用程序的例子是一个电子表格程序，那叫一个复杂啊...虽然说基本把Q">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  <meta property="og:title" content="一个Quick and Dirty的记事本程序"/>
+  <meta property="og:site_name" content="11zHexo"/>
+
+  <link rel="alternate" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31707826-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">11zHexo</a></h1>
+  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-08-20T16:00:00.000Z"><a href="/blog/45/">Aug 21 2011</a></time>
+      
+      
+  
+    <h1 class="title">一个Quick and Dirty的记事本程序</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>最近在学QT编程，总算是能做出一个图形界面程序了。
+
+</p>
+<p>我用的书是《C++ GUI Qt 4 编程（第二版）》(C++ GUI Programming with Qt4,Second Edition)。书上给我的第一个有主窗口的完整应用程序的例子是一个电子表格程序，那叫一个复杂啊...虽然说基本把QT库的基本内容展现出来了，可是我实在消化不了那么多东西，而且涉及到表格，太过具体，这些比较细节的东西以后未必用的上。
+
+</p>
+<p>所以我不打算完整的学下来，转而做一个简单的记事本程序。
+
+</p>
+<p>这个程序有基本的标题栏，菜单栏，状态栏...
+
+</p>
+<p>只是工具栏被我删掉了，感觉跟菜单栏比较类似，也懒得去做图标...
+
+</p>
+<p>我找了一下网上的教程，有直接用Qt Designer图形界面操作的，但太傻瓜化，有些功能还实现不了。还有就是书上的例子，纯代码...而我是要做一个有基本界面还可以打开和保存文件，有剪切复制粘贴功能的记事本，用Qt Designer设计UI，然后再写一些代码。
+
+</p>
+<p>所以参考了一个QT官网上的一个教程和书里的制作电子表格的示例程序，做了一个Quick and Dirty的记事本程序。
+
+</p>
+<p>之所以Dirty，是因为它甚至还不支持中文！（勿喷，勿喷，写入文件是用一个叫做QTextStream的类弄的，我什么都不知道...）
+
+</p>
+<p>同是C++初学者的我，压根搞不清状况。那么多乱七八糟的类和对象。问题是Qt Designer设计的ui对象我搞不懂怎么用代码操作，书上它是纯代码的也没讲。
+
+</p>
+<p>后来还是QtCreator这个给力的IDE好使啊，打出ui，再按点号，自动将点号转成&quot;-&gt;&quot;，然后用特殊方式显示“ui”，这是说，它找到了这个对象，原来这个对象就叫ui...查了一下前面的定义，大体上看懂了。。。
+
+</p>
+<p>把窗体初始化以后，然后就是各种信号和槽的连接...各种QT的类，揣摩各种语法规则(本人比较懒，不想查书...)，Google各种error...在这个过程中，总算是了解了基本的QT编程。
+
+</p>
+<p>最开心的事情：setShortcut(QKeySequence::XXX)是在各种操作系统上的万能钥匙啊，什么快捷键，系统给你，不用写，哈哈～
+
+</p>
+<p>代码在<a href="https://github.com/sun11/QTGUI_Writer">https://github.com/sun11/QTGUI_Writer</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/Qt/">Qt</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sun11.me">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+  
+    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+  
+    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+  
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+  
+    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+  
+    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+  
+    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+  
+    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+  
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+  
+    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 E. Sununs
+  
+</div>
+<div class="alignright" style="margin-right:300px">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC BY-NC-SA</a>.
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = '11zhexo';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

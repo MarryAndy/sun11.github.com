@@ -1,0 +1,397 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 2 | Archives | 11zHexo</title>
+  <meta name="author" content="E. Sununs">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="11zHexo"/>
+
+  <link rel="alternate" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31707826-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">11zHexo</a></h1>
+  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+
+<h2 class="archive-title">Archives</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-06T16:00:00.000Z"><a href="/blog/100/">Jan 7 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/100/">TL-WR703n挂载USB摄像头</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>首先刷OpenWrt,我用的是<a title="http://www.right.com.cn/forum/thread-71042-1-2.html" href="http://www.right.com.cn/forum/thread-71042-1-2.html" target="_blank">这个帖子</a>里的<a title="http://ishare.iask.sina.com.cn/f/22200677.html" href="http://ishare.iask.sina.com.cn/f/22200677.html" target="_blank">这个版本</a>，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。
+
+</p>
+<p>我是按<a title="http://www.unxmail.com/read.php?187" href="http://www.unxmail.com/read.php?187" target="_blank">这个帖子</a>来操作的，把u盘分成两个区，一个ext3格式（据说比较稳定？），一个ext4格式。按照帖子成功挂载以后点开luci的System里的Software，发现空间已经是u盘那个指定分区的空间了，啊哈，想装啥就装啥。
+
+</p>
+<p>接下来就是摄像头了。由于路由器只有一个usb口，所以得用hub。（废话）
+
+</p>
+<p>我看到了<a title="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" href="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" target="_blank">这个帖子</a>,软件源是不用改的，所以直接：
+
+</p>
+<p>opkg update
+
+</p>
+<p>opkg install usbutils
+
+</p>
+<p>由于我的摄像头是杂牌的，芯片貌似不是301的，所以这跟多数人用的301方案不同。
+
+</p>
+<p>首先在win7的设备管理器查到了我的摄像头的设备信息，搜到了型号。发现和帖子里的芯片型号一样，大喜呀。
+
+</p>
+<p>然后我装了kmod-video-gspca-zc3xx（可能不用装的）和kmod-video-uvc。
+
+</p>
+<p>结果竟然很快成功了。
+
+</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/blog/100/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-09-28T16:00:00.000Z"><a href="/blog/63/">Sep 29 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/63/">[译]人脸检测与人脸识别简介</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>From: <a href="http://www.shervinemami.co.cc/faceRecognition.html/">http://www.shervinemami.co.cc/faceRecognition.html/</a>
+
+</p>
+<p>Translated by 11
+
+</p>
+<p>“人脸识别”是一个在计算机视觉和生物特征识别领域十分活跃的话题。这个主题已经被给力地研究了25年，并且最终在安全、机器人学、人机交互、数码摄像机、游戏和娱乐领域得到了广泛应用。
+
+</p>
+<p>“人脸识别”大致可分为两个阶段：
+
+</p>
+<p>1.人脸检测 搜索一幅图像，寻找一切人脸区域（此处以绿色矩形显示），然后进行图像处理，清理脸部图像以便于更好地识别。
+
+</p>
+<p>2.人脸识别 把上一阶段检测处理得到的人脸图像与数据<a href="http://11zpic-11zpic.stor.sinaapp.com/original/c4874641c9d4ba540d14aa8b64f4d35d.jpg"><img align="right" title="facerecOut" src="http://11zpic-11zpic.stor.sinaapp.com/original/c4874641c9d4ba540d14aa8b64f4d35d.jpg" alt="" width="174" height="197" style="margin: 20px;" /></a> 库中的已知人脸进行比对，判定人脸对应的人是谁(此处以红色文本显示)。
+
+</p>
+<p>2002年后，人脸检测已经可以相当可靠地运作。比如OpenCV的Face Detector,对于一个人直视摄像头得到的较清晰图片，大约有90-95%的准确度。通常来说，当人以侧面对准摄像头或与摄像头成一定角度时，较难检测到人脸，有时需要3D Head Pose Estimation。假如图片亮度不是很好，也较难检测到人脸。脸部的部分区域比另一部分区域明亮，带有阴影，模糊，或者戴眼镜，也会影响检测效果。
+
+</p>
+<p>然而，人脸识别却比人脸检测不可靠得多，一般只有30-70%的准确度。20世纪90年代以来，人脸识别一直是一个很重要的研究领域，但仍然十分不可靠，并且每一年都有更多的识别技术被创造，如文章底部所列出的（Alternatives to Eigenfaces such as 3D face recognition or recognition from video.）
+
+</p>
+<p>我将向你展示如何使用“特征脸”（Eigenfaces)，也称为主元分析法（Principal Component Analysis or PCA)。相对于普通的神经网络方法（Neural Networks）和Fisher Faces方法来说，这是一个简单和流行的对图片进行的二维人脸识别的方法。
+
+</p>
+<p>要学习特征脸方法的理论，你需要阅读Face Recognition With Eigenface from Servo Magazine (April 2007)，可能还需要一些数学算法。
+
+</p>
+<p>首先我将向你解释，怎样实现特征脸的命令行离线训练（offline training from the command-line），基于Servo Magazine tutorial and source-code (May 2007)。
+
+</p>
+<p>之后，我将说明如何将此扩展成为从网络摄像头进行实时的在线训练:-)
+</p>
+<p><p><span style="color: #ff6600;"><strong>使用OpenCV的Face Detector检测人脸</strong></span></p>
+</p>
+<p><p>如上所述，人脸识别的第一个阶段是人脸检测。OpenCV库使得使用它的Haar Cascade Face Detector(也称为Viola-Jones方法)检测正面人脸变得相当简单。</p>
+OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函数直接用没有意义，所以最好用这个包装好的函数：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div><div class="line-number">43</div><div class="line-number">44</div><div class="line-number">45</div><div class="line-number">46</div><div class="line-number">47</div><div class="line-number">48</div><div class="line-number">49</div><div class="line-number">50</div><div class="line-number">51</div><div class="line-number">52</div><div class="line-number">53</div></code></pre></td><td class="code"><pre><code><div class="line">// Perform face detection on the input image, using the given Haar Cascade.</div><div class="line">// Returns a rectangle for the detected region <span class="keyword">in</span> the given image.</div><div class="line">CvRect detectFaceInImage(IplImage *inputImg, CvHaarClassifierCascade* cascade)</div><div class="line">{</div><div class="line">	// Smallest face size.</div><div class="line">	CvSize minFeatureSize = cvSize(<span class="number">20</span>, <span class="number">20</span>)<span class="comment">;</span></div><div class="line">	// Only search for <span class="number">1</span> face.</div><div class="line">	int flags = CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH<span class="comment">;</span></div><div class="line">	// How detailed should the search be.</div><div class="line">	float search_scale_factor = <span class="number">1.1</span>f<span class="comment">;</span></div><div class="line">	IplImage *detectImg<span class="comment">;</span></div><div class="line">	IplImage *greyImg = <span class="number">0</span><span class="comment">;</span></div><div class="line">	CvMemStorage* storage<span class="comment">;</span></div><div class="line">	CvRect rc<span class="comment">;</span></div><div class="line">	double t<span class="comment">;</span></div><div class="line">	CvSeq* rects<span class="comment">;</span></div><div class="line">	CvSize size<span class="comment">;</span></div><div class="line">	int i, ms, nFaces<span class="comment">;</span></div><br><div class="line">	storage = cvCreateMemStorage(<span class="number">0</span>)<span class="comment">;</span></div><div class="line">	cvClearMemStorage( storage )<span class="comment">;</span></div><br><div class="line">	// If the image is color, use a greyscale copy of the image.</div><div class="line">	detectImg = (IplImage*)inputImg<span class="comment">;</span></div><div class="line">	if (inputImg-&amp;gt<span class="comment">;nChannels &amp;gt; 1) {</span></div><div class="line">		size = cvSize(inputImg-&amp;gt<span class="comment">;width, inputImg-&amp;gt;height);</span></div><div class="line">		greyImg = cvCreateImage(size, IPL_DEPTH_8U, <span class="number">1</span> )<span class="comment">;</span></div><div class="line">		cvCvtColor( inputImg, greyImg, CV_BGR2GRAY )<span class="comment">;</span></div><div class="line">		detectImg = greyImg<span class="comment">;	// Use the greyscale image.</span></div><div class="line">	}</div><br><div class="line">	// Detect all the faces <span class="keyword">in</span> the greyscale image.</div><div class="line">	t = (double)cvGetTickCount()<span class="comment">;</span></div><div class="line">	rects = cvHaarDetectObjects( detectImg, cascade, storage,</div><div class="line">			search_scale_factor, <span class="number">3</span>, flags, minFeatureSize)<span class="comment">;</span></div><div class="line">	t = (double)cvGetTickCount() - t<span class="comment">;</span></div><div class="line">	ms = cvRound( t / ((double)cvGetTickFrequency() * <span class="number">1000.0</span>) )<span class="comment">;</span></div><div class="line">	nFaces = rects-&amp;gt<span class="comment">;total;</span></div><div class="line">	printf(<span class="string">"Face Detection took %d ms and found %d objectsn"</span>, ms, nFaces)<span class="comment">;</span></div><br><div class="line">	// Get the first detected face (the biggest).</div><div class="line">	if (nFaces &amp;gt<span class="comment">; 0)</span></div><div class="line">		rc = *(CvRect*)cvGetSeqElem( rects, <span class="number">0</span> )<span class="comment">;</span></div><div class="line">	else</div><div class="line">		rc = cvRect(-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>)<span class="comment">;	// Couldn't find the face.</span></div><br><div class="line">	if (greyImg)</div><div class="line">		cvReleaseImage( &amp;amp<span class="comment">;greyImg );</span></div><div class="line">	cvReleaseMemStorage( &amp;amp<span class="comment">;storage );</span></div><div class="line">	//cvReleaseHaarClassifierCascade( &amp;amp<span class="comment">;cascade );</span></div><br><div class="line">	return rc<span class="comment">;	// Return the biggest face found, or (-1,-1,-1,-1).</span></div><div class="line">}</div></code></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/blog/63/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-08-20T16:00:00.000Z"><a href="/blog/45/">Aug 21 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/45/">一个Quick and Dirty的记事本程序</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>最近在学QT编程，总算是能做出一个图形界面程序了。
+
+</p>
+<p>我用的书是《C++ GUI Qt 4 编程（第二版）》(C++ GUI Programming with Qt4,Second Edition)。书上给我的第一个有主窗口的完整应用程序的例子是一个电子表格程序，那叫一个复杂啊...虽然说基本把QT库的基本内容展现出来了，可是我实在消化不了那么多东西，而且涉及到表格，太过具体，这些比较细节的东西以后未必用的上。
+
+</p>
+<p>所以我不打算完整的学下来，转而做一个简单的记事本程序。
+
+</p>
+<p>这个程序有基本的标题栏，菜单栏，状态栏...
+
+</p>
+<p>只是工具栏被我删掉了，感觉跟菜单栏比较类似，也懒得去做图标...
+
+</p>
+<p>我找了一下网上的教程，有直接用Qt Designer图形界面操作的，但太傻瓜化，有些功能还实现不了。还有就是书上的例子，纯代码...而我是要做一个有基本界面还可以打开和保存文件，有剪切复制粘贴功能的记事本，用Qt Designer设计UI，然后再写一些代码。
+
+</p>
+<p>所以参考了一个QT官网上的一个教程和书里的制作电子表格的示例程序，做了一个Quick and Dirty的记事本程序。
+
+</p>
+<p>之所以Dirty，是因为它甚至还不支持中文！（勿喷，勿喷，写入文件是用一个叫做QTextStream的类弄的，我什么都不知道...）
+
+</p>
+<p>同是C++初学者的我，压根搞不清状况。那么多乱七八糟的类和对象。问题是Qt Designer设计的ui对象我搞不懂怎么用代码操作，书上它是纯代码的也没讲。
+
+</p>
+<p>后来还是QtCreator这个给力的IDE好使啊，打出ui，再按点号，自动将点号转成&quot;-&gt;&quot;，然后用特殊方式显示“ui”，这是说，它找到了这个对象，原来这个对象就叫ui...查了一下前面的定义，大体上看懂了。。。
+
+</p>
+<p>把窗体初始化以后，然后就是各种信号和槽的连接...各种QT的类，揣摩各种语法规则(本人比较懒，不想查书...)，Google各种error...在这个过程中，总算是了解了基本的QT编程。
+
+</p>
+<p>最开心的事情：setShortcut(QKeySequence::XXX)是在各种操作系统上的万能钥匙啊，什么快捷键，系统给你，不用写，哈哈～
+
+</p>
+<p>代码在<a href="https://github.com/sun11/QTGUI_Writer">https://github.com/sun11/QTGUI_Writer</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-06-25T16:00:00.000Z"><a href="/blog/7/">Jun 26 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/7/">Hello World</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><strong>Hello World!</strong></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/" class="alignleft prev">Prev</a>
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sun11.me">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+  
+    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+  
+    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+  
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+  
+    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+  
+    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+  
+    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+  
+    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+  
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+  
+    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 E. Sununs
+  
+</div>
+<div class="alignright" style="margin-right:300px">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC BY-NC-SA</a>.
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = '11zhexo';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

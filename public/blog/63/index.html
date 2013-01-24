@@ -1,0 +1,469 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>[译]人脸检测与人脸识别简介 | 11zHexo</title>
+  <meta name="author" content="E. Sununs">
+  
+  <meta name="description" content="From: http://www.shervinemami.co.cc/faceRecognition.html/
+
+
+Translated by 11
+
+
+“人脸识别”是一个在计算机视觉和生物特征识别领域十分活跃的话题。这个主题已经被给力地研究了25年，并且最终在安全、机器人学、人机交互、数码摄像机、游戏和娱乐领域得到了广泛应用。
+
+
+“人脸识别”大致可分为两个阶段：
+
+
+1.人脸检测 搜索一幅图像，寻找一切人脸区域（此处以绿色矩形显示），然后进行图像处理，清理脸部图像以便于更好地识别。
+
+
+2.人脸识别 把上一阶段检测处理得到的人脸图像与数据 库中的已知人脸进行比对，判定人脸对应的人是谁(此处以红色文本显示)。
+
+
+2002年后，人脸检测已经可以相当可靠地运作。比如OpenCV的Face Detector,对于一个人直视摄像头得到的较清晰图片，大约有90-95%的准确度。通常来说，当人以侧面对准摄像头或与摄像头成一定角度时，较难检测到人脸，有时需要3D Head Pose Estimation。假如图片亮度不是很好，也较难检测到人脸。脸部的部分区域比另一部分区域明亮，带有阴影，模糊，或者戴眼镜，也会影响检测效果。
+
+
+然而，人脸识别却比人脸检测不可靠得多，一般只有30-70%的准确度。20世纪90年代以来，人脸识别一直是一个很重要的研究领域，但仍然十分不可靠，并且每一年都有更多的识别技术被创造，如文章底部所列出的（Alternatives to Eigenfaces such as 3D face recognition or recognition from video.）
+
+
+我将向你展示如何使用“特征脸”（Eigenfaces)，也称为主元分析法（Principal Component Analysis or PCA)。相对于普通的神经网络方法（Neural Networks）和Fisher Faces方法来说，这是一个简单和流行的对图片进行的二维人脸识别的方法。
+
+
+要学习特征脸方法的理论，你需要阅读Face Recognition With Eigenface from Servo Magazine (April 2007)，可能还需要一些数学算法。
+
+
+首先我将向你解释，怎样实现特征脸的命令行离线训练（offline training from the command-line），基于Servo Magazine tutorial and source-code (May 2007)。
+
+
+之后，我将说明如何将此扩展成为从网络摄像头进行实时的在线训练:-)
+
+使用OpenCV的Face Detector检测人脸
+
+如上所述，人脸识别的第一个阶段是人脸检测。OpenCV库使得使用它的Haar Cascade Face Detector(也称为Viola-Jones方法)检测正面人脸变得相当简单。
+OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函数直接用没有意义，所以最好用这个包装好的函数：
+
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253// Perform face detection on the input image, using the given Haar Cascade.// Returns a rectangle for the detected region in the given image.CvRect detectFaceInImage(IplImage *inputImg, CvHaarClassifierCascade* cascade){	// Smallest face size.	CvSize minFeatureSize = cvSize(20, 20);	// Only search for 1 face.	int flags = CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;	// How detailed should the search be.	float search_scale_factor = 1.1f;	IplImage *detectImg;	IplImage *greyImg = 0;	CvMemStorage* storage;	CvRect rc;	double t;	CvSeq* rects;	CvSize size;	int i, ms, nFaces;	storage = cvCreateMemStorage(0);	cvClearMemStorage( storage );	// If the image is color, use a greyscale copy of the image.	detectImg = (IplImage*)inputImg;	if (inputImg-&amp;gt;nChannels &amp;gt; 1) {		size = cvSize(inputImg-&amp;gt;width, inputImg-&amp;gt;height);		greyImg = cvCreateImage(size, IPL_DEPTH_8U, 1 );		cvCvtColor( inputImg, greyImg, CV_BGR2GRAY );		detectImg = greyImg;	// Use the greyscale image.	}	// Detect all the faces in the greyscale image.	t = (double)cvGetTickCount();	rects = cvHaarDetectObjects( detectImg, cascade, storage,			search_scale_factor, 3, flags, minFeatureSize);	t = (double)cvGetTickCount() - t;	ms = cvRound( t / ((double)cvGetTickFrequency() * 1000.0) );	nFaces = rects-&amp;gt;total;	printf(&quot;Face Detection took %d ms and found %d objectsn&quot;, ms, nFaces);	// Get the first detected face (the biggest).	if (nFaces &amp;gt; 0)		rc = *(CvRect*)cvGetSeqElem( rects, 0 );	else		rc = cvRect(-1,-1,-1,-1);	// Couldn't find the face.	if (greyImg)		cvReleaseImage( &amp;amp;greyImg );	cvReleaseMemStorage( &amp;amp;storage );	//cvReleaseHaarClassifierCascade( &amp;amp;cascade );	return rc;	// Return the biggest face found, or (-1,-1,-1,-1).}">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  <meta property="og:title" content="[译]人脸检测与人脸识别简介"/>
+  <meta property="og:site_name" content="11zHexo"/>
+
+  <link rel="alternate" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31707826-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">11zHexo</a></h1>
+  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-09-28T16:00:00.000Z"><a href="/blog/63/">Sep 29 2011</a></time>
+      
+      
+  
+    <h1 class="title">[译]人脸检测与人脸识别简介</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>From: <a href="http://www.shervinemami.co.cc/faceRecognition.html/">http://www.shervinemami.co.cc/faceRecognition.html/</a>
+
+</p>
+<p>Translated by 11
+
+</p>
+<p>“人脸识别”是一个在计算机视觉和生物特征识别领域十分活跃的话题。这个主题已经被给力地研究了25年，并且最终在安全、机器人学、人机交互、数码摄像机、游戏和娱乐领域得到了广泛应用。
+
+</p>
+<p>“人脸识别”大致可分为两个阶段：
+
+</p>
+<p>1.人脸检测 搜索一幅图像，寻找一切人脸区域（此处以绿色矩形显示），然后进行图像处理，清理脸部图像以便于更好地识别。
+
+</p>
+<p>2.人脸识别 把上一阶段检测处理得到的人脸图像与数据<a href="http://11zpic-11zpic.stor.sinaapp.com/original/c4874641c9d4ba540d14aa8b64f4d35d.jpg"><img align="right" title="facerecOut" src="http://11zpic-11zpic.stor.sinaapp.com/original/c4874641c9d4ba540d14aa8b64f4d35d.jpg" alt="" width="174" height="197" style="margin: 20px;" /></a> 库中的已知人脸进行比对，判定人脸对应的人是谁(此处以红色文本显示)。
+
+</p>
+<p>2002年后，人脸检测已经可以相当可靠地运作。比如OpenCV的Face Detector,对于一个人直视摄像头得到的较清晰图片，大约有90-95%的准确度。通常来说，当人以侧面对准摄像头或与摄像头成一定角度时，较难检测到人脸，有时需要3D Head Pose Estimation。假如图片亮度不是很好，也较难检测到人脸。脸部的部分区域比另一部分区域明亮，带有阴影，模糊，或者戴眼镜，也会影响检测效果。
+
+</p>
+<p>然而，人脸识别却比人脸检测不可靠得多，一般只有30-70%的准确度。20世纪90年代以来，人脸识别一直是一个很重要的研究领域，但仍然十分不可靠，并且每一年都有更多的识别技术被创造，如文章底部所列出的（Alternatives to Eigenfaces such as 3D face recognition or recognition from video.）
+
+</p>
+<p>我将向你展示如何使用“特征脸”（Eigenfaces)，也称为主元分析法（Principal Component Analysis or PCA)。相对于普通的神经网络方法（Neural Networks）和Fisher Faces方法来说，这是一个简单和流行的对图片进行的二维人脸识别的方法。
+
+</p>
+<p>要学习特征脸方法的理论，你需要阅读Face Recognition With Eigenface from Servo Magazine (April 2007)，可能还需要一些数学算法。
+
+</p>
+<p>首先我将向你解释，怎样实现特征脸的命令行离线训练（offline training from the command-line），基于Servo Magazine tutorial and source-code (May 2007)。
+
+</p>
+<p>之后，我将说明如何将此扩展成为从网络摄像头进行实时的在线训练:-)
+</p>
+<p><p><span style="color: #ff6600;"><strong>使用OpenCV的Face Detector检测人脸</strong></span></p>
+</p>
+<p><p>如上所述，人脸识别的第一个阶段是人脸检测。OpenCV库使得使用它的Haar Cascade Face Detector(也称为Viola-Jones方法)检测正面人脸变得相当简单。</p>
+OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函数直接用没有意义，所以最好用这个包装好的函数：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div><div class="line-number">43</div><div class="line-number">44</div><div class="line-number">45</div><div class="line-number">46</div><div class="line-number">47</div><div class="line-number">48</div><div class="line-number">49</div><div class="line-number">50</div><div class="line-number">51</div><div class="line-number">52</div><div class="line-number">53</div></code></pre></td><td class="code"><pre><code><div class="line">// Perform face detection on the input image, using the given Haar Cascade.</div><div class="line">// Returns a rectangle for the detected region <span class="keyword">in</span> the given image.</div><div class="line">CvRect detectFaceInImage(IplImage *inputImg, CvHaarClassifierCascade* cascade)</div><div class="line">{</div><div class="line">	// Smallest face size.</div><div class="line">	CvSize minFeatureSize = cvSize(<span class="number">20</span>, <span class="number">20</span>)<span class="comment">;</span></div><div class="line">	// Only search for <span class="number">1</span> face.</div><div class="line">	int flags = CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH<span class="comment">;</span></div><div class="line">	// How detailed should the search be.</div><div class="line">	float search_scale_factor = <span class="number">1.1</span>f<span class="comment">;</span></div><div class="line">	IplImage *detectImg<span class="comment">;</span></div><div class="line">	IplImage *greyImg = <span class="number">0</span><span class="comment">;</span></div><div class="line">	CvMemStorage* storage<span class="comment">;</span></div><div class="line">	CvRect rc<span class="comment">;</span></div><div class="line">	double t<span class="comment">;</span></div><div class="line">	CvSeq* rects<span class="comment">;</span></div><div class="line">	CvSize size<span class="comment">;</span></div><div class="line">	int i, ms, nFaces<span class="comment">;</span></div><br><div class="line">	storage = cvCreateMemStorage(<span class="number">0</span>)<span class="comment">;</span></div><div class="line">	cvClearMemStorage( storage )<span class="comment">;</span></div><br><div class="line">	// If the image is color, use a greyscale copy of the image.</div><div class="line">	detectImg = (IplImage*)inputImg<span class="comment">;</span></div><div class="line">	if (inputImg-&amp;gt<span class="comment">;nChannels &amp;gt; 1) {</span></div><div class="line">		size = cvSize(inputImg-&amp;gt<span class="comment">;width, inputImg-&amp;gt;height);</span></div><div class="line">		greyImg = cvCreateImage(size, IPL_DEPTH_8U, <span class="number">1</span> )<span class="comment">;</span></div><div class="line">		cvCvtColor( inputImg, greyImg, CV_BGR2GRAY )<span class="comment">;</span></div><div class="line">		detectImg = greyImg<span class="comment">;	// Use the greyscale image.</span></div><div class="line">	}</div><br><div class="line">	// Detect all the faces <span class="keyword">in</span> the greyscale image.</div><div class="line">	t = (double)cvGetTickCount()<span class="comment">;</span></div><div class="line">	rects = cvHaarDetectObjects( detectImg, cascade, storage,</div><div class="line">			search_scale_factor, <span class="number">3</span>, flags, minFeatureSize)<span class="comment">;</span></div><div class="line">	t = (double)cvGetTickCount() - t<span class="comment">;</span></div><div class="line">	ms = cvRound( t / ((double)cvGetTickFrequency() * <span class="number">1000.0</span>) )<span class="comment">;</span></div><div class="line">	nFaces = rects-&amp;gt<span class="comment">;total;</span></div><div class="line">	printf(<span class="string">"Face Detection took %d ms and found %d objectsn"</span>, ms, nFaces)<span class="comment">;</span></div><br><div class="line">	// Get the first detected face (the biggest).</div><div class="line">	if (nFaces &amp;gt<span class="comment">; 0)</span></div><div class="line">		rc = *(CvRect*)cvGetSeqElem( rects, <span class="number">0</span> )<span class="comment">;</span></div><div class="line">	else</div><div class="line">		rc = cvRect(-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>)<span class="comment">;	// Couldn't find the face.</span></div><br><div class="line">	if (greyImg)</div><div class="line">		cvReleaseImage( &amp;amp<span class="comment">;greyImg );</span></div><div class="line">	cvReleaseMemStorage( &amp;amp<span class="comment">;storage );</span></div><div class="line">	//cvReleaseHaarClassifierCascade( &amp;amp<span class="comment">;cascade );</span></div><br><div class="line">	return rc<span class="comment">;	// Return the biggest face found, or (-1,-1,-1,-1).</span></div><div class="line">}</div></code></pre></td></tr></table></figure>
+<span id="more"></span>
+现在如果你想要在一张图片里寻找人脸，只需要简单地调用“detectFaceInImage”函数。你也需要指定OpenCV使用的人脸分类器(Face Classifier)。比如，OpenCV自带了一些用于正面脸的分类器，也有一些用于侧面脸的，还有眼睛检测，鼻检测，嘴检测，全身检测等等。你实际上可以任意把其它的分类检测器用于此函数，甚至创造你自己定制的分类检测器，比如车或人的检测(<a title="here" href="http://note.sonots.com/SciSoftware/haartraining.html">阅读此处</a>)，但既然正脸检测是唯一十分可靠的，这将是我们唯一要讨论的。
+
+</p>
+<p>对于正面人脸检测，你应该选取这些OpenCV自带的haar级联分类器(Haar Cascade Classifiers,in the &quot;datahaarcascades&quot; folder)。
+</p>
+<p><ul>
+    <li>&quot;haarcascade_frontalface_default.xml&quot;</li>
+    <li>&quot;haarcascade_frontalface_alt.xml&quot;</li>
+    <li>&quot;haarcascade_frontalface_alt2.xml&quot;</li>
+    <li>&quot;haarcascade_frontalface_alt_tree.xml&quot;</li>
+</ul>
+</p>
+<p><div>每个haar级联分类器都将给出略微不同的结果，这依赖于你的环境因素，所以你甚至可以用全部分类器，把结果结合在一起（如果你想要做尽可能多地检测）。有一些更多的用于眼睛，头部，嘴巴，鼻子的分类器在<a href="http://gias720.dis.ulpgc.es/Gias/modesto.html">Modesto&#39;s page</a>下载。</div>
+</p>
+<p><div>你可以在你的程序里这样做来进行人脸检测：</div>
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div></code></pre></td><td class="code"><pre><code><div class="line">// Haar Cascade <span class="type">file</span>, used <span class="keyword">for</span> Face Detection.</div><div class="line">char *faceCascadeFilename = <span class="string">"haarcascade_frontalface_alt.xml"</span>;</div><div class="line">// Load <span class="keyword">the</span> HaarCascade classifier <span class="keyword">for</span> face detection.</div><div class="line">CvHaarClassifierCascade* faceCascade;</div><div class="line">faceCascade = (CvHaarClassifierCascade*)cvLoad(faceCascadeFilename, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line"><span class="keyword">if</span>( !faceCascade ) {</div><div class="line">	printf(<span class="string">"Couldnt load Face detector '%s'n"</span>, faceCascadeFilename);</div><div class="line">	<span class="keyword">exit</span>(<span class="number">1</span>);</div><div class="line">}</div><br><div class="line">// Grab <span class="keyword">the</span> next frame <span class="keyword">from</span> <span class="keyword">the</span> camera.</div><div class="line">IplImage *inputImg = cvQueryFrame(camera);</div><br><div class="line">// Perform face detection <span class="function_start"><span class="keyword">on</span> <span class="title">the</span></span> input image, using <span class="keyword">the</span> <span class="keyword">given</span> Haar classifier</div><div class="line">CvRect faceRect = detectFaceInImage(inputImg, faceCascade);</div><br><div class="line">// Make sure a valid face was detected.</div><div class="line"><span class="keyword">if</span> (faceRect.width &amp;gt; <span class="number">0</span>) {</div><div class="line">	printf(<span class="string">"Detected a face at (%d,%d)!n"</span>, faceRect.x, faceRect.y);</div><div class="line">}</div><br><div class="line">.... Use 'faceRect' <span class="keyword">and</span> 'inputImg' ....</div><br><div class="line">// Free <span class="keyword">the</span> Face Detector resources when <span class="keyword">the</span> program <span class="keyword">is</span> finished</div><div class="line">cvReleaseHaarClassifierCascade( &amp;amp;cascade );</div></code></pre></td></tr></table></figure>
+</p>
+<p><p style="text-align: left;"><strong><span style="color: #ff6600;">对脸部图像进行预处理以便于识别</span></strong></p>
+现在你已经检测到一张人脸，你可以使用那张人脸图片进行人脸识别。然而，假如你尝试这样简单地从一张普通图片直接进行人脸识别的话，你将会至少损失10%的准确率！
+
+</p>
+<p>在一个人脸识别系统中，应用多种预处理技术对将要识别的图片进行标准化处理是极其重要的。多数人脸识别算法对光照条件十分敏感，所以假如在暗室训练，在明亮的房间就可能不会被识别出来等等。这个问题可归于“lumination dependent”，并且还有其它很多例子，比如脸部也应当在图片的一个十分固定的位置（比如眼睛位置为相同的像素坐标），固定的大小，旋转角度，头发和装饰，表情（笑，怒等），光照方向（向左或向上等），这就是在进行人脸识别前，使用好的图片预处理过滤器十分重要的原因。你还应该做一些其它事情，比如去除脸部周围的多余像素（如用椭圆遮罩，只显示其内部的人脸区域而不是头发或图片背景，因为他们的变化多于脸部区域）。
+
+</p>
+<p>为简单起见，我展示给你的人脸识别系统是使用灰度图像的特征脸方法。所以我将向你说明怎样简单地把彩色图像转化为灰度图像，并且之后简单地使用直方图均衡化（<a href="http://en.wikipedia.org/wiki/Histogram_equalization">Histogram Equalization</a>）作为一种自动的标准化脸部图像亮度和对比度的方法。为了得到更好的结果，你可以使用彩色人脸识别(color face recognition,ideally with color histogram fitting in HSV or another color space instead of RGB)，或者使用更多的预处理，比如边缘增强(edge enhancement),轮廓检测(contour detection),手势检测(motion detection),等等。这份代码把图片调整成一个标准的大小，但是可能会改变脸的纵横比(aspect ratio)。你可以阅读我这里的教程<a title="http://www.shervinemami.co.cc/imageTransforms.html" href="http://www.shervinemami.co.cc/imageTransforms.html">HERE</a>，来了解怎样调整图像大小而不改变它的纵横比。
+
+</p>
+<p>你可以看到一个预处理阶段的例子：
+
+</p>
+<p><a href="http://11zpic-11zpic.stor.sinaapp.com/original/0a71d260e3cc2557c918a5892b9e0a4e.jpg"><img class="size-full wp-image-116 alignnone" title="facerecProcessing" src="http://11zpic-11zpic.stor.sinaapp.com/original/0a71d260e3cc2557c918a5892b9e0a4e.jpg" alt="" width="343" height="96" /></a>
+
+</p>
+<p>这是把一幅RGB格式的图像或灰度图像转变为灰度图像的基本代码。它还把图像调整成了固定的维度，然后应用直方图均衡化来实现固定的亮度和对比度。
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div></code></pre></td><td class="code"><pre><code><div class="line">// Either convert <span class="keyword">the</span> image <span class="keyword">to</span> greyscale, <span class="keyword">or</span> use <span class="keyword">the</span> existing greyscale image.</div><div class="line">IplImage *imageGrey;</div><div class="line"><span class="keyword">if</span> (imageSrc-&amp;gt;nChannels == <span class="number">3</span>) {</div><div class="line">	imageGrey = cvCreateImage( cvGetSize(imageSrc), IPL_DEPTH_8U, <span class="number">1</span> );</div><div class="line">	// Convert <span class="keyword">from</span> RGB (actually <span class="keyword">it</span> <span class="keyword">is</span> BGR) <span class="keyword">to</span> Greyscale.</div><div class="line">	cvCvtColor( imageSrc, imageGrey, CV_BGR2GRAY );</div><div class="line">}</div><div class="line"><span class="keyword">else</span> {</div><div class="line">	// Just use <span class="keyword">the</span> input image, <span class="keyword">since</span> <span class="keyword">it</span> <span class="keyword">is</span> already Greyscale.</div><div class="line">	imageGrey = imageSrc;</div><div class="line">}</div><br><div class="line">// Resize <span class="keyword">the</span> image <span class="keyword">to</span> be a consistent size, even <span class="keyword">if</span> <span class="keyword">the</span> aspect ratio changes.</div><div class="line">IplImage *imageProcessed;</div><div class="line">imageProcessed = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, <span class="number">1</span>);</div><div class="line">// Make <span class="keyword">the</span> image a fixed size.</div><div class="line">// CV_INTER_CUBIC <span class="keyword">or</span> CV_INTER_LINEAR <span class="keyword">is</span> good <span class="keyword">for</span> enlarging, <span class="keyword">and</span></div><div class="line">// CV_INTER_AREA <span class="keyword">is</span> good <span class="keyword">for</span> shrinking / decimation, <span class="keyword">but</span> bad <span class="keyword">at</span> enlarging.</div><div class="line">cvResize(imageGrey, imageProcessed, CV_INTER_LINEAR);</div><br><div class="line">// Give <span class="keyword">the</span> image a standard brightness <span class="keyword">and</span> contrast.</div><div class="line">cvEqualizeHist(imageProcessed, imageProcessed);</div><br><div class="line">.....  Use 'imageProcessed' <span class="keyword">for</span> Face Recognition ....</div><br><div class="line"><span class="keyword">if</span> (imageGrey)</div><div class="line">	cvReleaseImage(&amp;amp;imageGrey);</div><div class="line"><span class="keyword">if</span> (imageProcessed)</div><div class="line">	cvReleaseImage(&amp;amp;imageProcessed);</div></code></pre></td></tr></table></figure>
+</p>
+<p><p style="text-align: left;"><strong><span style="color: #ff6600;">把“特征脸”用于人脸识别</span></strong></p>
+现在你已经有了一张经过预处理后的脸部图片，你可以使用特征脸(PCA)进行人脸识别。OpenCV自带了执行PCA操作的&quot;cvEigenDecomposite()&quot;函数，然而你需要一个图片数据库(训练集)告诉机器怎样识别当中的人。
+
+</p>
+<p>所以你应该收集每个人的一组预处理后的脸部图片用于识别。比如，假如你想要从10人的班级当中识别某个人，你可以为每个人存储20张图片，总共就有200张大小相同(如100×100像素)的经预处理的脸部图片。
+
+</p>
+<p>特征脸的理论在Servo Magazine的两篇文章(<a title="http://www.cognotics.com/opencv/servo_2007_series/part_4/index.html" href="http://www.cognotics.com/opencv/servo_2007_series/part_4/index.html">Face Recognition with Eigenface</a>)中解释了，但我仍会在这里尝试着向你解释。
+
+</p>
+<p>我们使用“主元分析”把你的200张训练图片转换成一个代表这些训练图片主要区别的“特征脸”集。首先它将会通过获取每个像素的平均值，生成这些图片的“平均人脸图片”。然后特征脸将会与“平均人脸”比较。第一个特征脸是最主要的脸部区别，第二个特征脸是第二重要的脸部区别，等等……直到你有了大约50张代表大多数训练集图片的区别的特征脸。
+
+</p>
+<p><img class="alignleft size-full" title="facerecAverageFace" src="http://11zpic-11zpic.stor.sinaapp.com/original/2d8eed8219f74225270be7e16f40f52c.jpg" alt=""/><img class="alignleft size-full" title="facerecEigenface0" src="http://11zpic-11zpic.stor.sinaapp.com/original/1380ef44406c3de47f7c1b572d9fe8d8.jpg" alt="" width="130" height="150" /><img class="alignnone size-full" title="facerecEigenface119" src="http://11zpic-11zpic.stor.sinaapp.com/original/a31dc0014de76bf6194e7523e53cdb9f.jpg" alt="" width="130" height="150" />
+
+
+</p>
+<p>在上面这些示例图片中你可以看到平均人脸和第一个以及最后一个特征脸。它们是从一个四人的每人30幅图片的训练集中生成的。注意到，平均人脸显示的是一个普通人的平滑脸部结构，排在最前的一些特征脸显示了一些主要的脸部特征，而最后的特征脸（比如Eigenface 119）主要是图像噪声。你可以在下面看到前32张特征脸。
+
+</p>
+<p><a href="http://11zpic-11zpic.stor.sinaapp.com/original/e0a93b99f0dbaace7d3b2f583bdd8f7e.jpg"><img class="alignnone size-full wp-image-120" title="facerecEigenfaces" src="http://11zpic-11zpic.stor.sinaapp.com/original/e0a93b99f0dbaace7d3b2f583bdd8f7e.jpg" alt="" width="532" height="307" /></a>
+</p>
+<p><p style="text-align: left;"><strong><span style="color: #ff6600;">使用主元分析法进行人脸识别</span></strong></p>
+简单地说，特征脸方法(Principal Component Analysis)计算出了训练集中图片的主要区别，并且用这些“区别”的组合来代表每幅训练图片。
+
+</p>
+<p>比如，一张训练图片可能是如下的组成：
+
+</p>
+<p>(averageFace) + (<span style="color: #0000ff;">13.5</span>% of eigenface0) - (<span style="color: #0000ff;">34.3</span>% of eigenface1) + (<span style="color: #0000ff;">4.7</span>% of eigenface2) + ... + (<span style="color: #0000ff;">0.0</span>% of eigenface199).
+
+</p>
+<p>一旦计算出来，就可以认为这张训练图片是这200个比率(ratio)：
+
+</p>
+<p>{<span style="color: #0000ff;">13.5</span>, <span style="color: #0000ff;">-34.3</span>, <span style="color: #0000ff;">4.7</span>, ..., <span style="color: #0000ff;">0.0</span>}.
+
+</p>
+<p>用特征脸图片分别乘以这些比率，并加上平均人脸图片 (average face)，从这200个比率还原这张训练图片是完全可以做到的。但是既然很多排在后面的特征脸是图像噪声或者不会对图片有太大作用，这个比率表可以被降低到只剩下最主要的,比如前30个，不会对图像质量有很大影响。所以现在可以用30个特征脸，平均人脸图片，和一个含有30个比率的表，来代表全部的200张训练图片。
+
+</p>
+<p>有趣的是，这意味着，我们已经找到了一种方法把200张图片压缩成31张图片再加上一点点数据，而不丢失很多的图像质量。但是这个教程是关于人脸识别的，而不是图像压缩的，所以我们将会忽略它:-)
+
+</p>
+<p>在另一幅图片中识别一个人，可以应用相同的PCA计算，使用相同的200个特征脸来寻找200个代表输入图片的比率。并且仍然可以只保留前30个比率而忽略其余的比率，因为它们是次要的。然后通过搜索这些比率的表，寻找在数据库中已知的20个人，来看谁的前30个比率与输入图片的前30个比率最接近。这就是寻找与输入图片最相似的训练图片的基本方法，总共提供了200张训练图片。
+</p>
+<p><p><span style="color: #ff6600;"><strong>离线命令行训练的实现</strong></span></p>
+为了实现离线训练，也就是通过命令行(command-line)使用文件作为输入输出，我使用了与Servo Magazine里<a href="http://www.cognotics.com/opencv/servo_2007_series/part_5/index.html">Face Recognition with Eigenface</a>相同的实现，所以你可以先阅读这篇文章，但是我做了一些小的改动。
+
+</p>
+<p>基本上，从训练图片创建一个人脸识别数据库，就是创建一个列出图片文件和每个文件代表的人的文本文件。
+
+</p>
+<p>比如，你可以把这些输入一个名为&quot;4_images_of_2_people.txt&quot;的文本文件：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="number">1</span> <span class="type">Shervin</span> <span class="typedef">dataShervinShervin1.bmp</span></div><div class="line"><span class="number">1</span> <span class="type">Shervin</span> <span class="typedef">dataShervinShervin2.bmp</span></div><div class="line"><span class="number">1</span> <span class="type">Shervin</span> <span class="typedef">dataShervinShervin3.bmp</span></div><div class="line"><span class="number">1</span> <span class="type">Shervin</span> <span class="typedef">dataShervinShervin4.bmp</span></div><div class="line"><span class="number">2</span> <span class="type">Chandan</span> <span class="typedef">dataChandanChandan1.bmp</span></div><div class="line"><span class="number">2</span> <span class="type">Chandan</span> <span class="typedef">dataChandanChandan2.bmp</span></div><div class="line"><span class="number">2</span> <span class="type">Chandan</span> <span class="typedef">dataChandanChandan3.bmp</span></div><div class="line"><span class="number">2</span> <span class="type">Chandan</span> <span class="typedef">dataChandanChandan4.bmp</span></div></code></pre></td></tr></table></figure>
+它告诉这个程序，第一个人的名字叫“Shervin”，而Shervin的四张预处理后的脸部图像在&quot;dataShervin&quot;文件夹，第二个人的名字叫&quot;Chandan&quot;，在&quot;dataChandan&quot;中有她的四张图片。这个程序可以使用&quot;loadFaceImgArray()&quot;函数把这些图片加载到一个图片数组中。注意，为了简单起见，它不允许空格或特殊字符出现在人名中，&lt;?&gt;所以你可能想要实现这一功能，或者把人名中的空格用下划线代替（比如 Shervin_Emami）。&lt;/?&gt;
+
+</p>
+<p>为了从这些加载好的图片中创建一个数据库，你可以使用OpenCV的&quot;cvCalcEigenObjects()&quot;和&quot;cvEigenDecomposite()&quot;函数，比如：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="comment">// Tell PCA to quit when it has enough eigenfaces.</span></div><div class="line">CvTermCriteria calcLimit = cvTermCriteria( CV_TERMCRIT_ITER, nEigens, <span class="number">1</span>);</div><br><div class="line"><span class="comment">// Compute average image, eigenvectors (eigenfaces) and eigenvalues (ratios).</span></div><div class="line">cvCalcEigenObjects(nTrainFaces, (<span class="keyword">void</span>*)faceImgArr, (<span class="keyword">void</span>*)eigenVectArr,</div><div class="line">	CV_EIGOBJ_NO_CALLBACK, <span class="number">0</span>, <span class="number">0</span>, &amp;amp;calcLimit,</div><div class="line">	pAvgTrainImg, eigenValMat-&amp;gt;data<span class="variable">.fl</span>);</div><br><div class="line"><span class="comment">// Normalize the matrix of eigenvalues.</span></div><div class="line">cvNormalize(eigenValMat, eigenValMat, <span class="number">1</span>, <span class="number">0</span>, CV_L1, <span class="number">0</span>);</div><br><div class="line"><span class="comment">// Project each training image onto the PCA subspace.</span></div><div class="line">CvMat projectedTrainFaceMat = cvCreateMat( nTrainFaces, nEigens, CV_32FC1 );</div><div class="line"><span class="keyword">int</span> offset = projectedTrainFaceMat-&amp;gt;step / <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&amp;lt;nTrainFaces; i++) {</div><div class="line">	cvEigenDecomposite(faceImgArr[i], nEigens, eigenVectArr, <span class="number">0</span>, <span class="number">0</span>,</div><div class="line">		pAvgTrainImg, projectedTrainFaceMat-&amp;gt;data<span class="variable">.fl</span> + i*offset);</div><div class="line">}</div></code></pre></td></tr></table></figure>
+现在你有了：
+</p>
+<p><ul>
+    <li>平均人脸图片&quot;pAvgTrainImg&quot;，</li>
+    <li>包含特征脸图片的数组&quot;eigenVectArr[]&quot;（如：假如你使用了nEigens=200 张训练图片，将得到200 个特征脸），</li>
+    <li>特征值矩阵 (即特征脸的比率，eigenface ratios) 每张图片的&quot;projectedTrainFaceMat&quot; 。</li>
+</ul>
+</p>
+<p><div>现在这些可以被储存成一个文件，也就是人脸识别的数据库。代码中的&quot;storeTrainingData()&quot;函数将会把这些数据储存到”facedata.xml“文件里，它可以随时被重新载入来识别经训练过的人。代码中也有一个&quot;storeEigenfaceImages()&quot;的函数，生成前面提到的图片，平均人脸图片被保存到&quot;out_averageImage.bmp&quot;，特征脸被保存到&quot;out_eigenfaces.bmp&quot;。</div>
+</p>
+<p><p><span style="color: #ff6600;"><strong>离线命令行识别的实现</strong></span></p>
+在离线训练阶段，系统尝试从一个文本文件中的列表读取若干张图像中的人脸，并进行识别。为了实现它，我仍然使用Servo Magazine的<a href="http://www.cognotics.com/opencv/servo_2007_series/part_5/index.html">Face Recognition with Eigenface</a>的实现，在此基础上扩展。
+
+</p>
+<p>用于离线训练的相同格式的文本文件也可用于离线识别。这个文本文件列出了用于测试的图像文件和对应于这张图像的正确的人名。随后这个程序就对每一幅图片进行识别，并且检验文本文件中的真实值（图片对应的正确人名）来确认其是否识别正确，并统计它的准确率。
+
+</p>
+<p>离线识别的实现几乎与离线训练完全相同：
+
+</p>
+<ol>
+<li><p>读取原来的用于训练的文本文件（现在用于识别），把若干个图片文件（预处理后的脸部图片）和名字载入一个图片数组。这些在代码中用“loadFaceImgArray()”函数执行。</p>
+</li>
+<li><p>平均人脸，特征脸和特征值（比率）使用函数“loadTrainingData()” 从人脸识别数据库文件（the face recognition database fil）“facedata.xml”载入。</p>
+</li>
+<li><p>使用OpenCV的函数“cvEigenDecomposite()”，每张输入的图片都被投影到PCA子空间，来观察哪些特征脸的比率最适合于代表这张图片。</p>
+</li>
+<li><p>现在有了特征值（特征脸图片的比率）代表这张输入图片，程序需要查找原始的训练图片，找出拥有最相似比率的图片。这些用数学的方法在“findNearestNeighbor()”函数中执行，采用的是“欧几里得距离（Euclidean Distance）”，但是它只是基本地检查输入图片与每张训练图片的相似性，找到最相似的一张：一张在欧几里得空间上与输入图片距离最近的图片。就像在 Servo Magazine的文章上提到的那样，如果使用马氏距离（ the Mahalanobis space，需要在代码里定义 USE_MAHALANOBIS_DISTANCE），你可以得到更准确的结果。</p>
+</li>
+<li><p>在输入图片与最相似图片之间的距离用于确定可信度（confidence）,作为是否识别出某人的指导。1.0的可信度意味着完全相同，0.0或者负的可信度意味着非常不相似。但是需要注意，我在代码中用到的可信度公式只是一个非常基本的可信度测量，不是很可靠，但是我觉得多数人会想要看到一个粗略的可信度值。你可能发现它对你的图片给出错误的值，所以你可以禁用它（比如：把可信度设为恒定的1.0）。</p>
+</li>
+</ol>
+<p>一旦指导哪张训练图片和输入图片最相似，并假定可信度值不是太低（应该至少是0.6或更高），那么它就指出了那个人是谁，换句话说，它识别出了那个人！
+</p>
+<p><p><span style="color: #ff6600;"><strong>摄像头实时识别的实现</strong></span></p>
+要让一个摄像头视频流输入取代文件列表是十分简单的。基本上，你只要从摄像头抓取一帧，而不是读取一个文件，并且一直运行下去直到用户退出，而不是等待文件读取到头就行了。OpenCV为此提供了“cvCreateCameraCapture()”函数（或cvCaptureFromCAM()）。
+
+</p>
+<p>从摄像头抓取一帧可以简单地用下面的函数实现：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div></code></pre></td><td class="code"><pre><code><div class="line">// Grab <span class="keyword">the</span> next camera frame. Waits <span class="keyword">until</span> <span class="keyword">the</span> next frame <span class="keyword">is</span> ready, <span class="keyword">and</span></div><div class="line">// provides direct access <span class="keyword">to</span> <span class="keyword">it</span>, so do NOT modify <span class="keyword">or</span> free <span class="keyword">the</span> returned image!</div><div class="line">// Will automatically initialize <span class="keyword">the</span> camera <span class="function_start"><span class="keyword">on</span> <span class="title">the</span></span> <span class="keyword">first</span> frame.</div><div class="line">IplImage* getCameraFrame(CvCapture* &amp;amp;camera)</div><div class="line">{</div><div class="line">	IplImage *frame;</div><div class="line">	int w, h;</div><br><div class="line">	// If <span class="keyword">the</span> camera hasn't been initialized, <span class="keyword">then</span> open <span class="keyword">it</span>.</div><div class="line">	<span class="keyword">if</span> (!camera) {</div><div class="line">		printf(<span class="string">"Acessing the camera ...\n"</span>);</div><div class="line">		camera = cvCreateCameraCapture( <span class="number">0</span> );</div><div class="line">		<span class="keyword">if</span> (!camera) {</div><div class="line">			printf(<span class="string">"Couldn't access the camera.\n"</span>);</div><div class="line">			<span class="keyword">exit</span>(<span class="number">1</span>);</div><div class="line">		}</div><div class="line">		// Try <span class="keyword">to</span> <span class="keyword">set</span> <span class="keyword">the</span> camera resolution <span class="keyword">to</span> <span class="number">320</span> x <span class="number">240.</span></div><div class="line">		cvSetCaptureProperty(camera, CV_CAP_PROP_FRAME_WIDTH, <span class="number">320</span>);</div><div class="line">		cvSetCaptureProperty(camera, CV_CAP_PROP_FRAME_HEIGHT, <span class="number">240</span>);</div><div class="line">		// Get <span class="keyword">the</span> <span class="keyword">first</span> frame, <span class="keyword">to</span> make sure <span class="keyword">the</span> camera <span class="keyword">is</span> initialized.</div><div class="line">		frame = cvQueryFrame( camera );</div><div class="line">		<span class="keyword">if</span> (frame) {</div><div class="line">			w = frame-&amp;gt;width;</div><div class="line">			h = frame-&amp;gt;height;</div><div class="line">			printf(<span class="string">"Got the camera at %dx%d resolution.\n"</span>, w, h);</div><div class="line">		}</div><div class="line">		// Wait a little, so <span class="keyword">that</span> <span class="keyword">the</span> camera can auto-adjust <span class="keyword">its</span> brightness.</div><div class="line">		Sleep(<span class="number">1000</span>);	// (<span class="keyword">in</span> milliseconds)</div><div class="line">	}</div><br><div class="line">	// Wait <span class="keyword">until</span> <span class="keyword">the</span> next camera frame <span class="keyword">is</span> ready, <span class="keyword">then</span> grab <span class="keyword">it</span>.</div><div class="line">	frame = cvQueryFrame( camera );</div><div class="line">	<span class="keyword">if</span> (!frame) {</div><div class="line">		printf(<span class="string">"Couldn't grab a camera frame.\n"</span>);</div><div class="line">		<span class="keyword">exit</span>(<span class="number">1</span>);</div><div class="line">	}</div><div class="line"><span class="command">	return</span> frame;</div><div class="line">}</div></code></pre></td></tr></table></figure>
+这个函数可以这样用：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div></code></pre></td><td class="code"><pre><code><div class="line">CvCapture* camera = <span class="number">0</span>;	// The camera device.</div><div class="line"><span class="keyword">while</span> ( cvWaitKey(<span class="number">10</span>) != <span class="number">27</span> ) {	// Quit on <span class="string">"Escape"</span> key.</div><div class="line">	IplImage *frame = getCameraFrame(camera);</div><div class="line">	<span class="keyword">...</span></div><div class="line">}</div><div class="line">// Free the camera.</div><div class="line">cvReleaseCapture( &amp;amp;camera );</div></code></pre></td></tr></table></figure>
+请注意，假如你是为windows操作系统开发，你可以使用 Theo Watson 的 <a href="http://muonics.net/school/spring05/videoInput/">videoInput Library v0.1995</a> 达到两倍于这些代码的速度。它使用了DirectShow硬件加速,然而OpenCV使用VFW已经15年不变了！
+把我已经解释的这些部分放到一起，人脸识别系统运行步骤如下：
+
+</p>
+<ol>
+<li><p>从摄像头抓取一帧图片。</p>
+</li>
+<li><p>转换彩色图片帧为灰度图片帧。</p>
+</li>
+<li><p>检测灰度图片帧的人脸。</p>
+</li>
+<li><p>处理图片以显示人脸区域（使用 cvSetImageROI() 和 cvCopyImage()）。</p>
+</li>
+<li><p>预处理脸部图片。</p>
+</li>
+<li><p>识别图片中的人。
+<p><span style="color: #ff6600;"><strong>摄像头实时训练的实现</strong></span></p>
+现在你已经有了一个用摄像头实时识别人脸的方法，但是要学习新人脸，你不得不关闭这个程序，把摄像头的图片保存成图片文件，更新图片列表，使用离线命令行训练的方法，然后以实时摄像头识别的模式再次运行这个程序。所以实际上，你完全可以用程序来执行实时的摄像头训练！</p>
+</li>
+</ol>
+<p>这里就是用摄像头视频流把一个新的人加入人脸识别数据库而不关闭程序的一个最简单的方法：
+
+</p>
+<ol>
+<li><p>从摄像头收集一些图片（预处理后的脸部图片）,也可以同时执行人脸识别。</p>
+</li>
+<li><p>用“cvSaveImage()”函数保存这些脸部图片作为图片文件存入磁盘。</p>
+</li>
+<li><p>加入每张脸部图片的文件名到训练图片列表（用于离线命令行训练的文本文件）的底部。</p>
+</li>
+<li><p>一旦你准备实时训练，你将从所有图片文件形成的数据库重新训练。这个文本文件列出了新加入的训练图片文件，并且这些图片被电脑存为了图片文件，所以实时训练工作起来跟离线训练一样。</p>
+</li>
+<li><p>但是在重新训练之前，释放任何正在使用的资源和重新初始化也很必要。应该像你重新启动了这个程序一样。比如，在图片被存储成文件并且加入训练列表的文本文件后，你应该再执行相同的离线训练（包括从训练列表文件载入图片，用PCA方法找出新训练集的特征脸和比率）之前释放特征脸数组。 这个实时训练的方法相当低效，因为假如在训练集中有50个人，而你多加了一个人，它将为51个人重新训练，这是非常不好的，因为训练的时间随着用户或图片数量的增加呈指数级增长。但是假如你只是处理百来张图片，它不需要多少秒就可以完成。</p>
+</li>
+</ol>
+<p>文件下载请转到<a title="http://www.shervinemami.co.cc/faceRecognition.html" href="http://www.shervinemami.co.cc/faceRecognition.html">原文</a>。
+
+</p>
+<p>The article source is <a title="http://www.shervinemami.co.cc/faceRecognition.html" href="http://www.shervinemami.co.cc/faceRecognition.html"><a href="http://www.shervinemami.co.cc/faceRecognition.html&lt;/a&gt;">http://www.shervinemami.co.cc/faceRecognition.html&lt;/a&gt;</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/Face-Recognition/">Face Recognition</a>, <a href="/tags/OpenCV/">OpenCV</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sun11.me">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+  
+    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+  
+    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+  
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+  
+    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+  
+    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+  
+    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+  
+    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+  
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+  
+    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 E. Sununs
+  
+</div>
+<div class="alignright" style="margin-right:300px">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC BY-NC-SA</a>.
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = '11zhexo';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

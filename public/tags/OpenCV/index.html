@@ -1,0 +1,389 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>OpenCV | 11zHexo</title>
+  <meta name="author" content="E. Sununs">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="11zHexo"/>
+
+  <link rel="alternate" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31707826-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">11zHexo</a></h1>
+  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+
+<h2 class="archive-title tag">OpenCV</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-25T09:16:00.000Z"><a href="/blog/tiny6410de-opencv2-dot-4-2yi-zhi-bi-ji/">Jul 25 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/tiny6410de-opencv2-dot-4-2yi-zhi-bi-ji/">Tiny6410的OpenCV2.4.2移植笔记</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>关于OpenCV在ARM上的移植最经典的应该就是这篇：
+<a href="http://blog.csdn.net/noodies/article/details/5798434">编译OpenCV for arm-linux</a>
+
+</p>
+<p>去年在什么都不懂的情况下移植的时候也主要是靠这篇文章，写得很详细，如果你觉得还不够详细的话，推荐个带图的:
+<a href="http://blog.csdn.net/yr119111/article/details/7732336">opencv2.3.1在arm端的移植</a>
+
+</p>
+<p>这篇写得也不错:
+<a href="http://www.cnblogs.com/s_agapo/archive/2011/11/24/2262346.html">Linux下移植OpenCV+Qt到ARM(Tiny6410)总结</a>
+
+</p>
+<p>我的环境是Ubuntu12.04,板子是友善之臂的tiny6410。
+
+</p>
+<p>首先当然是装好arm-linux-gcc,配置环境变量，输入arm-linux-gcc -v有输出，这步就完成了。
+然后是cmake,比较方便的是用带界面的cmake-gui,要注意的地方是<strong>CMAKE_INSTALL_PREFIX</strong>和<strong>WITH_TIFF</strong>还有<strong>CMAKE_EXE_LINKER_FLAGS</strong>。
+
+</p>
+<p>第一个参数需要注意是因为我们编译的库是适用于ARM的，不应该直接放在/usr/local里，否则如果装了x86的OpenCV会有冲突，比如改成/usr/local/opencv-arm。第二个参数一般情况下需要去掉勾，因为似乎默认情况下ubuntu是没有这个支持的，要选上得自己装些什么东西。第三个参数是因为OpenCV需要这两个库的支持？我现在也还不太明白，总之加上-lrt和-lpthread就不会报错了。其它参数保持原状基本都不会报错。
+
+</p>
+<p>cmake好后下一步是make,对于双核的机器加上-j4参数速度会快很多，但是也发烫，在系统监视器里看到四个线程的CPU都是接近100%,风扇一直呼呼地响。
+
+</p>
+<p>然后是配置编译环境了，好像在2.3以后OpenCV的x86版安装好后都会有pkgconfig的.pc文件。//2.3以前的版本不清楚
+
+</p>
+<p>所以比较方便的就是用pkgconfig来配置了，它的.pc文件是在/usr/local/lib/pkgconfig下面。这是适用于PC版本的OpenCV的（因为之前已经安装好了x86的OpenCV）。但是只要把那第一行的prefix路径改成ARM版OpenCV的安装路径（也就是上面CMAKE_INSTALL_PREFIX参数的值）就可以直接用了。<a href="http://blog.csdn.net/yr119111/article/details/7732336">opencv2.3.1在arm端的移植</a>这篇帖子说再Libs里要加上-lrt -lpthread参数，我的环境下似乎不需要，但是加上也没什么问题。
+
+</p>
+<p>这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config --cflags --libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config --cflags --libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。
+我用的主要是Qt，所以在.pro文件里加上：
+
+</p>
+<pre><code><div class="line">    <span class="title">unix</span> {</div><div class="line">        <span class="title">CONFIG</span> += link_pkgconfig</div><div class="line">        PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc</div><div class="line">    }</div></code></pre>
+<p>但是编译成功后可能会显示一些警告，比如：
+
+</p>
+<pre><code><div class="line">    <span class="string">.</span><span class="string">.</span><span class="comment">/</span>.<span class="string">.</span><span class="comment">/lib/libopencv_core</span>.<span class="comment">so</span>, <span class="comment">needed</span> <span class="comment">by</span> <span class="comment">/usr/local/opencv</span>-<span class="comment">arm/lib/libopencv_highgui</span>.<span class="comment">so</span>, <span class="comment">not</span> <span class="comment">found</span> <span class="comment">(try</span> <span class="comment">using</span> <span class="literal">-</span><span class="comment">rpath</span> <span class="comment">or</span> <span class="literal">-</span><span class="comment">rpath</span>-<span class="comment">link)</div></code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/blog/tiny6410de-opencv2-dot-4-2yi-zhi-bi-ji/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-17T09:21:00.000Z"><a href="/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/">Jul 17 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/">[译]OpenCV的基础光学字符识别</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>From:<a href="http://blog.damiles.com/2008/11/basic-ocr-in-opencv/">http://blog.damiles.com/2008/11/basic-ocr-in-opencv/</a>
+
+</p>
+<h2><em><a href="https://github.com/damiles/basicOCR">Github源码</a></em></h2>
+<p>在这个教程当中我们将完成一个基础的数字光学字符识别。这包括把一个手写的数字分类进它所属的类里。
+
+</p>
+<p>为了完成它，们我将要使用我们之前的教程里所有学到的东西，我们将要使用简单的<a href="http://blog.damiles.com/?p=72">basic painter</a>和 <a href="http://blog.damiles.com/?p=84">the basic pattern recognition and classification with openCV</a> 两个教程。
+
+</p>
+<p>在一个典型的模式识别分类器里，包括三个模块：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/9d6e45397b7eb2ed28bafff2460e962a.gif" alt="">
+
+</p>
+<h3>预处理（信号获取和滤波）</h3>
+<h3>特征提取（特征向量的计算）</h3>
+<h3>分类（特征向量的分类）</h3>
+<p>预处理（Preprocessing）：在这个模块我们将要处理我们输入的图片，比如大小标准化，彩色图像灰度化等等。
+
+</p>
+<p>特征提取(Feature extraction)：在这个模块我们转换我们处理后的图像为一个特征向量以便于分类，它可能是像素矩阵转换成向量或者获取轮廓编码链的数据表示。
+
+</p>
+<p>分类模块获取特征向量，并训练我们的系统或者说使用一个分类方法（比如knn）把输入的特征向量分类。
+
+</p>
+<p>这个基础光学字符识别的流程图如下：
+
+</p>
+<p><img width="600px" src="http://11zpic-11zpic.stor.sinaapp.com/original/f7bb4dc01684abdfc722f2b20a53b1ba.jpg" />
+
+</p>
+<p>现在我们有由图片组成的一个训练集和一个测试集来训练和测试我们的分类器（knn）。
+
+</p>
+<p>我们有1000张手写数字的图片，每个数字100张。我们使用每个数字的50张图片来训练，另外50张来测试我们的系统。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/200/8d31c89d75a8ef4d90ebdce98d21208f.gif" alt="">
+
+</p>
+<p>接下来我们要做的第一个工作就是对所有训练集的图片预处理，为了完成它我们创建一个预处理函数。在这个函数中，我们输入一张图片和我们想要它在处理后得到的新的长和宽，这个函数讲返回一个标准大小的带有边框的图片。你可以看到更多清楚的处理流程：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/8b1221f56d51a478e9116d118df3b774.gif" alt="">
+
+</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-09-28T16:00:00.000Z"><a href="/blog/63/">Sep 29 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/63/">[译]人脸检测与人脸识别简介</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>From: <a href="http://www.shervinemami.co.cc/faceRecognition.html/">http://www.shervinemami.co.cc/faceRecognition.html/</a>
+
+</p>
+<p>Translated by 11
+
+</p>
+<p>“人脸识别”是一个在计算机视觉和生物特征识别领域十分活跃的话题。这个主题已经被给力地研究了25年，并且最终在安全、机器人学、人机交互、数码摄像机、游戏和娱乐领域得到了广泛应用。
+
+</p>
+<p>“人脸识别”大致可分为两个阶段：
+
+</p>
+<p>1.人脸检测 搜索一幅图像，寻找一切人脸区域（此处以绿色矩形显示），然后进行图像处理，清理脸部图像以便于更好地识别。
+
+</p>
+<p>2.人脸识别 把上一阶段检测处理得到的人脸图像与数据<a href="http://11zpic-11zpic.stor.sinaapp.com/original/c4874641c9d4ba540d14aa8b64f4d35d.jpg"><img align="right" title="facerecOut" src="http://11zpic-11zpic.stor.sinaapp.com/original/c4874641c9d4ba540d14aa8b64f4d35d.jpg" alt="" width="174" height="197" style="margin: 20px;" /></a> 库中的已知人脸进行比对，判定人脸对应的人是谁(此处以红色文本显示)。
+
+</p>
+<p>2002年后，人脸检测已经可以相当可靠地运作。比如OpenCV的Face Detector,对于一个人直视摄像头得到的较清晰图片，大约有90-95%的准确度。通常来说，当人以侧面对准摄像头或与摄像头成一定角度时，较难检测到人脸，有时需要3D Head Pose Estimation。假如图片亮度不是很好，也较难检测到人脸。脸部的部分区域比另一部分区域明亮，带有阴影，模糊，或者戴眼镜，也会影响检测效果。
+
+</p>
+<p>然而，人脸识别却比人脸检测不可靠得多，一般只有30-70%的准确度。20世纪90年代以来，人脸识别一直是一个很重要的研究领域，但仍然十分不可靠，并且每一年都有更多的识别技术被创造，如文章底部所列出的（Alternatives to Eigenfaces such as 3D face recognition or recognition from video.）
+
+</p>
+<p>我将向你展示如何使用“特征脸”（Eigenfaces)，也称为主元分析法（Principal Component Analysis or PCA)。相对于普通的神经网络方法（Neural Networks）和Fisher Faces方法来说，这是一个简单和流行的对图片进行的二维人脸识别的方法。
+
+</p>
+<p>要学习特征脸方法的理论，你需要阅读Face Recognition With Eigenface from Servo Magazine (April 2007)，可能还需要一些数学算法。
+
+</p>
+<p>首先我将向你解释，怎样实现特征脸的命令行离线训练（offline training from the command-line），基于Servo Magazine tutorial and source-code (May 2007)。
+
+</p>
+<p>之后，我将说明如何将此扩展成为从网络摄像头进行实时的在线训练:-)
+</p>
+<p><p><span style="color: #ff6600;"><strong>使用OpenCV的Face Detector检测人脸</strong></span></p>
+</p>
+<p><p>如上所述，人脸识别的第一个阶段是人脸检测。OpenCV库使得使用它的Haar Cascade Face Detector(也称为Viola-Jones方法)检测正面人脸变得相当简单。</p>
+OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函数直接用没有意义，所以最好用这个包装好的函数：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div><div class="line-number">43</div><div class="line-number">44</div><div class="line-number">45</div><div class="line-number">46</div><div class="line-number">47</div><div class="line-number">48</div><div class="line-number">49</div><div class="line-number">50</div><div class="line-number">51</div><div class="line-number">52</div><div class="line-number">53</div></code></pre></td><td class="code"><pre><code><div class="line">// Perform face detection on the input image, using the given Haar Cascade.</div><div class="line">// Returns a rectangle for the detected region <span class="keyword">in</span> the given image.</div><div class="line">CvRect detectFaceInImage(IplImage *inputImg, CvHaarClassifierCascade* cascade)</div><div class="line">{</div><div class="line">	// Smallest face size.</div><div class="line">	CvSize minFeatureSize = cvSize(<span class="number">20</span>, <span class="number">20</span>)<span class="comment">;</span></div><div class="line">	// Only search for <span class="number">1</span> face.</div><div class="line">	int flags = CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH<span class="comment">;</span></div><div class="line">	// How detailed should the search be.</div><div class="line">	float search_scale_factor = <span class="number">1.1</span>f<span class="comment">;</span></div><div class="line">	IplImage *detectImg<span class="comment">;</span></div><div class="line">	IplImage *greyImg = <span class="number">0</span><span class="comment">;</span></div><div class="line">	CvMemStorage* storage<span class="comment">;</span></div><div class="line">	CvRect rc<span class="comment">;</span></div><div class="line">	double t<span class="comment">;</span></div><div class="line">	CvSeq* rects<span class="comment">;</span></div><div class="line">	CvSize size<span class="comment">;</span></div><div class="line">	int i, ms, nFaces<span class="comment">;</span></div><br><div class="line">	storage = cvCreateMemStorage(<span class="number">0</span>)<span class="comment">;</span></div><div class="line">	cvClearMemStorage( storage )<span class="comment">;</span></div><br><div class="line">	// If the image is color, use a greyscale copy of the image.</div><div class="line">	detectImg = (IplImage*)inputImg<span class="comment">;</span></div><div class="line">	if (inputImg-&amp;gt<span class="comment">;nChannels &amp;gt; 1) {</span></div><div class="line">		size = cvSize(inputImg-&amp;gt<span class="comment">;width, inputImg-&amp;gt;height);</span></div><div class="line">		greyImg = cvCreateImage(size, IPL_DEPTH_8U, <span class="number">1</span> )<span class="comment">;</span></div><div class="line">		cvCvtColor( inputImg, greyImg, CV_BGR2GRAY )<span class="comment">;</span></div><div class="line">		detectImg = greyImg<span class="comment">;	// Use the greyscale image.</span></div><div class="line">	}</div><br><div class="line">	// Detect all the faces <span class="keyword">in</span> the greyscale image.</div><div class="line">	t = (double)cvGetTickCount()<span class="comment">;</span></div><div class="line">	rects = cvHaarDetectObjects( detectImg, cascade, storage,</div><div class="line">			search_scale_factor, <span class="number">3</span>, flags, minFeatureSize)<span class="comment">;</span></div><div class="line">	t = (double)cvGetTickCount() - t<span class="comment">;</span></div><div class="line">	ms = cvRound( t / ((double)cvGetTickFrequency() * <span class="number">1000.0</span>) )<span class="comment">;</span></div><div class="line">	nFaces = rects-&amp;gt<span class="comment">;total;</span></div><div class="line">	printf(<span class="string">"Face Detection took %d ms and found %d objectsn"</span>, ms, nFaces)<span class="comment">;</span></div><br><div class="line">	// Get the first detected face (the biggest).</div><div class="line">	if (nFaces &amp;gt<span class="comment">; 0)</span></div><div class="line">		rc = *(CvRect*)cvGetSeqElem( rects, <span class="number">0</span> )<span class="comment">;</span></div><div class="line">	else</div><div class="line">		rc = cvRect(-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>)<span class="comment">;	// Couldn't find the face.</span></div><br><div class="line">	if (greyImg)</div><div class="line">		cvReleaseImage( &amp;amp<span class="comment">;greyImg );</span></div><div class="line">	cvReleaseMemStorage( &amp;amp<span class="comment">;storage );</span></div><div class="line">	//cvReleaseHaarClassifierCascade( &amp;amp<span class="comment">;cascade );</span></div><br><div class="line">	return rc<span class="comment">;	// Return the biggest face found, or (-1,-1,-1,-1).</span></div><div class="line">}</div></code></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/blog/63/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sun11.me">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+  
+    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+  
+    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+  
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+  
+    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+  
+    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+  
+    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+  
+    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+  
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+  
+    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 E. Sununs
+  
+</div>
+<div class="alignright" style="margin-right:300px">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC BY-NC-SA</a>.
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = '11zhexo';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

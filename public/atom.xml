@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[11zHexo]]></title>
+  <subtitle><![CDATA[本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.]]></subtitle>
+  <link href="http://sun11.me/atom.xml" rel="self"/>
+  <link href="http://sun11.me"/>
+  <updated>2013-01-24T10:29:52.750Z</updated>
+  <id>http://sun11.me/</id>
+  <author>
+    <name><![CDATA[E. Sununs]]></name>
+    <email><![CDATA[sununs11@gmail.com]]></email>
+  </author>
+  <generator uri="http://zespia.tw/hexo">Hexo</generator>
+  <entry>
+    <title type="html"><![CDATA[ROS on ARM--Linux For RK3066 Mini PC简介]]></title>
+    <link href="http://sun11.me/blog/linux-for-rk3066-mini-pc-introduction/"/>
+    <id>http://sun11.me/blog/linux-for-rk3066-mini-pc-introduction/</id>
+    <published>2013-01-24T09:27:26.000Z</published>
+    <updated>2013-01-24T10:21:01.000Z</updated>
+    <content type="html"><![CDATA[<p><a href="http://www.cnbeta.com/articles/188613.htm">去年6月左右</a>国内厂商（瑞科美 Rikomagic）推出了一款叫做MK802的Mini PC。采用Allwinner A10/ 1GHz Cortex-A8做处理器，运行Android 4.0系统，内存512MB或1G。实际上相当于一个没有触摸屏和电池的平板，不过可以用USB OTG连接鼠标键盘，通过HDMI接口输出音视频。
+
+</p>
+<p>“少即是多”，正因为它小，靠外部供电而非电池，有很多扩展的可能性，上市以后很火。到现在淘宝一搜MK802，会出现各种各样厂商（比如酷优乐，联力胜）的也叫做MK802或者UG802,MK803,MK808,MK809的之类的产品。可以给它刷上Linux，然后把它当成一个普通PC使用（因为驱动的原因，用自带的Android可能是更好的选择）。或者，不接显示器，做一个Headless Server？接移动硬盘做一个BT下载机？又或者，加上Arduino，连接上各种传感器，作为机器人的主控制器？总之可以做到很多平板做不到的事情。这里有一个简易对照表：<a href="http://bluefox.com.tw/2012/11/22/%E5%AE%89%E5%8D%93-android-mini-pc-%E7%B0%A1%E6%98%93%E5%B0%8D%E7%85%A7%E8%A1%A8/#more-2654">http://bluefox.com.tw/2012/11/22/%E5%AE%89%E5%8D%93-android-mini-pc-%E7%B0%A1%E6%98%93%E5%B0%8D%E7%85%A7%E8%A1%A8/#more-2654</a>
+
+</p>
+<p>MK802的第一代产品是使用全志A10芯片的，在半年后看来这个芯片性能不够强了，运行桌面Ubuntu不是很流畅，但是它的Android ROM和Linux的支持已经比较完善了。后面有一个MK802 II是它的升级版，改动不大，系统基本也可以通用。
+
+</p>
+<p>接下来出现了一个UG802,它不是由原来MK802的厂商瑞科美生产的，而是一个叫做酷优乐的公司。在搜索引擎上搜索“酷优乐”这个词都搜不到这个公司的网站。我是问淘宝客服才知道这个公司的网站的（kuyoule.cn），它是第一个使用RK3066芯片（1.66GHz,双核A9）的Mini PC。然后又出现了一个MK808（不知道是哪个产商的）ROM提升到8G，后来的MK808B增加了蓝牙，改进了WiFi天线（原来的好像WiFi信号不太好）。然后瑞科美才推出MK802 III，同样是使用RK3066芯片，不过个人感觉可能质量和ROM支持好一些。然后就是去年12月份推出的MK802 IIIS了，我买的就是这个。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/7f826aef8756ce136c0262bd5a49a17f.jpg" alt="">
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/eccbaf8ff5d4a416e546a1f2e18401b7.jpg" alt="">
+
+</p>
+<span id="more"></span>
+
+<p>RK3066的linux源码从一个西班牙的公司释出，然后AndrewDB开始开发，成功跑上了Ubuntu 12.10: <a href="http://www.slatedroid.com/topic/40717-ubuntu-linux-for-the-ug802/">http://www.slatedroid.com/topic/40717-ubuntu-linux-for-the-ug802/</a>
+
+</p>
+<p>AndrewDB开发了一段时间，放出了kernel镜像和rootfs，最后的版本是Pre-Alpha 0.3,在MK802 III/UG802/MK808/UG007/iMito MX1等RK3066芯片的设备上都测试正常。然后他放出了一个Roadmap，就在论坛里神秘消失了==，再也没有出现。。。大神们都是神龙见首不见尾么。。。
+
+</p>
+<p>AndrewDB在Google Code上创建了一个叫做<a href="https://code.google.com/p/rk3066-linux/">rk3066-linux</a>的项目,现在主要由AlokSinha2001接手了。他用<a href="http://ubuntu.g8.net/">MK808做了一个服务器</a>，现在已经持续运行一个月了。1月15号正式发布了PicUntu，主要对服务器的用途做了一些改进，做了一个安装脚本还有一个apk的安装导引。目前（2013年1月24日）最新的版本是0.9 RC 2.2，google code不让放那么大的文件下载，于是直接转到了那个用MK808做的网站上提供下载。
+
+</p>
+<p>运行起来还算流畅，使用Chromium没有什么问题，用ports.ubuntu.com的软件源安装软件也很方便，只是速度有点慢(似乎没有其它镜像？)。<a href="http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/page__st__380">Mali 400的驱动有人正在尝试中...</a>
+
+</p>
+<p>Picuntu的安装在下一篇文章里介绍。</p>
+]]></content>
+    <category scheme="http://sun11.me/tags/Linux/" term="Linux"/>
+    <category scheme="http://sun11.me/tags/Android/" term="Android"/>
+    <category scheme="http://sun11.me/tags/Embedded-Linux/" term="Embedded Linux"/>
+    <category scheme="http://sun11.me/tags/ARM/" term="ARM"/>
+    <category scheme="http://sun11.me/tags/Robot/" term="Robot"/>
+    <category scheme="http://sun11.me/tags/Ubuntu/" term="Ubuntu"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[WTFRobot Rosmin]]></title>
+    <link href="http://sun11.me/blog/WTFRobot-Rosmin/"/>
+    <id>http://sun11.me/blog/WTFRobot-Rosmin/</id>
+    <published>2012-12-15T03:27:35.000Z</published>
+    <updated>2012-12-15T03:48:39.000Z</updated>
+    <content type="html"><![CDATA[<embed src="http://player.youku.com/player.php/sid/XNDg2OTMzNDEy/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+
+<p>2012年8月，W、T、F三人陆续回到学校。
+
+</p>
+<p>因为共同的机器人之梦，这个团队在今年5月份组建。
+
+</p>
+<p>首先W同学有了一个想法，觉得可以把ARM11放在小车上，做一些图像处理的工作，然后再连上Arduino控制器控制小车运动，另外用一台Android手机来操控。
+
+</p>
+<p>开始考虑用纯Linux加上Qt作为图形界面，用上OpenCV来做。事实上W同学之前因为做过类似的东西对这个已经比较熟悉了。只是由于摄像头驱动以及USB接口只支持1.1的原因，采集摄像头图像的速度非常慢，慢到无法忍受。
+
+</p>
+<p> 但是经过多次尝试，发现一款USB摄像头在ARM板厂商的测试程序当中速度很快，效果很理想，问题是厂商并没有开源这个摄像头测试程序的代码，如果要自己做驱动的话就不是一时半会能搞定的了。于是W同学又尝试了把板子刷上Android操作系统，由于有API可以调用，尽管这个程序闭源仍然可以使用。
+
+</p>
+<p>于是W同学又从C/C++版本的OpenCV转到Android版本的OpenCV，在Android测试了一下自带的示例程序，发现会花屏。尝试了很多方法都未能解决。后来ARM板的损坏也导致不得不思考新的方案。
+
+</p>
+<p>于是就到了8月份。
+
+</p>
+<p>F同学由于要做Android客户端程序学习了Android编程。于是想到直接用Android手机代替ARM11开发板，这样会省去很多麻烦。而在这时，Android手机之间的单向socket通信已经基本完成，在解决了一些小问题以后工作很稳定，速度也很快。
+
+</p>
+<p>很快，由于F同学曾经有做小车的经验，以及Arduino编程的经验，由Arduino控制的小车耗不费力地就跑了起来。
+接下来遇到的第一个难题是Arduino与Android的通信。开始买Arduino的时候没有考虑这个问题，但现在需要与Android手机通信，主要有两个办法，蓝牙和USB，我们觉得蓝牙这个东西开关比较麻烦，也可能不够稳定，于是决定直接用USB Accessory，该特性由Android 2.3.4（平板是3.1）以上支持。开始看到很多论坛的帖子说华为中兴的手机不支持，真心捏了一把汗，还好后来证明三个人的手机都是可用的。
+
+</p>
+<p>要解决这个问题，F同学查找了很多资料，最终终于完成了Android手机（客户端）传递信息到另一台Android手机（服务器），再由这台服务器传递信息到Arduino控制小车运动。反应很灵敏，效果很不错，非常好的一个玩具遥控车。
+
+</p>
+<p>这个时候，bug只是偶尔出现，解决了以后基本就很完美了，工作都非常稳定。
+
+</p>
+<p>可是一切才刚刚开始。
+
+</p>
+<p>9月份，W研究了众多可用于Android平台上的计算机视觉库，包括OpenCV，SimpleCV，JavaCV以后，最终发现还是OpenCV比较适合，但是由于JNI接口使用觉得过于复杂，没有深入研究下去。于是利用Android上的OpenCV实现了追踪有明显颜色特征的物体（ColorBlob Track）并且绘制出其中心坐标。
+
+</p>
+<p>在T同学完成数模一段时间之后，小车的Arduino部分主要转给他负责。买好了舵机，却发现转起来吱吱地响。让舵机云台根据前面所说的图像处理得到的点的位置跟踪目标，经过一个下午调整终于调好了，可舵机已经坏得差不多了，声音很吓人。后来拆开发现里面的齿轮是塑料的！顿时觉得被坑了，180多买来的二自由度舵机云台居然如此劣质！淘宝立刻给差评！后来买了两个20多块的MG995,质量都很好一直用到现在。
+
+</p>
+<p>当然这还远远不是结束。接下来我们陆续实现了：
+
+</p>
+<ol>
+<li><p>TTS</p>
+</li>
+<li><p>小范围英文离线语音识别</p>
+</li>
+<li><p>Socket双向通信</p>
+</li>
+<li><p>各种代码的分离和整合</p>
+</li>
+</ol>
+<p>F同学开始研究利用Android服务器上的陀螺仪计算角度和客户端的地图绘制。
+
+</p>
+<p>借了一个平板过来。。。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/ed79edf141de1d98a5f212396be5c3a8.jpg" alt="">
+
+</p>
+<span id="more"></span>
+
+<p>然后，设计利用超声波测距检测拐角和使用QR码作为人工路标的导航机制：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/b567f86412ac9a51823976c67d52b27c.jpg" alt="">
+
+</p>
+<p>此图好象是刚刚调通超声波模块，但却不知这是暴风雨前的宁静。
+
+</p>
+<p>本以为超声波传感器+Arduino就一切OK了的，可后来发现事情远没有这么简单，因为Arduino Romeo的资源不足，开始认为是定时器不足导致超声波测距和USB Accessory无法使用。可后来尝试了各种方法，这个问题变得越纠结。
+
+</p>
+<p>我们于是增加了一个MSP430作为辅助板来控制超声波传感器。调了很多天之后发现还是不可行，最终发现I/O口不足。
+
+</p>
+<p>于是我们换用Google ADK。
+
+</p>
+<p>可谁知道我们第一次买来的竟然是假货，用了不到24个小时就坏了，后来淘宝退货，立刻买下了另一个原装进口的。这一耽误又是好多天，这个时候星火杯如果按照原计划已经快开始了。
+
+</p>
+<p>真假ADK：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/88c8896e89dd13d2092a2cb18ea42480.jpg" alt="">
+
+</p>
+<p>在光棍节那天，我们终于完成了超声波和USB Accessory的共同测试！
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/352d794c5728cbe9748f0ce4431ef49f.jpg" alt="">
+
+</p>
+<p>经历了设备大换血之后，下面的一段时间，我们一直在做小车的导航。每天至少几十次的测试。小车跑过了好几百次了吧。还好星火杯也延迟又延迟，否则我们无法有很多时间来改进。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/bb3a855a31c8227a9e786ee8551008cc.jpg" alt="">
+
+</p>
+<p>在前几天，Arduino与Android双向通信问题才完美解决，舵机转动影响陀螺仪的角度问题也基本解决。但在地图绘制方面还有一些不稳定。追踪小球上根据偏离中心距离调整速度，效果好了不少。
+
+</p>
+<p>最后来一张Rosmin的笑脸：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/eb075a854a9d6b082b6debca11f4bfcb.jpg" alt="">
+
+</p>
+<p>哈哈，还有牺牲了一个手机壳有时还不得不举着舵机讲电话的T同学。。。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/5084405ab64001d9edb1a2a3e91b192b.jpg" alt="">
+
+</p>
+<p>一切还只是刚刚开始
+
+</p>
+<p>The Next is Rossum.</p>
+]]></content>
+    <category scheme="http://sun11.me/tags/Android/" term="Android"/>
+    <category scheme="http://sun11.me/tags/Robot/" term="Robot"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[Ubuntu12.04美化配置笔记]]></title>
+    <link href="http://sun11.me/blog/ubuntu12-dot-04mei-hua-pei-zhi-bi-ji/"/>
+    <id>http://sun11.me/blog/ubuntu12-dot-04mei-hua-pei-zhi-bi-ji/</id>
+    <published>2012-07-28T03:04:00.000Z</published>
+    <updated>2012-12-14T18:06:23.000Z</updated>
+    <content type="html"><![CDATA[<p>好久没有玩美化了，前几天装了一下LinuxDeepin12.06，感觉美化做得很好，但是系统有一些问题，比如挂起或长时间锁屏后gnome-settings-daemon开不了，导致快捷键失效，主题风格变成非常好看的win95 style...搜了好多个帖子（前几年ubuntu也出过类似问题）都没解决。最后无奈换回标准Ubuntu，但是看到LinuxDeepin，搞美化的瘾又上来了。
+
+</p>
+<p>LinuxDeepin的主题用的是从Zukitwo主题修改而来的仿Mac主题。//为啥我这么清楚？因为它的css文件里的作者没改，上一个版本的Deepin-GTK主题甚至连主题名称也没改还叫Zukitwo。
+
+</p>
+<p>在美化方面我完全是Mac控，就连现在的Windows也是任务栏在上，下面RocketDock，主题用nick-zone.com的仿lion主题。Ubuntu的默认主题完全不符合我的审美，于是从LinuxDeepin的iso文件里提取出了主题的文件来用。发现了个小问题，就是打开黑色风格的窗口（如图片查看器）时窗口的上边缘有一条白线，看着灰常不爽（Zukitwo主题没有），去翻它的css，和Zukitwo的css文件diff一下，发现改动很少，于是从Zukitwo的主题开始调整，把几个按钮复制过去，发现按钮偏上了，然后按照Deepin的css改。Zukitwo的主题标题栏文字不居中，照Deepin的改就居中了。
+
+</p>
+<p>后来又发现一个Mac-OS-Lion-Theme-V2,做得灰常给力，于是就放弃了自己改的主题用这个了，可是还有一些按钮颜色不是很满意。配合Zukitwo-Cupertino的Gnome-Shell主题非常好。对Zukitwo-Cupertino我也做了点修改，把panel改成了0.8到0.5的透明，左上角那个gnome大脚向右移了一点。至于图标主题，果断用最有名的Faenza。
+
+</p>
+<p>后来又发现一个图标主题叫做Faenza-Cupertino。//为什么都叫Cupertino，我查了一下才知道，那是水果总部。。。
+
+</p>
+<p>这个主题是从Faenza的基础上改的，文件夹改成了蓝色更像Mac，其它都没变。//好像必须先装Faenza，因为它包里只有文件夹的图标
+
+</p>
+<p>于是现在就是Zukitwo-Cupertino+Faenza-Cupertino+Mac-OS-Lion-Theme-V2,忽然想到，会不会也有叫Cupertino的GTK主题？在gnome-look.org上搜，果然有！叫Adwaita-Cupertino,效果比Mac-OS-Lion-Theme-V2还好！
+
+</p>
+<p>不过标题栏的宽度实在太窄，关闭最小化最大化按钮之间的间隔也太小，于是我又改了改。
+
+</p>
+<p>嗯，现在完全是Cupertino系列了。。。Zukitwo-Cupertino+Faenza-Cupertino+Adwaita-Cupertino,我把GTK主题，窗口主题和gnome-shell主题放在一起，起名叫Cupertino-sun11-modified。图标包要装在另外位置就不放了。
+
+</p>
+<p>另外换上Moutain Lion的银河壁纸，换上苹果丽黑字体（后来还是换成了微软雅黑），Cairo-dock用Mac的主题，用PlymouthManager调了一下启动画面（还是比较喜欢那个Ubuntu Sunrise）。
+
+</p>
+<p>Faenza的ppa：<a href="https://launchpad.net/~tiheum/+archive/equinox/">https://launchpad.net/~tiheum/+archive/equinox/</a>
+
+</p>
+<p>Faenza-Cupertino: <a href="http://gnome-look.org/content/show.php/Faenza-Cupertino?content=129008/">http://gnome-look.org/content/show.php/Faenza-Cupertino?content=129008/</a>
+
+</p>
+<p>Cupertino-sun11-modified: <a href="http://dl.dropbox.com/u/18802606/Cupertino-sun11-modified.tar.gz/">http://dl.dropbox.com/u/18802606/Cupertino-sun11-modified.tar.gz/</a>
+
+</p>
+<p>Moutain Lion的Galaxy壁纸： <a href="http://11zpic-11zpic.stor.sinaapp.com/original/499c3ca4a3fc8c4130ee9e2fa602e76e.jpg/">http://11zpic-11zpic.stor.sinaapp.com/original/499c3ca4a3fc8c4130ee9e2fa602e76e.jpg/</a>
+
+</p>
+<p>网上流传两个版本的丽黑字体：
+
+</p>
+<p><a href="http://dl.dbank.com/c0037ab60k/">http://dl.dbank.com/c0037ab60k/</a>
+
+</p>
+<p><a href="http://www.iplaysoft.com/hiragino-sans.html/">http://www.iplaysoft.com/hiragino-sans.html/</a>
+
+
+</p>
+<p>上图：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/ecf7841f17300803c3f310ab500b3b51.png" />
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/0641fc7933141de0fbd12004bf2c44d1.png" />
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/f88f508953919c81045c2bf50dc8af5e.png" /></p>
+]]></content>
+    <category scheme="http://sun11.me/tags/Ubuntu/" term="Ubuntu"/>
+    <category scheme="http://sun11.me/tags/Customize/" term="Customize"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[Tiny6410的OpenCV2.4.2移植笔记]]></title>
+    <link href="http://sun11.me/blog/tiny6410de-opencv2-dot-4-2yi-zhi-bi-ji/"/>
+    <id>http://sun11.me/blog/tiny6410de-opencv2-dot-4-2yi-zhi-bi-ji/</id>
+    <published>2012-07-25T09:16:00.000Z</published>
+    <updated>2013-01-24T09:25:41.000Z</updated>
+    <content type="html"><![CDATA[<p>关于OpenCV在ARM上的移植最经典的应该就是这篇：
+<a href="http://blog.csdn.net/noodies/article/details/5798434">编译OpenCV for arm-linux</a>
+
+</p>
+<p>去年在什么都不懂的情况下移植的时候也主要是靠这篇文章，写得很详细，如果你觉得还不够详细的话，推荐个带图的:
+<a href="http://blog.csdn.net/yr119111/article/details/7732336">opencv2.3.1在arm端的移植</a>
+
+</p>
+<p>这篇写得也不错:
+<a href="http://www.cnblogs.com/s_agapo/archive/2011/11/24/2262346.html">Linux下移植OpenCV+Qt到ARM(Tiny6410)总结</a>
+
+</p>
+<p>我的环境是Ubuntu12.04,板子是友善之臂的tiny6410。
+
+</p>
+<p>首先当然是装好arm-linux-gcc,配置环境变量，输入arm-linux-gcc -v有输出，这步就完成了。
+然后是cmake,比较方便的是用带界面的cmake-gui,要注意的地方是<strong>CMAKE_INSTALL_PREFIX</strong>和<strong>WITH_TIFF</strong>还有<strong>CMAKE_EXE_LINKER_FLAGS</strong>。
+
+</p>
+<p>第一个参数需要注意是因为我们编译的库是适用于ARM的，不应该直接放在/usr/local里，否则如果装了x86的OpenCV会有冲突，比如改成/usr/local/opencv-arm。第二个参数一般情况下需要去掉勾，因为似乎默认情况下ubuntu是没有这个支持的，要选上得自己装些什么东西。第三个参数是因为OpenCV需要这两个库的支持？我现在也还不太明白，总之加上-lrt和-lpthread就不会报错了。其它参数保持原状基本都不会报错。
+
+</p>
+<p>cmake好后下一步是make,对于双核的机器加上-j4参数速度会快很多，但是也发烫，在系统监视器里看到四个线程的CPU都是接近100%,风扇一直呼呼地响。
+
+</p>
+<p>然后是配置编译环境了，好像在2.3以后OpenCV的x86版安装好后都会有pkgconfig的.pc文件。//2.3以前的版本不清楚
+
+</p>
+<p>所以比较方便的就是用pkgconfig来配置了，它的.pc文件是在/usr/local/lib/pkgconfig下面。这是适用于PC版本的OpenCV的（因为之前已经安装好了x86的OpenCV）。但是只要把那第一行的prefix路径改成ARM版OpenCV的安装路径（也就是上面CMAKE_INSTALL_PREFIX参数的值）就可以直接用了。<a href="http://blog.csdn.net/yr119111/article/details/7732336">opencv2.3.1在arm端的移植</a>这篇帖子说再Libs里要加上-lrt -lpthread参数，我的环境下似乎不需要，但是加上也没什么问题。
+
+</p>
+<p>这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config --cflags --libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config --cflags --libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。
+我用的主要是Qt，所以在.pro文件里加上：
+
+</p>
+<pre><code><div class="line">    <span class="title">unix</span> {</div><div class="line">        <span class="title">CONFIG</span> += link_pkgconfig</div><div class="line">        PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc</div><div class="line">    }</div></code></pre>
+<p>但是编译成功后可能会显示一些警告，比如：
+
+</p>
+<pre><code><div class="line">    <span class="string">.</span><span class="string">.</span><span class="comment">/</span>.<span class="string">.</span><span class="comment">/lib/libopencv_core</span>.<span class="comment">so</span>, <span class="comment">needed</span> <span class="comment">by</span> <span class="comment">/usr/local/opencv</span>-<span class="comment">arm/lib/libopencv_highgui</span>.<span class="comment">so</span>, <span class="comment">not</span> <span class="comment">found</span> <span class="comment">(try</span> <span class="comment">using</span> <span class="literal">-</span><span class="comment">rpath</span> <span class="comment">or</span> <span class="literal">-</span><span class="comment">rpath</span>-<span class="comment">link)</div></code></pre>
+<span id="more"></span>
+
+
+<p>这个警告在我的情况下只要把opencv-arm/lib里的.so文件全部放到/opt/FriendlyARM/toolschain/4.5.1/arm-none-linux-gnueabi/sys-root/lib下面就可以解决，但事实上不管这条警告也不会出什么问题，不会影响到程序的运行。//去年移植的时候就一直没管
+
+</p>
+<p>但是耗费我四天的根本就不是这些问题有木有啊！我要开始吐槽了有木有啊！
+
+</p>
+<p>首先要吐槽一下u盘，有个以前编译好的程序放在u盘上一直不能运行，报错 
+
+</p>
+<pre><code><div class="line">    <span class="string">.</span><span class="string">.</span><span class="comment">/</span>.<span class="string">.</span><span class="comment">/lib/libopencv_core</span>.<span class="comment">so</span>, <span class="comment">needed</span> <span class="comment">by</span> <span class="comment">/usr/local/opencv</span>-<span class="comment">arm/lib/libopencv_highgui</span>.<span class="comment">so</span>, <span class="comment">not</span> <span class="comment">found</span> <span class="comment">(try</span> <span class="comment">using</span> <span class="literal">-</span><span class="comment">rpath</span> <span class="comment">or</span> <span class="literal">-</span><span class="comment">rpath</span>-<span class="comment">link)</div></code></pre>
+<p>和编译时那个警告一样，害得我以为是那个警告必须解决掉。后来折腾了好久发现只要把程序拷到板子的存储介质上就直接能运行了！尼玛啊是文件系统还是权限的神马问题啊！于是我就换成用nfs挂载了。
+
+</p>
+<p>现在去年编译的那个程序是能运行了，可是新编译的程序都不能和OpenCV库连上，也是报相同的错，好吧，我试过把.so文件放在/lib下，放在/usr/local/opencv-arm/lib下，两个都放，甚至还试过新建好多个文件夹，放在/opt/FriendlyARM/toolschain/4.5.1/arm-none-linux-gnueabi/sys-root/lib下，结果都一样！只有老的程序能运行，新编译的都不行。后来脑袋终于开窍了，既然老程序可以运行，说明我移植的OpenCV库没有问题。于是我尝试直接用armm-linux-gcc编译了一个简单的程序，发现运行正常？！然后不知什么想法让我把新编译的程序拷贝到/mnt下，也就是nfs挂载的那个目录，神奇的事情发生了，它正常运行了！！！
+
+</p>
+<p>那么，这究竟是什么原理呢？我到现在还没搞明白。nfs挂载以后，所有挂载的文件都相当于自己原本文件系统里的文件么？还是有权限什么的问题呢？</p>
+]]></content>
+    <category scheme="http://sun11.me/tags/OpenCV/" term="OpenCV"/>
+    <category scheme="http://sun11.me/tags/ARM/" term="ARM"/>
+    <category scheme="http://sun11.me/tags/Embedded-Linux/" term="Embedded Linux"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[[译]OpenCV的基础光学字符识别]]></title>
+    <link href="http://sun11.me/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/"/>
+    <id>http://sun11.me/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/</id>
+    <published>2012-07-17T09:21:00.000Z</published>
+    <updated>2012-12-15T03:20:59.000Z</updated>
+    <content type="html"><![CDATA[<p>From:<a href="http://blog.damiles.com/2008/11/basic-ocr-in-opencv/">http://blog.damiles.com/2008/11/basic-ocr-in-opencv/</a>
+
+</p>
+<h2><em><a href="https://github.com/damiles/basicOCR">Github源码</a></em></h2>
+<p>在这个教程当中我们将完成一个基础的数字光学字符识别。这包括把一个手写的数字分类进它所属的类里。
+
+</p>
+<p>为了完成它，们我将要使用我们之前的教程里所有学到的东西，我们将要使用简单的<a href="http://blog.damiles.com/?p=72">basic painter</a>和 <a href="http://blog.damiles.com/?p=84">the basic pattern recognition and classification with openCV</a> 两个教程。
+
+</p>
+<p>在一个典型的模式识别分类器里，包括三个模块：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/9d6e45397b7eb2ed28bafff2460e962a.gif" alt="">
+
+</p>
+<h3>预处理（信号获取和滤波）</h3>
+<h3>特征提取（特征向量的计算）</h3>
+<h3>分类（特征向量的分类）</h3>
+<p>预处理（Preprocessing）：在这个模块我们将要处理我们输入的图片，比如大小标准化，彩色图像灰度化等等。
+
+</p>
+<p>特征提取(Feature extraction)：在这个模块我们转换我们处理后的图像为一个特征向量以便于分类，它可能是像素矩阵转换成向量或者获取轮廓编码链的数据表示。
+
+</p>
+<p>分类模块获取特征向量，并训练我们的系统或者说使用一个分类方法（比如knn）把输入的特征向量分类。
+
+</p>
+<p>这个基础光学字符识别的流程图如下：
+
+</p>
+<p><img width="600px" src="http://11zpic-11zpic.stor.sinaapp.com/original/f7bb4dc01684abdfc722f2b20a53b1ba.jpg" />
+
+</p>
+<p>现在我们有由图片组成的一个训练集和一个测试集来训练和测试我们的分类器（knn）。
+
+</p>
+<p>我们有1000张手写数字的图片，每个数字100张。我们使用每个数字的50张图片来训练，另外50张来测试我们的系统。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/200/8d31c89d75a8ef4d90ebdce98d21208f.gif" alt="">
+
+</p>
+<p>接下来我们要做的第一个工作就是对所有训练集的图片预处理，为了完成它我们创建一个预处理函数。在这个函数中，我们输入一张图片和我们想要它在处理后得到的新的长和宽，这个函数讲返回一个标准大小的带有边框的图片。你可以看到更多清楚的处理流程：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/8b1221f56d51a478e9116d118df3b774.gif" alt="">
+
+</p>
+<span id="more"></span>
+
+<p>预处理代码：
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div><div class="line-number">43</div><div class="line-number">44</div><div class="line-number">45</div><div class="line-number">46</div><div class="line-number">47</div><div class="line-number">48</div><div class="line-number">49</div><div class="line-number">50</div><div class="line-number">51</div><div class="line-number">52</div><div class="line-number">53</div><div class="line-number">54</div><div class="line-number">55</div><div class="line-number">56</div><div class="line-number">57</div><div class="line-number">58</div><div class="line-number">59</div><div class="line-number">60</div><div class="line-number">61</div><div class="line-number">62</div><div class="line-number">63</div><div class="line-number">64</div><div class="line-number">65</div><div class="line-number">66</div><div class="line-number">67</div><div class="line-number">68</div><div class="line-number">69</div><div class="line-number">70</div><div class="line-number">71</div><div class="line-number">72</div><div class="line-number">73</div><div class="line-number">74</div><div class="line-number">75</div><div class="line-number">76</div><div class="line-number">77</div><div class="line-number">78</div><div class="line-number">79</div><div class="line-number">80</div><div class="line-number">81</div><div class="line-number">82</div><div class="line-number">83</div><div class="line-number">84</div><div class="line-number">85</div><div class="line-number">86</div><div class="line-number">87</div><div class="line-number">88</div><div class="line-number">89</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">void</span> findX(IplImage* imgSrc,<span class="keyword">int</span>* min, <span class="keyword">int</span>* max){</div><div class="line"><span class="keyword">int</span> i;</div><div class="line"><span class="keyword">int</span> minFound=<span class="number">0</span>;</div><div class="line">CvMat data;</div><div class="line">CvScalar maxVal=cvRealScalar(imgSrc-&gt;width * <span class="number">255</span>);</div><div class="line">CvScalar val=cvRealScalar(<span class="number">0</span>);</div><div class="line"><span class="comment">//For each col sum, if sum &lt; width*255 then we find the min</span></div><div class="line"><span class="comment">//then continue to end to search the max, if sum&lt; width*255 then is new max</span></div><div class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt; imgSrc-&gt;width; i++){</div><div class="line">cvGetCol(imgSrc, &amp;data, i);</div><div class="line">val= cvSum(&amp;data);</div><div class="line"><span class="keyword">if</span>(val.val[<span class="number">0</span>] &lt; maxVal.val[<span class="number">0</span>]){</div><div class="line">*max= i;</div><div class="line"><span class="keyword">if</span>(!minFound){</div><div class="line">*min= i;</div><div class="line">minFound= <span class="number">1</span>;</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><br><div class="line"><span class="keyword">void</span> findY(IplImage* imgSrc,<span class="keyword">int</span>* min, <span class="keyword">int</span>* max){</div><div class="line"><span class="keyword">int</span> i;</div><div class="line"><span class="keyword">int</span> minFound=<span class="number">0</span>;</div><div class="line">CvMat data;</div><div class="line">CvScalar maxVal=cvRealScalar(imgSrc-&gt;width * <span class="number">255</span>);</div><div class="line">CvScalar val=cvRealScalar(<span class="number">0</span>);</div><div class="line"><span class="comment">//For each col sum, if sum &lt; width*255 then we find the min</span></div><div class="line"><span class="comment">//then continue to end to search the max, if sum&lt; width*255 then is new max</span></div><div class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt; imgSrc-&gt;height; i++){</div><div class="line">cvGetRow(imgSrc, &amp;data, i);</div><div class="line">val= cvSum(&amp;data);</div><div class="line"><span class="keyword">if</span>(val.val[<span class="number">0</span>] &lt; maxVal.val[<span class="number">0</span>]){</div><div class="line">*max=i;</div><div class="line"><span class="keyword">if</span>(!minFound){</div><div class="line">*min= i;</div><div class="line">minFound= <span class="number">1</span>;</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">CvRect findBB(IplImage* imgSrc){</div><div class="line">CvRect aux;</div><div class="line"><span class="keyword">int</span> xmin, xmax, ymin, ymax;</div><div class="line">xmin=xmax=ymin=ymax=<span class="number">0</span>;</div><br><div class="line">findX(imgSrc, &amp;xmin, &amp;xmax);</div><div class="line">findY(imgSrc, &amp;ymin, &amp;ymax);</div><br><div class="line">aux=cvRect(xmin, ymin, xmax-xmin, ymax-ymin);</div><br><div class="line"><span class="comment">//printf("BB: %d,%d - %d,%d\n", aux.x, aux.y, aux.width, aux.height);</span></div><br><div class="line"><span class="keyword">return</span> aux;</div><br><div class="line">}</div><br><div class="line">IplImage preprocessing(IplImage* imgSrc,<span class="keyword">int</span> new_width, <span class="keyword">int</span> new_height){</div><div class="line">IplImage* result;</div><div class="line">IplImage* scaledResult;</div><br><div class="line">CvMat data;</div><div class="line">CvMat dataA;</div><div class="line">CvRect bb;<span class="comment">//bounding box</span></div><div class="line">CvRect bba;<span class="comment">//boundinb box maintain aspect ratio</span></div><br><div class="line"><span class="comment">//Find bounding box</span></div><div class="line">bb=findBB(imgSrc);</div><br><div class="line"><span class="comment">//Get bounding box data and no with aspect ratio, the x and y can be corrupted</span></div><div class="line">cvGetSubRect(imgSrc, &amp;data, cvRect(bb.x, bb.y, bb.width, bb.height));</div><div class="line"><span class="comment">//Create image with this data with width and height with aspect ratio 1</span></div><div class="line"><span class="comment">//then we get highest size betwen width and height of our bounding box</span></div><div class="line"><span class="keyword">int</span> size=(bb.width&gt;bb.height)?bb.width:bb.height;</div><div class="line">result=cvCreateImage( cvSize( size, size ), <span class="number">8</span>, <span class="number">1</span> );</div><div class="line">cvSet(result,CV_RGB(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>),NULL);</div><div class="line"><span class="comment">//Copy de data in center of image</span></div><div class="line"><span class="keyword">int</span> x=(<span class="keyword">int</span>)floor((<span class="keyword">float</span>)(size-bb.width)/<span class="number">2.0f</span>);</div><div class="line"><span class="keyword">int</span> y=(<span class="keyword">int</span>)floor((<span class="keyword">float</span>)(size-bb.height)/<span class="number">2.0f</span>);</div><div class="line">cvGetSubRect(result, &amp;dataA, cvRect(x,y,bb.width, bb.height));</div><div class="line">cvCopy(&amp;data, &amp;dataA, NULL);</div><div class="line"><span class="comment">//Scale result</span></div><div class="line">scaledResult=cvCreateImage( cvSize( new_width, new_height ), <span class="number">8</span>, <span class="number">1</span> );</div><div class="line">cvResize(result, scaledResult, CV_INTER_NN);</div><br><div class="line"><span class="comment">//Return processed data</span></div><div class="line"><span class="keyword">return</span> *scaledResult;</div><br><div class="line">}</div></code></pre></td></tr></table></figure>
+
+
+
+<p>我们使用basicOCR类的getData函数来创建训练数据和训练类，这个函数获取所有在OCR文件夹下的图片来创建训练数据，OCR文件夹中的每个类是一个文件夹，其中每个文件都是名为cnn.pbm的pbm文件，c是类（0,1,...,9）中的一个，nn是图片的编号(00,01,...,99)。
+
+</p>
+<p>我们得到的每张图片都是预处理过的了，然后他们将转换成特征向量里的数据以便我们使用。
+
+</p>
+<p>basicOCR.cpp 获取数据代码：
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">void</span> basicOCR::getData()</div><div class="line">{</div><div class="line">IplImage* src_image;</div><div class="line">IplImage prs_image;</div><div class="line">CvMat row,data;</div><div class="line"><span class="keyword">char</span> file[<span class="number">255</span>];</div><div class="line"><span class="keyword">int</span> i,j;</div><div class="line"><span class="keyword">for</span>(i =<span class="number">0</span>; i&lt;classes; i++){</div><div class="line"><span class="keyword">for</span>( j = <span class="number">0</span>; j&lt; train_samples; j++){</div><br><div class="line"><span class="comment">//Load file</span></div><div class="line"><span class="keyword">if</span>(j&lt;<span class="number">10</span>)</div><div class="line">sprintf(file,<span class="string">"%s%d/%d0%d.pbm"</span>,file_path, i, i , j);</div><div class="line"><span class="keyword">else</span></div><div class="line">sprintf(file,<span class="string">"%s%d/%d%d.pbm"</span>,file_path, i, i , j);</div><div class="line">src_image = cvLoadImage(file,<span class="number">0</span>);</div><div class="line"><span class="keyword">if</span>(!src_image){</div><div class="line">printf(<span class="string">"Error: Cant load image %s\n"</span>, file);</div><div class="line"><span class="comment">//exit(-1);</span></div><div class="line">}</div><div class="line"><span class="comment">//process file</span></div><div class="line">prs_image = preprocessing(src_image, size, size);</div><br><div class="line"><span class="comment">//Set class label</span></div><div class="line">cvGetRow(trainClasses, &amp;row, i*train_samples + j);</div><div class="line">cvSet(&amp;row, cvRealScalar(i));</div><div class="line"><span class="comment">//Set data</span></div><div class="line">cvGetRow(trainData, &amp;row, i*train_samples + j);</div><br><div class="line">IplImage* img = cvCreateImage( cvSize( size, size ), IPL_DEPTH_32F, <span class="number">1</span> );</div><div class="line"><span class="comment">//convert 8 bits image to 32 float image</span></div><div class="line">cvConvertScale(&amp;prs_image, img, <span class="number">0.0039215</span>, <span class="number">0</span>);</div><br><div class="line">cvGetSubRect(img, &amp;data, cvRect(<span class="number">0</span>,<span class="number">0</span>, size,size));</div><br><div class="line">CvMat row_header, *row1;</div><div class="line"><span class="comment">//convert data matrix sizexsize to vecor</span></div><div class="line">row1 = cvReshape( &amp;data, &amp;row_header, <span class="number">0</span>, <span class="number">1</span> );</div><div class="line">cvCopy(row1, &amp;row, NULL);</div><div class="line">}</div><div class="line">}</div><div class="line">}</div></code></pre></td></tr></table></figure>
+
+
+<p>在处理并且得到训练数据和类以后我们用我们的模型训练这些数据，在这个例子中我们用knn方法：
+
+</p>
+<p><code> knn=new CvKNearest( trainData, trainClasses, 0, false, K ); </code>
+
+</p>
+<p>现在我们可以测试我们的模型了，并且我们可以使用测试的结果来和其它我们使用的方法比较，又或者我们减小图片大小等等。这里是在我们的basicOCR类里创建的一个函数，测试函数。
+
+</p>
+<p>这个函数获取其它500个样本并且用我们选择的方法分类，再检验得到的结果。
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">void</span> basicOCR::test(){</div><div class="line">IplImage* src_image;</div><div class="line">IplImage prs_image;</div><div class="line">CvMat row,data;</div><div class="line"><span class="keyword">char</span> file[<span class="number">255</span>];</div><div class="line"><span class="keyword">int</span> i,j;</div><div class="line"><span class="keyword">int</span> error=<span class="number">0</span>;</div><div class="line"><span class="keyword">int</span> testCount=<span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(i =<span class="number">0</span>; i&lt;classes; i++){</div><div class="line"><span class="keyword">for</span>( j = <span class="number">50</span>; j&lt; <span class="number">50</span>+train_samples; j++){</div><br><div class="line">sprintf(file,<span class="string">"%s%d/%d%d.pbm"</span>,file_path, i, i , j);</div><div class="line">src_image = cvLoadImage(file,<span class="number">0</span>);</div><div class="line"><span class="keyword">if</span>(!src_image){</div><div class="line">printf(<span class="string">"Error: Cant load image %s\n"</span>, file);</div><div class="line"><span class="comment">//exit(-1);</span></div><div class="line">}</div><div class="line"><span class="comment">//process file</span></div><div class="line">prs_image = preprocessing(src_image, size, size);</div><div class="line"><span class="keyword">float</span> r=classify(&amp;prs_image,<span class="number">0</span>);</div><div class="line"><span class="keyword">if</span>((<span class="keyword">int</span>)r!=i)</div><div class="line">error++;</div><br><div class="line">testCount++;</div><div class="line">}</div><div class="line">}</div><div class="line"><span class="keyword">float</span> totalerror=<span class="number">100</span>*(<span class="keyword">float</span>)error/(<span class="keyword">float</span>)testCount;</div><div class="line">printf(<span class="string">"System Error: %.2f%%\n"</span>, totalerror);</div><br><div class="line">}</div></code></pre></td></tr></table></figure>
+
+<p>test函数使用了分类函数，获取图片，处理图片，得到特征向量并且用knn类的find_nearest函数对其分类。下面
+
+</p>
+<p>这个函数我们用来分类输入的用户图片：
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">float</span> basicOCR::classify(IplImage* img, <span class="keyword">int</span> showResult)</div><div class="line">{</div><div class="line">IplImage prs_image;</div><div class="line">CvMat data;</div><div class="line">CvMat* nearest=cvCreateMat(<span class="number">1</span>,K,CV_32FC1);</div><div class="line"><span class="keyword">float</span> result;</div><div class="line"><span class="comment">//process file</span></div><div class="line">prs_image = preprocessing(img, size, size);</div><br><div class="line"><span class="comment">//Set data</span></div><div class="line">IplImage* img32 = cvCreateImage( cvSize( size, size ), IPL_DEPTH_32F, <span class="number">1</span> );</div><div class="line">cvConvertScale(&amp;prs_image, img32, <span class="number">0.0039215</span>, <span class="number">0</span>);</div><div class="line">cvGetSubRect(img32, &amp;data, cvRect(<span class="number">0</span>,<span class="number">0</span>, size,size));</div><div class="line">CvMat row_header, *row1;</div><div class="line">row1 = cvReshape( &amp;data, &amp;row_header, <span class="number">0</span>, <span class="number">1</span> );</div><br><div class="line">result=knn-&gt;find_nearest(row1,K,<span class="number">0</span>,<span class="number">0</span>,nearest,<span class="number">0</span>);</div><br><div class="line"><span class="keyword">int</span> accuracy=<span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;K;i++){</div><div class="line"><span class="keyword">if</span>( nearest-&gt;data.fl[i] == result)</div><div class="line">accuracy++;</div><div class="line">}</div><div class="line"><span class="keyword">float</span> pre=<span class="number">100</span>*((<span class="keyword">float</span>)accuracy/(<span class="keyword">float</span>)K);</div><div class="line"><span class="keyword">if</span>(showResult==<span class="number">1</span>){</div><div class="line">printf(<span class="string">"|\t%.0f\t| \t%.2f%%&amp;nbsp; \t| \t%d of %d \t| \n"</span>,result,pre,accuracy,K);</div><div class="line">printf(<span class="string">" ---------------------------------------------------------------\n"</span>);</div><div class="line">}</div><br><div class="line"><span class="keyword">return</span> result;</div><br><div class="line">}</div></code></pre></td></tr></table></figure>
+
+<p>所有的工作或者训练和测试都在basicOCR类里，当我们创建一个basicOCR的实例时只需要调用classify函数来分类我们输入的图片。然后我们使用我们之前在其它教程里创建的简单的Painter来给用户交互绘出一张图片并且分类它。
+
+</p>
+<hr>
+<p>注：
+
+</p>
+<p>1.knn,即K最邻近结点算法（k-Nearest Neighbor algorithm）,最简单的机器学习算法之一，简单说就是在特征空间里找到周围最近的k个样本，如果这k个样本中的大多数属于某个类，则该样本也属于这个类。
+
+</p>
+<p>2.painter,GUI编程中的绘图接口，也就是完成绘制和显示图像的功能。
+
+</p>
+<p><a href="https://github.com/damiles/basicOCR">Github源码</a></p>
+]]></content>
+    <category scheme="http://sun11.me/tags/OpenCV/" term="OpenCV"/>
+    <category scheme="http://sun11.me/tags/OCR/" term="OCR"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[西电技物论坛]]></title>
+    <link href="http://sun11.me/blog/106/"/>
+    <id>http://sun11.me/blog/106/</id>
+    <published>2012-02-20T16:00:00.000Z</published>
+    <updated>2012-12-15T05:04:04.000Z</updated>
+    <content type="html"><![CDATA[<p>经过路由器和网关的两层端口映射和两个防火墙端口的开启，CentOS 6.2 + Apache + vsftpd 的小型论坛总算基本建好了。
+
+</p>
+<p><del>地址是<a href="http://210.27.10.208/">http://210.27.10.208/</a>,仅供西电校内访问。</del>
+
+</p>
+<p>现在校内外均可访问<a href="http://f120.tk/">http://f120.tk/</a>，ftp服务只有校内可以访问。
+
+</p>
+<p>这可折腾了好久时间。我想我把路由器，网关之类的概念算是理解透了。
+
+</p>
+<p>碰到各种各样的问题，linux的用户权限，防火墙，端口映射，配置文件...
+
+</p>
+<p>还好最后都一一解决了。
+
+</p>
+<p>采用wordpress做模板，用了v2press主题，于是它就变身论坛。</p>
+]]></content>
+    <category scheme="http://sun11.me/tags/Web/" term="Web"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[TL-WR703n挂载USB摄像头]]></title>
+    <link href="http://sun11.me/blog/100/"/>
+    <id>http://sun11.me/blog/100/</id>
+    <published>2012-01-06T16:00:00.000Z</published>
+    <updated>2012-12-15T04:54:54.000Z</updated>
+    <content type="html"><![CDATA[<p>首先刷OpenWrt,我用的是<a title="http://www.right.com.cn/forum/thread-71042-1-2.html" href="http://www.right.com.cn/forum/thread-71042-1-2.html" target="_blank">这个帖子</a>里的<a title="http://ishare.iask.sina.com.cn/f/22200677.html" href="http://ishare.iask.sina.com.cn/f/22200677.html" target="_blank">这个版本</a>，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。
+
+</p>
+<p>我是按<a title="http://www.unxmail.com/read.php?187" href="http://www.unxmail.com/read.php?187" target="_blank">这个帖子</a>来操作的，把u盘分成两个区，一个ext3格式（据说比较稳定？），一个ext4格式。按照帖子成功挂载以后点开luci的System里的Software，发现空间已经是u盘那个指定分区的空间了，啊哈，想装啥就装啥。
+
+</p>
+<p>接下来就是摄像头了。由于路由器只有一个usb口，所以得用hub。（废话）
+
+</p>
+<p>我看到了<a title="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" href="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" target="_blank">这个帖子</a>,软件源是不用改的，所以直接：
+
+</p>
+<p>opkg update
+
+</p>
+<p>opkg install usbutils
+
+</p>
+<p>由于我的摄像头是杂牌的，芯片貌似不是301的，所以这跟多数人用的301方案不同。
+
+</p>
+<p>首先在win7的设备管理器查到了我的摄像头的设备信息，搜到了型号。发现和帖子里的芯片型号一样，大喜呀。
+
+</p>
+<p>然后我装了kmod-video-gspca-zc3xx（可能不用装的）和kmod-video-uvc。
+
+</p>
+<p>结果竟然很快成功了。
+
+</p>
+<span id="more"></span>
+
+<p>接下来是：
+
+</p>
+<p>opkg install mjpg-streamer
+
+</p>
+<p>是&#39;-&#39;不是&#39;_&#39;，和帖子里的不一样，因为跟那个帖子的软件源不同。
+
+</p>
+<p>然后仍然按那个帖子把网页文件上传上去，输入命令：
+
+</p>
+<p>mjpg_streamer -i &quot;input_uvc.so -y -d /dev/video0&quot; -o &quot;output_http.so -p 8080 -w /www/camwww&quot;
+
+</p>
+<p>就可以在<a href="http://192.168.0.1:8080/?action=stream看到视频了。">http://192.168.0.1:8080/?action=stream看到视频了。</a>
+
+</p>
+<p>我把画质调到了30,显示速度还可以。
+
+</p>
+<p><a href="http://11zpic-11zpic.stor.sinaapp.com/original/54539106a4e5c87797caf47aa5676976.png"><img class="alignnone size-full wp-image-101" title="Screenshot" src="http://11zpic-11zpic.stor.sinaapp.com/original/54539106a4e5c87797caf47aa5676976.png" alt="" width="584" height="328" /></a>
+
+</p>
+<p>关于输入配置参数：
+
+</p>
+<p>-y是关键，默认启动是mjpeg格式，这个就报错。改成YUV格式
+
+</p>
+<p>-d指定设备
+
+</p>
+<p>-f 制定帧数，默认30帧
+
+</p>
+<p>-r指定视频大小，如320×240
+
+</p>
+<p>-q指定画质，默认80
+
+</p>
+<p>关于输出参数：
+
+</p>
+<p>-p 指定端口，这里是8080
+
+</p>
+<p>-w 指定网页目录，这里我们设置的是/www/camwww目录
+
+</p>
+<p>-c设置通过密码访问
+
+</p>
+<p>（注：眼下正值考试之际，无力详细写此教程，关于建立两个wifi，一个连接可以上网的wifi热点，一个作为接入点的部分没写，就忽略了吧。）</p>
+]]></content>
+    <category scheme="http://sun11.me/tags/OpenWrt/" term="OpenWrt"/>
+    <category scheme="http://sun11.me/tags/Linux/" term="Linux"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[[译]人脸检测与人脸识别简介]]></title>
+    <link href="http://sun11.me/blog/63/"/>
+    <id>http://sun11.me/blog/63/</id>
+    <published>2011-09-28T16:00:00.000Z</published>
+    <updated>2012-12-14T18:08:03.000Z</updated>
+    <content type="html"><![CDATA[<p>From: <a href="http://www.shervinemami.co.cc/faceRecognition.html/">http://www.shervinemami.co.cc/faceRecognition.html/</a>
+
+</p>
+<p>Translated by 11
+
+</p>
+<p>“人脸识别”是一个在计算机视觉和生物特征识别领域十分活跃的话题。这个主题已经被给力地研究了25年，并且最终在安全、机器人学、人机交互、数码摄像机、游戏和娱乐领域得到了广泛应用。
+
+</p>
+<p>“人脸识别”大致可分为两个阶段：
+
+</p>
+<p>1.人脸检测 搜索一幅图像，寻找一切人脸区域（此处以绿色矩形显示），然后进行图像处理，清理脸部图像以便于更好地识别。
+
+</p>
+<p>2.人脸识别 把上一阶段检测处理得到的人脸图像与数据<a href="http://11zpic-11zpic.stor.sinaapp.com/original/c4874641c9d4ba540d14aa8b64f4d35d.jpg"><img align="right" title="facerecOut" src="http://11zpic-11zpic.stor.sinaapp.com/original/c4874641c9d4ba540d14aa8b64f4d35d.jpg" alt="" width="174" height="197" style="margin: 20px;" /></a> 库中的已知人脸进行比对，判定人脸对应的人是谁(此处以红色文本显示)。
+
+</p>
+<p>2002年后，人脸检测已经可以相当可靠地运作。比如OpenCV的Face Detector,对于一个人直视摄像头得到的较清晰图片，大约有90-95%的准确度。通常来说，当人以侧面对准摄像头或与摄像头成一定角度时，较难检测到人脸，有时需要3D Head Pose Estimation。假如图片亮度不是很好，也较难检测到人脸。脸部的部分区域比另一部分区域明亮，带有阴影，模糊，或者戴眼镜，也会影响检测效果。
+
+</p>
+<p>然而，人脸识别却比人脸检测不可靠得多，一般只有30-70%的准确度。20世纪90年代以来，人脸识别一直是一个很重要的研究领域，但仍然十分不可靠，并且每一年都有更多的识别技术被创造，如文章底部所列出的（Alternatives to Eigenfaces such as 3D face recognition or recognition from video.）
+
+</p>
+<p>我将向你展示如何使用“特征脸”（Eigenfaces)，也称为主元分析法（Principal Component Analysis or PCA)。相对于普通的神经网络方法（Neural Networks）和Fisher Faces方法来说，这是一个简单和流行的对图片进行的二维人脸识别的方法。
+
+</p>
+<p>要学习特征脸方法的理论，你需要阅读Face Recognition With Eigenface from Servo Magazine (April 2007)，可能还需要一些数学算法。
+
+</p>
+<p>首先我将向你解释，怎样实现特征脸的命令行离线训练（offline training from the command-line），基于Servo Magazine tutorial and source-code (May 2007)。
+
+</p>
+<p>之后，我将说明如何将此扩展成为从网络摄像头进行实时的在线训练:-)
+</p>
+<p><p><span style="color: #ff6600;"><strong>使用OpenCV的Face Detector检测人脸</strong></span></p>
+</p>
+<p><p>如上所述，人脸识别的第一个阶段是人脸检测。OpenCV库使得使用它的Haar Cascade Face Detector(也称为Viola-Jones方法)检测正面人脸变得相当简单。</p>
+OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函数直接用没有意义，所以最好用这个包装好的函数：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div><div class="line-number">43</div><div class="line-number">44</div><div class="line-number">45</div><div class="line-number">46</div><div class="line-number">47</div><div class="line-number">48</div><div class="line-number">49</div><div class="line-number">50</div><div class="line-number">51</div><div class="line-number">52</div><div class="line-number">53</div></code></pre></td><td class="code"><pre><code><div class="line">// Perform face detection on the input image, using the given Haar Cascade.</div><div class="line">// Returns a rectangle for the detected region <span class="keyword">in</span> the given image.</div><div class="line">CvRect detectFaceInImage(IplImage *inputImg, CvHaarClassifierCascade* cascade)</div><div class="line">{</div><div class="line">	// Smallest face size.</div><div class="line">	CvSize minFeatureSize = cvSize(<span class="number">20</span>, <span class="number">20</span>)<span class="comment">;</span></div><div class="line">	// Only search for <span class="number">1</span> face.</div><div class="line">	int flags = CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH<span class="comment">;</span></div><div class="line">	// How detailed should the search be.</div><div class="line">	float search_scale_factor = <span class="number">1.1</span>f<span class="comment">;</span></div><div class="line">	IplImage *detectImg<span class="comment">;</span></div><div class="line">	IplImage *greyImg = <span class="number">0</span><span class="comment">;</span></div><div class="line">	CvMemStorage* storage<span class="comment">;</span></div><div class="line">	CvRect rc<span class="comment">;</span></div><div class="line">	double t<span class="comment">;</span></div><div class="line">	CvSeq* rects<span class="comment">;</span></div><div class="line">	CvSize size<span class="comment">;</span></div><div class="line">	int i, ms, nFaces<span class="comment">;</span></div><br><div class="line">	storage = cvCreateMemStorage(<span class="number">0</span>)<span class="comment">;</span></div><div class="line">	cvClearMemStorage( storage )<span class="comment">;</span></div><br><div class="line">	// If the image is color, use a greyscale copy of the image.</div><div class="line">	detectImg = (IplImage*)inputImg<span class="comment">;</span></div><div class="line">	if (inputImg-&amp;gt<span class="comment">;nChannels &amp;gt; 1) {</span></div><div class="line">		size = cvSize(inputImg-&amp;gt<span class="comment">;width, inputImg-&amp;gt;height);</span></div><div class="line">		greyImg = cvCreateImage(size, IPL_DEPTH_8U, <span class="number">1</span> )<span class="comment">;</span></div><div class="line">		cvCvtColor( inputImg, greyImg, CV_BGR2GRAY )<span class="comment">;</span></div><div class="line">		detectImg = greyImg<span class="comment">;	// Use the greyscale image.</span></div><div class="line">	}</div><br><div class="line">	// Detect all the faces <span class="keyword">in</span> the greyscale image.</div><div class="line">	t = (double)cvGetTickCount()<span class="comment">;</span></div><div class="line">	rects = cvHaarDetectObjects( detectImg, cascade, storage,</div><div class="line">			search_scale_factor, <span class="number">3</span>, flags, minFeatureSize)<span class="comment">;</span></div><div class="line">	t = (double)cvGetTickCount() - t<span class="comment">;</span></div><div class="line">	ms = cvRound( t / ((double)cvGetTickFrequency() * <span class="number">1000.0</span>) )<span class="comment">;</span></div><div class="line">	nFaces = rects-&amp;gt<span class="comment">;total;</span></div><div class="line">	printf(<span class="string">"Face Detection took %d ms and found %d objectsn"</span>, ms, nFaces)<span class="comment">;</span></div><br><div class="line">	// Get the first detected face (the biggest).</div><div class="line">	if (nFaces &amp;gt<span class="comment">; 0)</span></div><div class="line">		rc = *(CvRect*)cvGetSeqElem( rects, <span class="number">0</span> )<span class="comment">;</span></div><div class="line">	else</div><div class="line">		rc = cvRect(-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>)<span class="comment">;	// Couldn't find the face.</span></div><br><div class="line">	if (greyImg)</div><div class="line">		cvReleaseImage( &amp;amp<span class="comment">;greyImg );</span></div><div class="line">	cvReleaseMemStorage( &amp;amp<span class="comment">;storage );</span></div><div class="line">	//cvReleaseHaarClassifierCascade( &amp;amp<span class="comment">;cascade );</span></div><br><div class="line">	return rc<span class="comment">;	// Return the biggest face found, or (-1,-1,-1,-1).</span></div><div class="line">}</div></code></pre></td></tr></table></figure>
+<span id="more"></span>
+现在如果你想要在一张图片里寻找人脸，只需要简单地调用“detectFaceInImage”函数。你也需要指定OpenCV使用的人脸分类器(Face Classifier)。比如，OpenCV自带了一些用于正面脸的分类器，也有一些用于侧面脸的，还有眼睛检测，鼻检测，嘴检测，全身检测等等。你实际上可以任意把其它的分类检测器用于此函数，甚至创造你自己定制的分类检测器，比如车或人的检测(<a title="here" href="http://note.sonots.com/SciSoftware/haartraining.html">阅读此处</a>)，但既然正脸检测是唯一十分可靠的，这将是我们唯一要讨论的。
+
+</p>
+<p>对于正面人脸检测，你应该选取这些OpenCV自带的haar级联分类器(Haar Cascade Classifiers,in the &quot;datahaarcascades&quot; folder)。
+</p>
+<p><ul>
+    <li>&quot;haarcascade_frontalface_default.xml&quot;</li>
+    <li>&quot;haarcascade_frontalface_alt.xml&quot;</li>
+    <li>&quot;haarcascade_frontalface_alt2.xml&quot;</li>
+    <li>&quot;haarcascade_frontalface_alt_tree.xml&quot;</li>
+</ul>
+</p>
+<p><div>每个haar级联分类器都将给出略微不同的结果，这依赖于你的环境因素，所以你甚至可以用全部分类器，把结果结合在一起（如果你想要做尽可能多地检测）。有一些更多的用于眼睛，头部，嘴巴，鼻子的分类器在<a href="http://gias720.dis.ulpgc.es/Gias/modesto.html">Modesto&#39;s page</a>下载。</div>
+</p>
+<p><div>你可以在你的程序里这样做来进行人脸检测：</div>
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div></code></pre></td><td class="code"><pre><code><div class="line">// Haar Cascade <span class="type">file</span>, used <span class="keyword">for</span> Face Detection.</div><div class="line">char *faceCascadeFilename = <span class="string">"haarcascade_frontalface_alt.xml"</span>;</div><div class="line">// Load <span class="keyword">the</span> HaarCascade classifier <span class="keyword">for</span> face detection.</div><div class="line">CvHaarClassifierCascade* faceCascade;</div><div class="line">faceCascade = (CvHaarClassifierCascade*)cvLoad(faceCascadeFilename, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line"><span class="keyword">if</span>( !faceCascade ) {</div><div class="line">	printf(<span class="string">"Couldnt load Face detector '%s'n"</span>, faceCascadeFilename);</div><div class="line">	<span class="keyword">exit</span>(<span class="number">1</span>);</div><div class="line">}</div><br><div class="line">// Grab <span class="keyword">the</span> next frame <span class="keyword">from</span> <span class="keyword">the</span> camera.</div><div class="line">IplImage *inputImg = cvQueryFrame(camera);</div><br><div class="line">// Perform face detection <span class="function_start"><span class="keyword">on</span> <span class="title">the</span></span> input image, using <span class="keyword">the</span> <span class="keyword">given</span> Haar classifier</div><div class="line">CvRect faceRect = detectFaceInImage(inputImg, faceCascade);</div><br><div class="line">// Make sure a valid face was detected.</div><div class="line"><span class="keyword">if</span> (faceRect.width &amp;gt; <span class="number">0</span>) {</div><div class="line">	printf(<span class="string">"Detected a face at (%d,%d)!n"</span>, faceRect.x, faceRect.y);</div><div class="line">}</div><br><div class="line">.... Use 'faceRect' <span class="keyword">and</span> 'inputImg' ....</div><br><div class="line">// Free <span class="keyword">the</span> Face Detector resources when <span class="keyword">the</span> program <span class="keyword">is</span> finished</div><div class="line">cvReleaseHaarClassifierCascade( &amp;amp;cascade );</div></code></pre></td></tr></table></figure>
+</p>
+<p><p style="text-align: left;"><strong><span style="color: #ff6600;">对脸部图像进行预处理以便于识别</span></strong></p>
+现在你已经检测到一张人脸，你可以使用那张人脸图片进行人脸识别。然而，假如你尝试这样简单地从一张普通图片直接进行人脸识别的话，你将会至少损失10%的准确率！
+
+</p>
+<p>在一个人脸识别系统中，应用多种预处理技术对将要识别的图片进行标准化处理是极其重要的。多数人脸识别算法对光照条件十分敏感，所以假如在暗室训练，在明亮的房间就可能不会被识别出来等等。这个问题可归于“lumination dependent”，并且还有其它很多例子，比如脸部也应当在图片的一个十分固定的位置（比如眼睛位置为相同的像素坐标），固定的大小，旋转角度，头发和装饰，表情（笑，怒等），光照方向（向左或向上等），这就是在进行人脸识别前，使用好的图片预处理过滤器十分重要的原因。你还应该做一些其它事情，比如去除脸部周围的多余像素（如用椭圆遮罩，只显示其内部的人脸区域而不是头发或图片背景，因为他们的变化多于脸部区域）。
+
+</p>
+<p>为简单起见，我展示给你的人脸识别系统是使用灰度图像的特征脸方法。所以我将向你说明怎样简单地把彩色图像转化为灰度图像，并且之后简单地使用直方图均衡化（<a href="http://en.wikipedia.org/wiki/Histogram_equalization">Histogram Equalization</a>）作为一种自动的标准化脸部图像亮度和对比度的方法。为了得到更好的结果，你可以使用彩色人脸识别(color face recognition,ideally with color histogram fitting in HSV or another color space instead of RGB)，或者使用更多的预处理，比如边缘增强(edge enhancement),轮廓检测(contour detection),手势检测(motion detection),等等。这份代码把图片调整成一个标准的大小，但是可能会改变脸的纵横比(aspect ratio)。你可以阅读我这里的教程<a title="http://www.shervinemami.co.cc/imageTransforms.html" href="http://www.shervinemami.co.cc/imageTransforms.html">HERE</a>，来了解怎样调整图像大小而不改变它的纵横比。
+
+</p>
+<p>你可以看到一个预处理阶段的例子：
+
+</p>
+<p><a href="http://11zpic-11zpic.stor.sinaapp.com/original/0a71d260e3cc2557c918a5892b9e0a4e.jpg"><img class="size-full wp-image-116 alignnone" title="facerecProcessing" src="http://11zpic-11zpic.stor.sinaapp.com/original/0a71d260e3cc2557c918a5892b9e0a4e.jpg" alt="" width="343" height="96" /></a>
+
+</p>
+<p>这是把一幅RGB格式的图像或灰度图像转变为灰度图像的基本代码。它还把图像调整成了固定的维度，然后应用直方图均衡化来实现固定的亮度和对比度。
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div></code></pre></td><td class="code"><pre><code><div class="line">// Either convert <span class="keyword">the</span> image <span class="keyword">to</span> greyscale, <span class="keyword">or</span> use <span class="keyword">the</span> existing greyscale image.</div><div class="line">IplImage *imageGrey;</div><div class="line"><span class="keyword">if</span> (imageSrc-&amp;gt;nChannels == <span class="number">3</span>) {</div><div class="line">	imageGrey = cvCreateImage( cvGetSize(imageSrc), IPL_DEPTH_8U, <span class="number">1</span> );</div><div class="line">	// Convert <span class="keyword">from</span> RGB (actually <span class="keyword">it</span> <span class="keyword">is</span> BGR) <span class="keyword">to</span> Greyscale.</div><div class="line">	cvCvtColor( imageSrc, imageGrey, CV_BGR2GRAY );</div><div class="line">}</div><div class="line"><span class="keyword">else</span> {</div><div class="line">	// Just use <span class="keyword">the</span> input image, <span class="keyword">since</span> <span class="keyword">it</span> <span class="keyword">is</span> already Greyscale.</div><div class="line">	imageGrey = imageSrc;</div><div class="line">}</div><br><div class="line">// Resize <span class="keyword">the</span> image <span class="keyword">to</span> be a consistent size, even <span class="keyword">if</span> <span class="keyword">the</span> aspect ratio changes.</div><div class="line">IplImage *imageProcessed;</div><div class="line">imageProcessed = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, <span class="number">1</span>);</div><div class="line">// Make <span class="keyword">the</span> image a fixed size.</div><div class="line">// CV_INTER_CUBIC <span class="keyword">or</span> CV_INTER_LINEAR <span class="keyword">is</span> good <span class="keyword">for</span> enlarging, <span class="keyword">and</span></div><div class="line">// CV_INTER_AREA <span class="keyword">is</span> good <span class="keyword">for</span> shrinking / decimation, <span class="keyword">but</span> bad <span class="keyword">at</span> enlarging.</div><div class="line">cvResize(imageGrey, imageProcessed, CV_INTER_LINEAR);</div><br><div class="line">// Give <span class="keyword">the</span> image a standard brightness <span class="keyword">and</span> contrast.</div><div class="line">cvEqualizeHist(imageProcessed, imageProcessed);</div><br><div class="line">.....  Use 'imageProcessed' <span class="keyword">for</span> Face Recognition ....</div><br><div class="line"><span class="keyword">if</span> (imageGrey)</div><div class="line">	cvReleaseImage(&amp;amp;imageGrey);</div><div class="line"><span class="keyword">if</span> (imageProcessed)</div><div class="line">	cvReleaseImage(&amp;amp;imageProcessed);</div></code></pre></td></tr></table></figure>
+</p>
+<p><p style="text-align: left;"><strong><span style="color: #ff6600;">把“特征脸”用于人脸识别</span></strong></p>
+现在你已经有了一张经过预处理后的脸部图片，你可以使用特征脸(PCA)进行人脸识别。OpenCV自带了执行PCA操作的&quot;cvEigenDecomposite()&quot;函数，然而你需要一个图片数据库(训练集)告诉机器怎样识别当中的人。
+
+</p>
+<p>所以你应该收集每个人的一组预处理后的脸部图片用于识别。比如，假如你想要从10人的班级当中识别某个人，你可以为每个人存储20张图片，总共就有200张大小相同(如100×100像素)的经预处理的脸部图片。
+
+</p>
+<p>特征脸的理论在Servo Magazine的两篇文章(<a title="http://www.cognotics.com/opencv/servo_2007_series/part_4/index.html" href="http://www.cognotics.com/opencv/servo_2007_series/part_4/index.html">Face Recognition with Eigenface</a>)中解释了，但我仍会在这里尝试着向你解释。
+
+</p>
+<p>我们使用“主元分析”把你的200张训练图片转换成一个代表这些训练图片主要区别的“特征脸”集。首先它将会通过获取每个像素的平均值，生成这些图片的“平均人脸图片”。然后特征脸将会与“平均人脸”比较。第一个特征脸是最主要的脸部区别，第二个特征脸是第二重要的脸部区别，等等……直到你有了大约50张代表大多数训练集图片的区别的特征脸。
+
+</p>
+<p><img class="alignleft size-full" title="facerecAverageFace" src="http://11zpic-11zpic.stor.sinaapp.com/original/2d8eed8219f74225270be7e16f40f52c.jpg" alt=""/><img class="alignleft size-full" title="facerecEigenface0" src="http://11zpic-11zpic.stor.sinaapp.com/original/1380ef44406c3de47f7c1b572d9fe8d8.jpg" alt="" width="130" height="150" /><img class="alignnone size-full" title="facerecEigenface119" src="http://11zpic-11zpic.stor.sinaapp.com/original/a31dc0014de76bf6194e7523e53cdb9f.jpg" alt="" width="130" height="150" />
+
+
+</p>
+<p>在上面这些示例图片中你可以看到平均人脸和第一个以及最后一个特征脸。它们是从一个四人的每人30幅图片的训练集中生成的。注意到，平均人脸显示的是一个普通人的平滑脸部结构，排在最前的一些特征脸显示了一些主要的脸部特征，而最后的特征脸（比如Eigenface 119）主要是图像噪声。你可以在下面看到前32张特征脸。
+
+</p>
+<p><a href="http://11zpic-11zpic.stor.sinaapp.com/original/e0a93b99f0dbaace7d3b2f583bdd8f7e.jpg"><img class="alignnone size-full wp-image-120" title="facerecEigenfaces" src="http://11zpic-11zpic.stor.sinaapp.com/original/e0a93b99f0dbaace7d3b2f583bdd8f7e.jpg" alt="" width="532" height="307" /></a>
+</p>
+<p><p style="text-align: left;"><strong><span style="color: #ff6600;">使用主元分析法进行人脸识别</span></strong></p>
+简单地说，特征脸方法(Principal Component Analysis)计算出了训练集中图片的主要区别，并且用这些“区别”的组合来代表每幅训练图片。
+
+</p>
+<p>比如，一张训练图片可能是如下的组成：
+
+</p>
+<p>(averageFace) + (<span style="color: #0000ff;">13.5</span>% of eigenface0) - (<span style="color: #0000ff;">34.3</span>% of eigenface1) + (<span style="color: #0000ff;">4.7</span>% of eigenface2) + ... + (<span style="color: #0000ff;">0.0</span>% of eigenface199).
+
+</p>
+<p>一旦计算出来，就可以认为这张训练图片是这200个比率(ratio)：
+
+</p>
+<p>{<span style="color: #0000ff;">13.5</span>, <span style="color: #0000ff;">-34.3</span>, <span style="color: #0000ff;">4.7</span>, ..., <span style="color: #0000ff;">0.0</span>}.
+
+</p>
+<p>用特征脸图片分别乘以这些比率，并加上平均人脸图片 (average face)，从这200个比率还原这张训练图片是完全可以做到的。但是既然很多排在后面的特征脸是图像噪声或者不会对图片有太大作用，这个比率表可以被降低到只剩下最主要的,比如前30个，不会对图像质量有很大影响。所以现在可以用30个特征脸，平均人脸图片，和一个含有30个比率的表，来代表全部的200张训练图片。
+
+</p>
+<p>有趣的是，这意味着，我们已经找到了一种方法把200张图片压缩成31张图片再加上一点点数据，而不丢失很多的图像质量。但是这个教程是关于人脸识别的，而不是图像压缩的，所以我们将会忽略它:-)
+
+</p>
+<p>在另一幅图片中识别一个人，可以应用相同的PCA计算，使用相同的200个特征脸来寻找200个代表输入图片的比率。并且仍然可以只保留前30个比率而忽略其余的比率，因为它们是次要的。然后通过搜索这些比率的表，寻找在数据库中已知的20个人，来看谁的前30个比率与输入图片的前30个比率最接近。这就是寻找与输入图片最相似的训练图片的基本方法，总共提供了200张训练图片。
+</p>
+<p><p><span style="color: #ff6600;"><strong>离线命令行训练的实现</strong></span></p>
+为了实现离线训练，也就是通过命令行(command-line)使用文件作为输入输出，我使用了与Servo Magazine里<a href="http://www.cognotics.com/opencv/servo_2007_series/part_5/index.html">Face Recognition with Eigenface</a>相同的实现，所以你可以先阅读这篇文章，但是我做了一些小的改动。
+
+</p>
+<p>基本上，从训练图片创建一个人脸识别数据库，就是创建一个列出图片文件和每个文件代表的人的文本文件。
+
+</p>
+<p>比如，你可以把这些输入一个名为&quot;4_images_of_2_people.txt&quot;的文本文件：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="number">1</span> <span class="type">Shervin</span> <span class="typedef">dataShervinShervin1.bmp</span></div><div class="line"><span class="number">1</span> <span class="type">Shervin</span> <span class="typedef">dataShervinShervin2.bmp</span></div><div class="line"><span class="number">1</span> <span class="type">Shervin</span> <span class="typedef">dataShervinShervin3.bmp</span></div><div class="line"><span class="number">1</span> <span class="type">Shervin</span> <span class="typedef">dataShervinShervin4.bmp</span></div><div class="line"><span class="number">2</span> <span class="type">Chandan</span> <span class="typedef">dataChandanChandan1.bmp</span></div><div class="line"><span class="number">2</span> <span class="type">Chandan</span> <span class="typedef">dataChandanChandan2.bmp</span></div><div class="line"><span class="number">2</span> <span class="type">Chandan</span> <span class="typedef">dataChandanChandan3.bmp</span></div><div class="line"><span class="number">2</span> <span class="type">Chandan</span> <span class="typedef">dataChandanChandan4.bmp</span></div></code></pre></td></tr></table></figure>
+它告诉这个程序，第一个人的名字叫“Shervin”，而Shervin的四张预处理后的脸部图像在&quot;dataShervin&quot;文件夹，第二个人的名字叫&quot;Chandan&quot;，在&quot;dataChandan&quot;中有她的四张图片。这个程序可以使用&quot;loadFaceImgArray()&quot;函数把这些图片加载到一个图片数组中。注意，为了简单起见，它不允许空格或特殊字符出现在人名中，&lt;?&gt;所以你可能想要实现这一功能，或者把人名中的空格用下划线代替（比如 Shervin_Emami）。&lt;/?&gt;
+
+</p>
+<p>为了从这些加载好的图片中创建一个数据库，你可以使用OpenCV的&quot;cvCalcEigenObjects()&quot;和&quot;cvEigenDecomposite()&quot;函数，比如：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="comment">// Tell PCA to quit when it has enough eigenfaces.</span></div><div class="line">CvTermCriteria calcLimit = cvTermCriteria( CV_TERMCRIT_ITER, nEigens, <span class="number">1</span>);</div><br><div class="line"><span class="comment">// Compute average image, eigenvectors (eigenfaces) and eigenvalues (ratios).</span></div><div class="line">cvCalcEigenObjects(nTrainFaces, (<span class="keyword">void</span>*)faceImgArr, (<span class="keyword">void</span>*)eigenVectArr,</div><div class="line">	CV_EIGOBJ_NO_CALLBACK, <span class="number">0</span>, <span class="number">0</span>, &amp;amp;calcLimit,</div><div class="line">	pAvgTrainImg, eigenValMat-&amp;gt;data<span class="variable">.fl</span>);</div><br><div class="line"><span class="comment">// Normalize the matrix of eigenvalues.</span></div><div class="line">cvNormalize(eigenValMat, eigenValMat, <span class="number">1</span>, <span class="number">0</span>, CV_L1, <span class="number">0</span>);</div><br><div class="line"><span class="comment">// Project each training image onto the PCA subspace.</span></div><div class="line">CvMat projectedTrainFaceMat = cvCreateMat( nTrainFaces, nEigens, CV_32FC1 );</div><div class="line"><span class="keyword">int</span> offset = projectedTrainFaceMat-&amp;gt;step / <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&amp;lt;nTrainFaces; i++) {</div><div class="line">	cvEigenDecomposite(faceImgArr[i], nEigens, eigenVectArr, <span class="number">0</span>, <span class="number">0</span>,</div><div class="line">		pAvgTrainImg, projectedTrainFaceMat-&amp;gt;data<span class="variable">.fl</span> + i*offset);</div><div class="line">}</div></code></pre></td></tr></table></figure>
+现在你有了：
+</p>
+<p><ul>
+    <li>平均人脸图片&quot;pAvgTrainImg&quot;，</li>
+    <li>包含特征脸图片的数组&quot;eigenVectArr[]&quot;（如：假如你使用了nEigens=200 张训练图片，将得到200 个特征脸），</li>
+    <li>特征值矩阵 (即特征脸的比率，eigenface ratios) 每张图片的&quot;projectedTrainFaceMat&quot; 。</li>
+</ul>
+</p>
+<p><div>现在这些可以被储存成一个文件，也就是人脸识别的数据库。代码中的&quot;storeTrainingData()&quot;函数将会把这些数据储存到”facedata.xml“文件里，它可以随时被重新载入来识别经训练过的人。代码中也有一个&quot;storeEigenfaceImages()&quot;的函数，生成前面提到的图片，平均人脸图片被保存到&quot;out_averageImage.bmp&quot;，特征脸被保存到&quot;out_eigenfaces.bmp&quot;。</div>
+</p>
+<p><p><span style="color: #ff6600;"><strong>离线命令行识别的实现</strong></span></p>
+在离线训练阶段，系统尝试从一个文本文件中的列表读取若干张图像中的人脸，并进行识别。为了实现它，我仍然使用Servo Magazine的<a href="http://www.cognotics.com/opencv/servo_2007_series/part_5/index.html">Face Recognition with Eigenface</a>的实现，在此基础上扩展。
+
+</p>
+<p>用于离线训练的相同格式的文本文件也可用于离线识别。这个文本文件列出了用于测试的图像文件和对应于这张图像的正确的人名。随后这个程序就对每一幅图片进行识别，并且检验文本文件中的真实值（图片对应的正确人名）来确认其是否识别正确，并统计它的准确率。
+
+</p>
+<p>离线识别的实现几乎与离线训练完全相同：
+
+</p>
+<ol>
+<li><p>读取原来的用于训练的文本文件（现在用于识别），把若干个图片文件（预处理后的脸部图片）和名字载入一个图片数组。这些在代码中用“loadFaceImgArray()”函数执行。</p>
+</li>
+<li><p>平均人脸，特征脸和特征值（比率）使用函数“loadTrainingData()” 从人脸识别数据库文件（the face recognition database fil）“facedata.xml”载入。</p>
+</li>
+<li><p>使用OpenCV的函数“cvEigenDecomposite()”，每张输入的图片都被投影到PCA子空间，来观察哪些特征脸的比率最适合于代表这张图片。</p>
+</li>
+<li><p>现在有了特征值（特征脸图片的比率）代表这张输入图片，程序需要查找原始的训练图片，找出拥有最相似比率的图片。这些用数学的方法在“findNearestNeighbor()”函数中执行，采用的是“欧几里得距离（Euclidean Distance）”，但是它只是基本地检查输入图片与每张训练图片的相似性，找到最相似的一张：一张在欧几里得空间上与输入图片距离最近的图片。就像在 Servo Magazine的文章上提到的那样，如果使用马氏距离（ the Mahalanobis space，需要在代码里定义 USE_MAHALANOBIS_DISTANCE），你可以得到更准确的结果。</p>
+</li>
+<li><p>在输入图片与最相似图片之间的距离用于确定可信度（confidence）,作为是否识别出某人的指导。1.0的可信度意味着完全相同，0.0或者负的可信度意味着非常不相似。但是需要注意，我在代码中用到的可信度公式只是一个非常基本的可信度测量，不是很可靠，但是我觉得多数人会想要看到一个粗略的可信度值。你可能发现它对你的图片给出错误的值，所以你可以禁用它（比如：把可信度设为恒定的1.0）。</p>
+</li>
+</ol>
+<p>一旦指导哪张训练图片和输入图片最相似，并假定可信度值不是太低（应该至少是0.6或更高），那么它就指出了那个人是谁，换句话说，它识别出了那个人！
+</p>
+<p><p><span style="color: #ff6600;"><strong>摄像头实时识别的实现</strong></span></p>
+要让一个摄像头视频流输入取代文件列表是十分简单的。基本上，你只要从摄像头抓取一帧，而不是读取一个文件，并且一直运行下去直到用户退出，而不是等待文件读取到头就行了。OpenCV为此提供了“cvCreateCameraCapture()”函数（或cvCaptureFromCAM()）。
+
+</p>
+<p>从摄像头抓取一帧可以简单地用下面的函数实现：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div></code></pre></td><td class="code"><pre><code><div class="line">// Grab <span class="keyword">the</span> next camera frame. Waits <span class="keyword">until</span> <span class="keyword">the</span> next frame <span class="keyword">is</span> ready, <span class="keyword">and</span></div><div class="line">// provides direct access <span class="keyword">to</span> <span class="keyword">it</span>, so do NOT modify <span class="keyword">or</span> free <span class="keyword">the</span> returned image!</div><div class="line">// Will automatically initialize <span class="keyword">the</span> camera <span class="function_start"><span class="keyword">on</span> <span class="title">the</span></span> <span class="keyword">first</span> frame.</div><div class="line">IplImage* getCameraFrame(CvCapture* &amp;amp;camera)</div><div class="line">{</div><div class="line">	IplImage *frame;</div><div class="line">	int w, h;</div><br><div class="line">	// If <span class="keyword">the</span> camera hasn't been initialized, <span class="keyword">then</span> open <span class="keyword">it</span>.</div><div class="line">	<span class="keyword">if</span> (!camera) {</div><div class="line">		printf(<span class="string">"Acessing the camera ...\n"</span>);</div><div class="line">		camera = cvCreateCameraCapture( <span class="number">0</span> );</div><div class="line">		<span class="keyword">if</span> (!camera) {</div><div class="line">			printf(<span class="string">"Couldn't access the camera.\n"</span>);</div><div class="line">			<span class="keyword">exit</span>(<span class="number">1</span>);</div><div class="line">		}</div><div class="line">		// Try <span class="keyword">to</span> <span class="keyword">set</span> <span class="keyword">the</span> camera resolution <span class="keyword">to</span> <span class="number">320</span> x <span class="number">240.</span></div><div class="line">		cvSetCaptureProperty(camera, CV_CAP_PROP_FRAME_WIDTH, <span class="number">320</span>);</div><div class="line">		cvSetCaptureProperty(camera, CV_CAP_PROP_FRAME_HEIGHT, <span class="number">240</span>);</div><div class="line">		// Get <span class="keyword">the</span> <span class="keyword">first</span> frame, <span class="keyword">to</span> make sure <span class="keyword">the</span> camera <span class="keyword">is</span> initialized.</div><div class="line">		frame = cvQueryFrame( camera );</div><div class="line">		<span class="keyword">if</span> (frame) {</div><div class="line">			w = frame-&amp;gt;width;</div><div class="line">			h = frame-&amp;gt;height;</div><div class="line">			printf(<span class="string">"Got the camera at %dx%d resolution.\n"</span>, w, h);</div><div class="line">		}</div><div class="line">		// Wait a little, so <span class="keyword">that</span> <span class="keyword">the</span> camera can auto-adjust <span class="keyword">its</span> brightness.</div><div class="line">		Sleep(<span class="number">1000</span>);	// (<span class="keyword">in</span> milliseconds)</div><div class="line">	}</div><br><div class="line">	// Wait <span class="keyword">until</span> <span class="keyword">the</span> next camera frame <span class="keyword">is</span> ready, <span class="keyword">then</span> grab <span class="keyword">it</span>.</div><div class="line">	frame = cvQueryFrame( camera );</div><div class="line">	<span class="keyword">if</span> (!frame) {</div><div class="line">		printf(<span class="string">"Couldn't grab a camera frame.\n"</span>);</div><div class="line">		<span class="keyword">exit</span>(<span class="number">1</span>);</div><div class="line">	}</div><div class="line"><span class="command">	return</span> frame;</div><div class="line">}</div></code></pre></td></tr></table></figure>
+这个函数可以这样用：
+</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div></code></pre></td><td class="code"><pre><code><div class="line">CvCapture* camera = <span class="number">0</span>;	// The camera device.</div><div class="line"><span class="keyword">while</span> ( cvWaitKey(<span class="number">10</span>) != <span class="number">27</span> ) {	// Quit on <span class="string">"Escape"</span> key.</div><div class="line">	IplImage *frame = getCameraFrame(camera);</div><div class="line">	<span class="keyword">...</span></div><div class="line">}</div><div class="line">// Free the camera.</div><div class="line">cvReleaseCapture( &amp;amp;camera );</div></code></pre></td></tr></table></figure>
+请注意，假如你是为windows操作系统开发，你可以使用 Theo Watson 的 <a href="http://muonics.net/school/spring05/videoInput/">videoInput Library v0.1995</a> 达到两倍于这些代码的速度。它使用了DirectShow硬件加速,然而OpenCV使用VFW已经15年不变了！
+把我已经解释的这些部分放到一起，人脸识别系统运行步骤如下：
+
+</p>
+<ol>
+<li><p>从摄像头抓取一帧图片。</p>
+</li>
+<li><p>转换彩色图片帧为灰度图片帧。</p>
+</li>
+<li><p>检测灰度图片帧的人脸。</p>
+</li>
+<li><p>处理图片以显示人脸区域（使用 cvSetImageROI() 和 cvCopyImage()）。</p>
+</li>
+<li><p>预处理脸部图片。</p>
+</li>
+<li><p>识别图片中的人。
+<p><span style="color: #ff6600;"><strong>摄像头实时训练的实现</strong></span></p>
+现在你已经有了一个用摄像头实时识别人脸的方法，但是要学习新人脸，你不得不关闭这个程序，把摄像头的图片保存成图片文件，更新图片列表，使用离线命令行训练的方法，然后以实时摄像头识别的模式再次运行这个程序。所以实际上，你完全可以用程序来执行实时的摄像头训练！</p>
+</li>
+</ol>
+<p>这里就是用摄像头视频流把一个新的人加入人脸识别数据库而不关闭程序的一个最简单的方法：
+
+</p>
+<ol>
+<li><p>从摄像头收集一些图片（预处理后的脸部图片）,也可以同时执行人脸识别。</p>
+</li>
+<li><p>用“cvSaveImage()”函数保存这些脸部图片作为图片文件存入磁盘。</p>
+</li>
+<li><p>加入每张脸部图片的文件名到训练图片列表（用于离线命令行训练的文本文件）的底部。</p>
+</li>
+<li><p>一旦你准备实时训练，你将从所有图片文件形成的数据库重新训练。这个文本文件列出了新加入的训练图片文件，并且这些图片被电脑存为了图片文件，所以实时训练工作起来跟离线训练一样。</p>
+</li>
+<li><p>但是在重新训练之前，释放任何正在使用的资源和重新初始化也很必要。应该像你重新启动了这个程序一样。比如，在图片被存储成文件并且加入训练列表的文本文件后，你应该再执行相同的离线训练（包括从训练列表文件载入图片，用PCA方法找出新训练集的特征脸和比率）之前释放特征脸数组。 这个实时训练的方法相当低效，因为假如在训练集中有50个人，而你多加了一个人，它将为51个人重新训练，这是非常不好的，因为训练的时间随着用户或图片数量的增加呈指数级增长。但是假如你只是处理百来张图片，它不需要多少秒就可以完成。</p>
+</li>
+</ol>
+<p>文件下载请转到<a title="http://www.shervinemami.co.cc/faceRecognition.html" href="http://www.shervinemami.co.cc/faceRecognition.html">原文</a>。
+
+</p>
+<p>The article source is <a title="http://www.shervinemami.co.cc/faceRecognition.html" href="http://www.shervinemami.co.cc/faceRecognition.html"><a href="http://www.shervinemami.co.cc/faceRecognition.html&lt;/a&gt;">http://www.shervinemami.co.cc/faceRecognition.html&lt;/a&gt;</a></p>
+]]></content>
+    <category scheme="http://sun11.me/tags/Face-Recognition/" term="Face Recognition"/>
+    <category scheme="http://sun11.me/tags/OpenCV/" term="OpenCV"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[一个Quick and Dirty的记事本程序]]></title>
+    <link href="http://sun11.me/blog/45/"/>
+    <id>http://sun11.me/blog/45/</id>
+    <published>2011-08-20T16:00:00.000Z</published>
+    <updated>2012-12-14T18:08:10.000Z</updated>
+    <content type="html"><![CDATA[<p>最近在学QT编程，总算是能做出一个图形界面程序了。
+
+</p>
+<p>我用的书是《C++ GUI Qt 4 编程（第二版）》(C++ GUI Programming with Qt4,Second Edition)。书上给我的第一个有主窗口的完整应用程序的例子是一个电子表格程序，那叫一个复杂啊...虽然说基本把QT库的基本内容展现出来了，可是我实在消化不了那么多东西，而且涉及到表格，太过具体，这些比较细节的东西以后未必用的上。
+
+</p>
+<p>所以我不打算完整的学下来，转而做一个简单的记事本程序。
+
+</p>
+<p>这个程序有基本的标题栏，菜单栏，状态栏...
+
+</p>
+<p>只是工具栏被我删掉了，感觉跟菜单栏比较类似，也懒得去做图标...
+
+</p>
+<p>我找了一下网上的教程，有直接用Qt Designer图形界面操作的，但太傻瓜化，有些功能还实现不了。还有就是书上的例子，纯代码...而我是要做一个有基本界面还可以打开和保存文件，有剪切复制粘贴功能的记事本，用Qt Designer设计UI，然后再写一些代码。
+
+</p>
+<p>所以参考了一个QT官网上的一个教程和书里的制作电子表格的示例程序，做了一个Quick and Dirty的记事本程序。
+
+</p>
+<p>之所以Dirty，是因为它甚至还不支持中文！（勿喷，勿喷，写入文件是用一个叫做QTextStream的类弄的，我什么都不知道...）
+
+</p>
+<p>同是C++初学者的我，压根搞不清状况。那么多乱七八糟的类和对象。问题是Qt Designer设计的ui对象我搞不懂怎么用代码操作，书上它是纯代码的也没讲。
+
+</p>
+<p>后来还是QtCreator这个给力的IDE好使啊，打出ui，再按点号，自动将点号转成&quot;-&gt;&quot;，然后用特殊方式显示“ui”，这是说，它找到了这个对象，原来这个对象就叫ui...查了一下前面的定义，大体上看懂了。。。
+
+</p>
+<p>把窗体初始化以后，然后就是各种信号和槽的连接...各种QT的类，揣摩各种语法规则(本人比较懒，不想查书...)，Google各种error...在这个过程中，总算是了解了基本的QT编程。
+
+</p>
+<p>最开心的事情：setShortcut(QKeySequence::XXX)是在各种操作系统上的万能钥匙啊，什么快捷键，系统给你，不用写，哈哈～
+
+</p>
+<p>代码在<a href="https://github.com/sun11/QTGUI_Writer">https://github.com/sun11/QTGUI_Writer</a></p>
+]]></content>
+    <category scheme="http://sun11.me/tags/Qt/" term="Qt"/>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[Hello World]]></title>
+    <link href="http://sun11.me/blog/7/"/>
+    <id>http://sun11.me/blog/7/</id>
+    <published>2011-06-25T16:00:00.000Z</published>
+    <updated>2012-12-14T17:27:03.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>Hello World!</strong></p>
+]]></content>
+  </entry>
+</feed>

@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>[译]OpenCV的基础光学字符识别 | 11zHexo</title>
+  <meta name="author" content="E. Sununs">
+  
+  <meta name="description" content="From:http://blog.damiles.com/2008/11/basic-ocr-in-opencv/
+
+
+Github源码
+在这个教程当中我们将完成一个基础的数字光学字符识别。这包括把一个手写的数字分类进它所属的类里。
+
+
+为了完成它，们我将要使用我们之前的教程里所有学到的东西，我们将要使用简单的basic painter和 the basic pattern recognition and classification with openCV 两个教程。
+
+
+在一个典型的模式识别分类器里，包括三个模块：
+
+
+
+
+
+预处理（信号获取和滤波）
+特征提取（特征向量的计算）
+分类（特征向量的分类）
+预处理（Preprocessing）：在这个模块我们将要处理我们输入的图片，比如大小标准化，彩色图像灰度化等等。
+
+
+特征提取(Feature extraction)：在这个模块我们转换我们处理后的图像为一个特征向量以便于分类，它可能是像素矩阵转换成向量或者获取轮廓编码链的数据表示。
+
+
+分类模块获取特征向量，并训练我们的系统或者说使用一个分类方法（比如knn）把输入的特征向量分类。
+
+
+这个基础光学字符识别的流程图如下：
+
+
+
+
+
+现在我们有由图片组成的一个训练集和一个测试集来训练和测试我们的分类器（knn）。
+
+
+我们有1000张手写数字的图片，每个数字100张。我们使用每个数字的50张图片来训练，另外50张来测试我们的系统。
+
+
+
+
+
+接下来我们要做的第一个工作就是对所有训练集的图片预处理，为了完成它我们创建一个预处理函数。在这个函数中，我们输入一张图片和我们想要它在处理后得到的新的长和宽，这个函数讲返回一个标准大小的带有边框的图片。你可以看到更多清楚的处理流程：">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  <meta property="og:title" content="[译]OpenCV的基础光学字符识别"/>
+  <meta property="og:site_name" content="11zHexo"/>
+
+  <link rel="alternate" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31707826-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">11zHexo</a></h1>
+  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-17T09:21:00.000Z"><a href="/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/">Jul 17 2012</a></time>
+      
+      
+  
+    <h1 class="title">[译]OpenCV的基础光学字符识别</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>From:<a href="http://blog.damiles.com/2008/11/basic-ocr-in-opencv/">http://blog.damiles.com/2008/11/basic-ocr-in-opencv/</a>
+
+</p>
+<h2><em><a href="https://github.com/damiles/basicOCR">Github源码</a></em></h2>
+<p>在这个教程当中我们将完成一个基础的数字光学字符识别。这包括把一个手写的数字分类进它所属的类里。
+
+</p>
+<p>为了完成它，们我将要使用我们之前的教程里所有学到的东西，我们将要使用简单的<a href="http://blog.damiles.com/?p=72">basic painter</a>和 <a href="http://blog.damiles.com/?p=84">the basic pattern recognition and classification with openCV</a> 两个教程。
+
+</p>
+<p>在一个典型的模式识别分类器里，包括三个模块：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/9d6e45397b7eb2ed28bafff2460e962a.gif" alt="">
+
+</p>
+<h3>预处理（信号获取和滤波）</h3>
+<h3>特征提取（特征向量的计算）</h3>
+<h3>分类（特征向量的分类）</h3>
+<p>预处理（Preprocessing）：在这个模块我们将要处理我们输入的图片，比如大小标准化，彩色图像灰度化等等。
+
+</p>
+<p>特征提取(Feature extraction)：在这个模块我们转换我们处理后的图像为一个特征向量以便于分类，它可能是像素矩阵转换成向量或者获取轮廓编码链的数据表示。
+
+</p>
+<p>分类模块获取特征向量，并训练我们的系统或者说使用一个分类方法（比如knn）把输入的特征向量分类。
+
+</p>
+<p>这个基础光学字符识别的流程图如下：
+
+</p>
+<p><img width="600px" src="http://11zpic-11zpic.stor.sinaapp.com/original/f7bb4dc01684abdfc722f2b20a53b1ba.jpg" />
+
+</p>
+<p>现在我们有由图片组成的一个训练集和一个测试集来训练和测试我们的分类器（knn）。
+
+</p>
+<p>我们有1000张手写数字的图片，每个数字100张。我们使用每个数字的50张图片来训练，另外50张来测试我们的系统。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/200/8d31c89d75a8ef4d90ebdce98d21208f.gif" alt="">
+
+</p>
+<p>接下来我们要做的第一个工作就是对所有训练集的图片预处理，为了完成它我们创建一个预处理函数。在这个函数中，我们输入一张图片和我们想要它在处理后得到的新的长和宽，这个函数讲返回一个标准大小的带有边框的图片。你可以看到更多清楚的处理流程：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/8b1221f56d51a478e9116d118df3b774.gif" alt="">
+
+</p>
+<span id="more"></span>
+
+<p>预处理代码：
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div><div class="line-number">43</div><div class="line-number">44</div><div class="line-number">45</div><div class="line-number">46</div><div class="line-number">47</div><div class="line-number">48</div><div class="line-number">49</div><div class="line-number">50</div><div class="line-number">51</div><div class="line-number">52</div><div class="line-number">53</div><div class="line-number">54</div><div class="line-number">55</div><div class="line-number">56</div><div class="line-number">57</div><div class="line-number">58</div><div class="line-number">59</div><div class="line-number">60</div><div class="line-number">61</div><div class="line-number">62</div><div class="line-number">63</div><div class="line-number">64</div><div class="line-number">65</div><div class="line-number">66</div><div class="line-number">67</div><div class="line-number">68</div><div class="line-number">69</div><div class="line-number">70</div><div class="line-number">71</div><div class="line-number">72</div><div class="line-number">73</div><div class="line-number">74</div><div class="line-number">75</div><div class="line-number">76</div><div class="line-number">77</div><div class="line-number">78</div><div class="line-number">79</div><div class="line-number">80</div><div class="line-number">81</div><div class="line-number">82</div><div class="line-number">83</div><div class="line-number">84</div><div class="line-number">85</div><div class="line-number">86</div><div class="line-number">87</div><div class="line-number">88</div><div class="line-number">89</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">void</span> findX(IplImage* imgSrc,<span class="keyword">int</span>* min, <span class="keyword">int</span>* max){</div><div class="line"><span class="keyword">int</span> i;</div><div class="line"><span class="keyword">int</span> minFound=<span class="number">0</span>;</div><div class="line">CvMat data;</div><div class="line">CvScalar maxVal=cvRealScalar(imgSrc-&gt;width * <span class="number">255</span>);</div><div class="line">CvScalar val=cvRealScalar(<span class="number">0</span>);</div><div class="line"><span class="comment">//For each col sum, if sum &lt; width*255 then we find the min</span></div><div class="line"><span class="comment">//then continue to end to search the max, if sum&lt; width*255 then is new max</span></div><div class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt; imgSrc-&gt;width; i++){</div><div class="line">cvGetCol(imgSrc, &amp;data, i);</div><div class="line">val= cvSum(&amp;data);</div><div class="line"><span class="keyword">if</span>(val.val[<span class="number">0</span>] &lt; maxVal.val[<span class="number">0</span>]){</div><div class="line">*max= i;</div><div class="line"><span class="keyword">if</span>(!minFound){</div><div class="line">*min= i;</div><div class="line">minFound= <span class="number">1</span>;</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><br><div class="line"><span class="keyword">void</span> findY(IplImage* imgSrc,<span class="keyword">int</span>* min, <span class="keyword">int</span>* max){</div><div class="line"><span class="keyword">int</span> i;</div><div class="line"><span class="keyword">int</span> minFound=<span class="number">0</span>;</div><div class="line">CvMat data;</div><div class="line">CvScalar maxVal=cvRealScalar(imgSrc-&gt;width * <span class="number">255</span>);</div><div class="line">CvScalar val=cvRealScalar(<span class="number">0</span>);</div><div class="line"><span class="comment">//For each col sum, if sum &lt; width*255 then we find the min</span></div><div class="line"><span class="comment">//then continue to end to search the max, if sum&lt; width*255 then is new max</span></div><div class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt; imgSrc-&gt;height; i++){</div><div class="line">cvGetRow(imgSrc, &amp;data, i);</div><div class="line">val= cvSum(&amp;data);</div><div class="line"><span class="keyword">if</span>(val.val[<span class="number">0</span>] &lt; maxVal.val[<span class="number">0</span>]){</div><div class="line">*max=i;</div><div class="line"><span class="keyword">if</span>(!minFound){</div><div class="line">*min= i;</div><div class="line">minFound= <span class="number">1</span>;</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">CvRect findBB(IplImage* imgSrc){</div><div class="line">CvRect aux;</div><div class="line"><span class="keyword">int</span> xmin, xmax, ymin, ymax;</div><div class="line">xmin=xmax=ymin=ymax=<span class="number">0</span>;</div><br><div class="line">findX(imgSrc, &amp;xmin, &amp;xmax);</div><div class="line">findY(imgSrc, &amp;ymin, &amp;ymax);</div><br><div class="line">aux=cvRect(xmin, ymin, xmax-xmin, ymax-ymin);</div><br><div class="line"><span class="comment">//printf("BB: %d,%d - %d,%d\n", aux.x, aux.y, aux.width, aux.height);</span></div><br><div class="line"><span class="keyword">return</span> aux;</div><br><div class="line">}</div><br><div class="line">IplImage preprocessing(IplImage* imgSrc,<span class="keyword">int</span> new_width, <span class="keyword">int</span> new_height){</div><div class="line">IplImage* result;</div><div class="line">IplImage* scaledResult;</div><br><div class="line">CvMat data;</div><div class="line">CvMat dataA;</div><div class="line">CvRect bb;<span class="comment">//bounding box</span></div><div class="line">CvRect bba;<span class="comment">//boundinb box maintain aspect ratio</span></div><br><div class="line"><span class="comment">//Find bounding box</span></div><div class="line">bb=findBB(imgSrc);</div><br><div class="line"><span class="comment">//Get bounding box data and no with aspect ratio, the x and y can be corrupted</span></div><div class="line">cvGetSubRect(imgSrc, &amp;data, cvRect(bb.x, bb.y, bb.width, bb.height));</div><div class="line"><span class="comment">//Create image with this data with width and height with aspect ratio 1</span></div><div class="line"><span class="comment">//then we get highest size betwen width and height of our bounding box</span></div><div class="line"><span class="keyword">int</span> size=(bb.width&gt;bb.height)?bb.width:bb.height;</div><div class="line">result=cvCreateImage( cvSize( size, size ), <span class="number">8</span>, <span class="number">1</span> );</div><div class="line">cvSet(result,CV_RGB(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>),NULL);</div><div class="line"><span class="comment">//Copy de data in center of image</span></div><div class="line"><span class="keyword">int</span> x=(<span class="keyword">int</span>)floor((<span class="keyword">float</span>)(size-bb.width)/<span class="number">2.0f</span>);</div><div class="line"><span class="keyword">int</span> y=(<span class="keyword">int</span>)floor((<span class="keyword">float</span>)(size-bb.height)/<span class="number">2.0f</span>);</div><div class="line">cvGetSubRect(result, &amp;dataA, cvRect(x,y,bb.width, bb.height));</div><div class="line">cvCopy(&amp;data, &amp;dataA, NULL);</div><div class="line"><span class="comment">//Scale result</span></div><div class="line">scaledResult=cvCreateImage( cvSize( new_width, new_height ), <span class="number">8</span>, <span class="number">1</span> );</div><div class="line">cvResize(result, scaledResult, CV_INTER_NN);</div><br><div class="line"><span class="comment">//Return processed data</span></div><div class="line"><span class="keyword">return</span> *scaledResult;</div><br><div class="line">}</div></code></pre></td></tr></table></figure>
+
+
+
+<p>我们使用basicOCR类的getData函数来创建训练数据和训练类，这个函数获取所有在OCR文件夹下的图片来创建训练数据，OCR文件夹中的每个类是一个文件夹，其中每个文件都是名为cnn.pbm的pbm文件，c是类（0,1,...,9）中的一个，nn是图片的编号(00,01,...,99)。
+
+</p>
+<p>我们得到的每张图片都是预处理过的了，然后他们将转换成特征向量里的数据以便我们使用。
+
+</p>
+<p>basicOCR.cpp 获取数据代码：
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div><div class="line-number">33</div><div class="line-number">34</div><div class="line-number">35</div><div class="line-number">36</div><div class="line-number">37</div><div class="line-number">38</div><div class="line-number">39</div><div class="line-number">40</div><div class="line-number">41</div><div class="line-number">42</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">void</span> basicOCR::getData()</div><div class="line">{</div><div class="line">IplImage* src_image;</div><div class="line">IplImage prs_image;</div><div class="line">CvMat row,data;</div><div class="line"><span class="keyword">char</span> file[<span class="number">255</span>];</div><div class="line"><span class="keyword">int</span> i,j;</div><div class="line"><span class="keyword">for</span>(i =<span class="number">0</span>; i&lt;classes; i++){</div><div class="line"><span class="keyword">for</span>( j = <span class="number">0</span>; j&lt; train_samples; j++){</div><br><div class="line"><span class="comment">//Load file</span></div><div class="line"><span class="keyword">if</span>(j&lt;<span class="number">10</span>)</div><div class="line">sprintf(file,<span class="string">"%s%d/%d0%d.pbm"</span>,file_path, i, i , j);</div><div class="line"><span class="keyword">else</span></div><div class="line">sprintf(file,<span class="string">"%s%d/%d%d.pbm"</span>,file_path, i, i , j);</div><div class="line">src_image = cvLoadImage(file,<span class="number">0</span>);</div><div class="line"><span class="keyword">if</span>(!src_image){</div><div class="line">printf(<span class="string">"Error: Cant load image %s\n"</span>, file);</div><div class="line"><span class="comment">//exit(-1);</span></div><div class="line">}</div><div class="line"><span class="comment">//process file</span></div><div class="line">prs_image = preprocessing(src_image, size, size);</div><br><div class="line"><span class="comment">//Set class label</span></div><div class="line">cvGetRow(trainClasses, &amp;row, i*train_samples + j);</div><div class="line">cvSet(&amp;row, cvRealScalar(i));</div><div class="line"><span class="comment">//Set data</span></div><div class="line">cvGetRow(trainData, &amp;row, i*train_samples + j);</div><br><div class="line">IplImage* img = cvCreateImage( cvSize( size, size ), IPL_DEPTH_32F, <span class="number">1</span> );</div><div class="line"><span class="comment">//convert 8 bits image to 32 float image</span></div><div class="line">cvConvertScale(&amp;prs_image, img, <span class="number">0.0039215</span>, <span class="number">0</span>);</div><br><div class="line">cvGetSubRect(img, &amp;data, cvRect(<span class="number">0</span>,<span class="number">0</span>, size,size));</div><br><div class="line">CvMat row_header, *row1;</div><div class="line"><span class="comment">//convert data matrix sizexsize to vecor</span></div><div class="line">row1 = cvReshape( &amp;data, &amp;row_header, <span class="number">0</span>, <span class="number">1</span> );</div><div class="line">cvCopy(row1, &amp;row, NULL);</div><div class="line">}</div><div class="line">}</div><div class="line">}</div></code></pre></td></tr></table></figure>
+
+
+<p>在处理并且得到训练数据和类以后我们用我们的模型训练这些数据，在这个例子中我们用knn方法：
+
+</p>
+<p><code> knn=new CvKNearest( trainData, trainClasses, 0, false, K ); </code>
+
+</p>
+<p>现在我们可以测试我们的模型了，并且我们可以使用测试的结果来和其它我们使用的方法比较，又或者我们减小图片大小等等。这里是在我们的basicOCR类里创建的一个函数，测试函数。
+
+</p>
+<p>这个函数获取其它500个样本并且用我们选择的方法分类，再检验得到的结果。
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">void</span> basicOCR::test(){</div><div class="line">IplImage* src_image;</div><div class="line">IplImage prs_image;</div><div class="line">CvMat row,data;</div><div class="line"><span class="keyword">char</span> file[<span class="number">255</span>];</div><div class="line"><span class="keyword">int</span> i,j;</div><div class="line"><span class="keyword">int</span> error=<span class="number">0</span>;</div><div class="line"><span class="keyword">int</span> testCount=<span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(i =<span class="number">0</span>; i&lt;classes; i++){</div><div class="line"><span class="keyword">for</span>( j = <span class="number">50</span>; j&lt; <span class="number">50</span>+train_samples; j++){</div><br><div class="line">sprintf(file,<span class="string">"%s%d/%d%d.pbm"</span>,file_path, i, i , j);</div><div class="line">src_image = cvLoadImage(file,<span class="number">0</span>);</div><div class="line"><span class="keyword">if</span>(!src_image){</div><div class="line">printf(<span class="string">"Error: Cant load image %s\n"</span>, file);</div><div class="line"><span class="comment">//exit(-1);</span></div><div class="line">}</div><div class="line"><span class="comment">//process file</span></div><div class="line">prs_image = preprocessing(src_image, size, size);</div><div class="line"><span class="keyword">float</span> r=classify(&amp;prs_image,<span class="number">0</span>);</div><div class="line"><span class="keyword">if</span>((<span class="keyword">int</span>)r!=i)</div><div class="line">error++;</div><br><div class="line">testCount++;</div><div class="line">}</div><div class="line">}</div><div class="line"><span class="keyword">float</span> totalerror=<span class="number">100</span>*(<span class="keyword">float</span>)error/(<span class="keyword">float</span>)testCount;</div><div class="line">printf(<span class="string">"System Error: %.2f%%\n"</span>, totalerror);</div><br><div class="line">}</div></code></pre></td></tr></table></figure>
+
+<p>test函数使用了分类函数，获取图片，处理图片，得到特征向量并且用knn类的find_nearest函数对其分类。下面
+
+</p>
+<p>这个函数我们用来分类输入的用户图片：
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div><div class="line-number">18</div><div class="line-number">19</div><div class="line-number">20</div><div class="line-number">21</div><div class="line-number">22</div><div class="line-number">23</div><div class="line-number">24</div><div class="line-number">25</div><div class="line-number">26</div><div class="line-number">27</div><div class="line-number">28</div><div class="line-number">29</div><div class="line-number">30</div><div class="line-number">31</div><div class="line-number">32</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="keyword">float</span> basicOCR::classify(IplImage* img, <span class="keyword">int</span> showResult)</div><div class="line">{</div><div class="line">IplImage prs_image;</div><div class="line">CvMat data;</div><div class="line">CvMat* nearest=cvCreateMat(<span class="number">1</span>,K,CV_32FC1);</div><div class="line"><span class="keyword">float</span> result;</div><div class="line"><span class="comment">//process file</span></div><div class="line">prs_image = preprocessing(img, size, size);</div><br><div class="line"><span class="comment">//Set data</span></div><div class="line">IplImage* img32 = cvCreateImage( cvSize( size, size ), IPL_DEPTH_32F, <span class="number">1</span> );</div><div class="line">cvConvertScale(&amp;prs_image, img32, <span class="number">0.0039215</span>, <span class="number">0</span>);</div><div class="line">cvGetSubRect(img32, &amp;data, cvRect(<span class="number">0</span>,<span class="number">0</span>, size,size));</div><div class="line">CvMat row_header, *row1;</div><div class="line">row1 = cvReshape( &amp;data, &amp;row_header, <span class="number">0</span>, <span class="number">1</span> );</div><br><div class="line">result=knn-&gt;find_nearest(row1,K,<span class="number">0</span>,<span class="number">0</span>,nearest,<span class="number">0</span>);</div><br><div class="line"><span class="keyword">int</span> accuracy=<span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;K;i++){</div><div class="line"><span class="keyword">if</span>( nearest-&gt;data.fl[i] == result)</div><div class="line">accuracy++;</div><div class="line">}</div><div class="line"><span class="keyword">float</span> pre=<span class="number">100</span>*((<span class="keyword">float</span>)accuracy/(<span class="keyword">float</span>)K);</div><div class="line"><span class="keyword">if</span>(showResult==<span class="number">1</span>){</div><div class="line">printf(<span class="string">"|\t%.0f\t| \t%.2f%%&amp;nbsp; \t| \t%d of %d \t| \n"</span>,result,pre,accuracy,K);</div><div class="line">printf(<span class="string">" ---------------------------------------------------------------\n"</span>);</div><div class="line">}</div><br><div class="line"><span class="keyword">return</span> result;</div><br><div class="line">}</div></code></pre></td></tr></table></figure>
+
+<p>所有的工作或者训练和测试都在basicOCR类里，当我们创建一个basicOCR的实例时只需要调用classify函数来分类我们输入的图片。然后我们使用我们之前在其它教程里创建的简单的Painter来给用户交互绘出一张图片并且分类它。
+
+</p>
+<hr>
+<p>注：
+
+</p>
+<p>1.knn,即K最邻近结点算法（k-Nearest Neighbor algorithm）,最简单的机器学习算法之一，简单说就是在特征空间里找到周围最近的k个样本，如果这k个样本中的大多数属于某个类，则该样本也属于这个类。
+
+</p>
+<p>2.painter,GUI编程中的绘图接口，也就是完成绘制和显示图像的功能。
+
+</p>
+<p><a href="https://github.com/damiles/basicOCR">Github源码</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/OpenCV/">OpenCV</a>, <a href="/tags/OCR/">OCR</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sun11.me">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+  
+    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+  
+    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+  
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+  
+    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+  
+    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+  
+    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+  
+    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+  
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+  
+    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 E. Sununs
+  
+</div>
+<div class="alignright" style="margin-right:300px">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC BY-NC-SA</a>.
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = '11zhexo';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

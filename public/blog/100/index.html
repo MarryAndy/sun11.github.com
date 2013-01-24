@@ -1,0 +1,318 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>TL-WR703n挂载USB摄像头 | 11zHexo</title>
+  <meta name="author" content="E. Sununs">
+  
+  <meta name="description" content="首先刷OpenWrt,我用的是这个帖子里的这个版本，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。
+
+
+我是按这个帖子来操作的，把u盘分成两个区，一个ext3格式（据说比较稳定？），一个ext4格式。按照帖子成功挂载以后点开luci的System里的Software，发现空间已经是u盘那个指定分区的空间了，啊哈，想装啥就装啥。
+
+
+接下来就是摄像头了。由于路由器只有一个usb口，所以得用hub。（废话）
+
+
+我看到了这个帖子,软件源是不用改的，所以直接：
+
+
+opkg update
+
+
+opkg install usbutils
+
+
+由于我的摄像头是杂牌的，芯片貌似不是301的，所以这跟多数人用的301方案不同。
+
+
+首先在win7的设备管理器查到了我的摄像头的设备信息，搜到了型号。发现和帖子里的芯片型号一样，大喜呀。
+
+
+然后我装了kmod-video-gspca-zc3xx（可能不用装的）和kmod-video-uvc。
+
+
+结果竟然很快成功了。">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  <meta property="og:title" content="TL-WR703n挂载USB摄像头"/>
+  <meta property="og:site_name" content="11zHexo"/>
+
+  <link rel="alternate" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31707826-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">11zHexo</a></h1>
+  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-06T16:00:00.000Z"><a href="/blog/100/">Jan 7 2012</a></time>
+      
+      
+  
+    <h1 class="title">TL-WR703n挂载USB摄像头</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>首先刷OpenWrt,我用的是<a title="http://www.right.com.cn/forum/thread-71042-1-2.html" href="http://www.right.com.cn/forum/thread-71042-1-2.html" target="_blank">这个帖子</a>里的<a title="http://ishare.iask.sina.com.cn/f/22200677.html" href="http://ishare.iask.sina.com.cn/f/22200677.html" target="_blank">这个版本</a>，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。
+
+</p>
+<p>我是按<a title="http://www.unxmail.com/read.php?187" href="http://www.unxmail.com/read.php?187" target="_blank">这个帖子</a>来操作的，把u盘分成两个区，一个ext3格式（据说比较稳定？），一个ext4格式。按照帖子成功挂载以后点开luci的System里的Software，发现空间已经是u盘那个指定分区的空间了，啊哈，想装啥就装啥。
+
+</p>
+<p>接下来就是摄像头了。由于路由器只有一个usb口，所以得用hub。（废话）
+
+</p>
+<p>我看到了<a title="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" href="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" target="_blank">这个帖子</a>,软件源是不用改的，所以直接：
+
+</p>
+<p>opkg update
+
+</p>
+<p>opkg install usbutils
+
+</p>
+<p>由于我的摄像头是杂牌的，芯片貌似不是301的，所以这跟多数人用的301方案不同。
+
+</p>
+<p>首先在win7的设备管理器查到了我的摄像头的设备信息，搜到了型号。发现和帖子里的芯片型号一样，大喜呀。
+
+</p>
+<p>然后我装了kmod-video-gspca-zc3xx（可能不用装的）和kmod-video-uvc。
+
+</p>
+<p>结果竟然很快成功了。
+
+</p>
+<span id="more"></span>
+
+<p>接下来是：
+
+</p>
+<p>opkg install mjpg-streamer
+
+</p>
+<p>是&#39;-&#39;不是&#39;_&#39;，和帖子里的不一样，因为跟那个帖子的软件源不同。
+
+</p>
+<p>然后仍然按那个帖子把网页文件上传上去，输入命令：
+
+</p>
+<p>mjpg_streamer -i &quot;input_uvc.so -y -d /dev/video0&quot; -o &quot;output_http.so -p 8080 -w /www/camwww&quot;
+
+</p>
+<p>就可以在<a href="http://192.168.0.1:8080/?action=stream看到视频了。">http://192.168.0.1:8080/?action=stream看到视频了。</a>
+
+</p>
+<p>我把画质调到了30,显示速度还可以。
+
+</p>
+<p><a href="http://11zpic-11zpic.stor.sinaapp.com/original/54539106a4e5c87797caf47aa5676976.png"><img class="alignnone size-full wp-image-101" title="Screenshot" src="http://11zpic-11zpic.stor.sinaapp.com/original/54539106a4e5c87797caf47aa5676976.png" alt="" width="584" height="328" /></a>
+
+</p>
+<p>关于输入配置参数：
+
+</p>
+<p>-y是关键，默认启动是mjpeg格式，这个就报错。改成YUV格式
+
+</p>
+<p>-d指定设备
+
+</p>
+<p>-f 制定帧数，默认30帧
+
+</p>
+<p>-r指定视频大小，如320×240
+
+</p>
+<p>-q指定画质，默认80
+
+</p>
+<p>关于输出参数：
+
+</p>
+<p>-p 指定端口，这里是8080
+
+</p>
+<p>-w 指定网页目录，这里我们设置的是/www/camwww目录
+
+</p>
+<p>-c设置通过密码访问
+
+</p>
+<p>（注：眼下正值考试之际，无力详细写此教程，关于建立两个wifi，一个连接可以上网的wifi热点，一个作为接入点的部分没写，就忽略了吧。）</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/OpenWrt/">OpenWrt</a>, <a href="/tags/Linux/">Linux</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sun11.me">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+  
+    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+  
+    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+  
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+  
+    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+  
+    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+  
+    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+  
+    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+  
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+  
+    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 E. Sununs
+  
+</div>
+<div class="alignright" style="margin-right:300px">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC BY-NC-SA</a>.
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = '11zhexo';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

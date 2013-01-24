@@ -1,0 +1,390 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>WTFRobot Rosmin | 11zHexo</title>
+  <meta name="author" content="E. Sununs">
+  
+  <meta name="description" content="2012年8月，W、T、F三人陆续回到学校。
+
+
+因为共同的机器人之梦，这个团队在今年5月份组建。
+
+
+首先W同学有了一个想法，觉得可以把ARM11放在小车上，做一些图像处理的工作，然后再连上Arduino控制器控制小车运动，另外用一台Android手机来操控。
+
+
+开始考虑用纯Linux加上Qt作为图形界面，用上OpenCV来做。事实上W同学之前因为做过类似的东西对这个已经比较熟悉了。只是由于摄像头驱动以及USB接口只支持1.1的原因，采集摄像头图像的速度非常慢，慢到无法忍受。
+
+
+ 但是经过多次尝试，发现一款USB摄像头在ARM板厂商的测试程序当中速度很快，效果很理想，问题是厂商并没有开源这个摄像头测试程序的代码，如果要自己做驱动的话就不是一时半会能搞定的了。于是W同学又尝试了把板子刷上Android操作系统，由于有API可以调用，尽管这个程序闭源仍然可以使用。
+
+
+于是W同学又从C/C++版本的OpenCV转到Android版本的OpenCV，在Android测试了一下自带的示例程序，发现会花屏。尝试了很多方法都未能解决。后来ARM板的损坏也导致不得不思考新的方案。
+
+
+于是就到了8月份。
+
+
+F同学由于要做Android客户端程序学习了Android编程。于是想到直接用Android手机代替ARM11开发板，这样会省去很多麻烦。而在这时，Android手机之间的单向socket通信已经基本完成，在解决了一些小问题以后工作很稳定，速度也很快。
+
+
+很快，由于F同学曾经有做小车的经验，以及Arduino编程的经验，由Arduino控制的小车耗不费力地就跑了起来。
+接下来遇到的第一个难题是Arduino与Android的通信。开始买Arduino的时候没有考虑这个问题，但现在需要与Android手机通信，主要有两个办法，蓝牙和USB，我们觉得蓝牙这个东西开关比较麻烦，也可能不够稳定，于是决定直接用USB Accessory，该特性由Android 2.3.4（平板是3.1）以上支持。开始看到很多论坛的帖子说华为中兴的手机不支持，真心捏了一把汗，还好后来证明三个人的手机都是可用的。
+
+
+要解决这个问题，F同学查找了很多资料，最终终于完成了Android手机（客户端）传递信息到另一台Android手机（服务器），再由这台服务器传递信息到Arduino控制小车运动。反应很灵敏，效果很不错，非常好的一个玩具遥控车。
+
+
+这个时候，bug只是偶尔出现，解决了以后基本就很完美了，工作都非常稳定。
+
+
+可是一切才刚刚开始。
+
+
+9月份，W研究了众多可用于Android平台上的计算机视觉库，包括OpenCV，SimpleCV，JavaCV以后，最终发现还是OpenCV比较适合，但是由于JNI接口使用觉得过于复杂，没有深入研究下去。于是利用Android上的OpenCV实现了追踪有明显颜色特征的物体（ColorBlob Track）并且绘制出其中心坐标。
+
+
+在T同学完成数模一段时间之后，小车的Arduino部分主要转给他负责。买好了舵机，却发现转起来吱吱地响。让舵机云台根据前面所说的图像处理得到的点的位置跟踪目标，经过一个下午调整终于调好了，可舵机已经坏得差不多了，声音很吓人。后来拆开发现里面的齿轮是塑料的！顿时觉得被坑了，180多买来的二自由度舵机云台居然如此劣质！淘宝立刻给差评！后来买了两个20多块的MG995,质量都很好一直用到现在。
+
+
+当然这还远远不是结束。接下来我们陆续实现了：
+
+
+
+TTS
+
+小范围英文离线语音识别
+
+Socket双向通信
+
+各种代码的分离和整合
+
+
+F同学开始研究利用Android服务器上的陀螺仪计算角度和客户端的地图绘制。
+
+
+借了一个平板过来。。。">
+  
+  
+  <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+
+  <meta property="og:title" content="WTFRobot Rosmin"/>
+  <meta property="og:site_name" content="11zHexo"/>
+
+  <link rel="alternate" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31707826-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">11zHexo</a></h1>
+  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-12-15T03:27:35.000Z"><a href="/blog/WTFRobot-Rosmin/">Dec 15 2012</a></time>
+      
+      
+  
+    <h1 class="title">WTFRobot Rosmin</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <embed src="http://player.youku.com/player.php/sid/XNDg2OTMzNDEy/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+
+<p>2012年8月，W、T、F三人陆续回到学校。
+
+</p>
+<p>因为共同的机器人之梦，这个团队在今年5月份组建。
+
+</p>
+<p>首先W同学有了一个想法，觉得可以把ARM11放在小车上，做一些图像处理的工作，然后再连上Arduino控制器控制小车运动，另外用一台Android手机来操控。
+
+</p>
+<p>开始考虑用纯Linux加上Qt作为图形界面，用上OpenCV来做。事实上W同学之前因为做过类似的东西对这个已经比较熟悉了。只是由于摄像头驱动以及USB接口只支持1.1的原因，采集摄像头图像的速度非常慢，慢到无法忍受。
+
+</p>
+<p> 但是经过多次尝试，发现一款USB摄像头在ARM板厂商的测试程序当中速度很快，效果很理想，问题是厂商并没有开源这个摄像头测试程序的代码，如果要自己做驱动的话就不是一时半会能搞定的了。于是W同学又尝试了把板子刷上Android操作系统，由于有API可以调用，尽管这个程序闭源仍然可以使用。
+
+</p>
+<p>于是W同学又从C/C++版本的OpenCV转到Android版本的OpenCV，在Android测试了一下自带的示例程序，发现会花屏。尝试了很多方法都未能解决。后来ARM板的损坏也导致不得不思考新的方案。
+
+</p>
+<p>于是就到了8月份。
+
+</p>
+<p>F同学由于要做Android客户端程序学习了Android编程。于是想到直接用Android手机代替ARM11开发板，这样会省去很多麻烦。而在这时，Android手机之间的单向socket通信已经基本完成，在解决了一些小问题以后工作很稳定，速度也很快。
+
+</p>
+<p>很快，由于F同学曾经有做小车的经验，以及Arduino编程的经验，由Arduino控制的小车耗不费力地就跑了起来。
+接下来遇到的第一个难题是Arduino与Android的通信。开始买Arduino的时候没有考虑这个问题，但现在需要与Android手机通信，主要有两个办法，蓝牙和USB，我们觉得蓝牙这个东西开关比较麻烦，也可能不够稳定，于是决定直接用USB Accessory，该特性由Android 2.3.4（平板是3.1）以上支持。开始看到很多论坛的帖子说华为中兴的手机不支持，真心捏了一把汗，还好后来证明三个人的手机都是可用的。
+
+</p>
+<p>要解决这个问题，F同学查找了很多资料，最终终于完成了Android手机（客户端）传递信息到另一台Android手机（服务器），再由这台服务器传递信息到Arduino控制小车运动。反应很灵敏，效果很不错，非常好的一个玩具遥控车。
+
+</p>
+<p>这个时候，bug只是偶尔出现，解决了以后基本就很完美了，工作都非常稳定。
+
+</p>
+<p>可是一切才刚刚开始。
+
+</p>
+<p>9月份，W研究了众多可用于Android平台上的计算机视觉库，包括OpenCV，SimpleCV，JavaCV以后，最终发现还是OpenCV比较适合，但是由于JNI接口使用觉得过于复杂，没有深入研究下去。于是利用Android上的OpenCV实现了追踪有明显颜色特征的物体（ColorBlob Track）并且绘制出其中心坐标。
+
+</p>
+<p>在T同学完成数模一段时间之后，小车的Arduino部分主要转给他负责。买好了舵机，却发现转起来吱吱地响。让舵机云台根据前面所说的图像处理得到的点的位置跟踪目标，经过一个下午调整终于调好了，可舵机已经坏得差不多了，声音很吓人。后来拆开发现里面的齿轮是塑料的！顿时觉得被坑了，180多买来的二自由度舵机云台居然如此劣质！淘宝立刻给差评！后来买了两个20多块的MG995,质量都很好一直用到现在。
+
+</p>
+<p>当然这还远远不是结束。接下来我们陆续实现了：
+
+</p>
+<ol>
+<li><p>TTS</p>
+</li>
+<li><p>小范围英文离线语音识别</p>
+</li>
+<li><p>Socket双向通信</p>
+</li>
+<li><p>各种代码的分离和整合</p>
+</li>
+</ol>
+<p>F同学开始研究利用Android服务器上的陀螺仪计算角度和客户端的地图绘制。
+
+</p>
+<p>借了一个平板过来。。。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/ed79edf141de1d98a5f212396be5c3a8.jpg" alt="">
+
+</p>
+<span id="more"></span>
+
+<p>然后，设计利用超声波测距检测拐角和使用QR码作为人工路标的导航机制：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/b567f86412ac9a51823976c67d52b27c.jpg" alt="">
+
+</p>
+<p>此图好象是刚刚调通超声波模块，但却不知这是暴风雨前的宁静。
+
+</p>
+<p>本以为超声波传感器+Arduino就一切OK了的，可后来发现事情远没有这么简单，因为Arduino Romeo的资源不足，开始认为是定时器不足导致超声波测距和USB Accessory无法使用。可后来尝试了各种方法，这个问题变得越纠结。
+
+</p>
+<p>我们于是增加了一个MSP430作为辅助板来控制超声波传感器。调了很多天之后发现还是不可行，最终发现I/O口不足。
+
+</p>
+<p>于是我们换用Google ADK。
+
+</p>
+<p>可谁知道我们第一次买来的竟然是假货，用了不到24个小时就坏了，后来淘宝退货，立刻买下了另一个原装进口的。这一耽误又是好多天，这个时候星火杯如果按照原计划已经快开始了。
+
+</p>
+<p>真假ADK：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/88c8896e89dd13d2092a2cb18ea42480.jpg" alt="">
+
+</p>
+<p>在光棍节那天，我们终于完成了超声波和USB Accessory的共同测试！
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/352d794c5728cbe9748f0ce4431ef49f.jpg" alt="">
+
+</p>
+<p>经历了设备大换血之后，下面的一段时间，我们一直在做小车的导航。每天至少几十次的测试。小车跑过了好几百次了吧。还好星火杯也延迟又延迟，否则我们无法有很多时间来改进。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/bb3a855a31c8227a9e786ee8551008cc.jpg" alt="">
+
+</p>
+<p>在前几天，Arduino与Android双向通信问题才完美解决，舵机转动影响陀螺仪的角度问题也基本解决。但在地图绘制方面还有一些不稳定。追踪小球上根据偏离中心距离调整速度，效果好了不少。
+
+</p>
+<p>最后来一张Rosmin的笑脸：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/eb075a854a9d6b082b6debca11f4bfcb.jpg" alt="">
+
+</p>
+<p>哈哈，还有牺牲了一个手机壳有时还不得不举着舵机讲电话的T同学。。。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/5084405ab64001d9edb1a2a3e91b192b.jpg" alt="">
+
+</p>
+<p>一切还只是刚刚开始
+
+</p>
+<p>The Next is Rossum.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/Android/">Android</a>, <a href="/tags/Robot/">Robot</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+<div class="search">
+  <form action="http://google.com/search" method="get" accept-charset="utf-8">
+    <input type="text" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sun11.me">
+  </form>
+</div>
+
+
+
+
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+  
+    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+  
+    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+  
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+  
+    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+  
+    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+  
+    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+  
+    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+  
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+  
+    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 E. Sununs
+  
+</div>
+<div class="alignright" style="margin-right:300px">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC BY-NC-SA</a>.
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = '11zhexo';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
