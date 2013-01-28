@@ -63,6 +63,62 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-01-28T15:11:32.000Z"><a href="/blog/picuntu-installation/">Jan 28 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/picuntu-installation/">ROS on ARM--Picuntu 安装配置</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>上篇提到一个叫做Picuntu的项目，目的是为RK3066芯片的设备移植传统Linux，目前基本的使用已经没有什么问题，UG802/MK808（不含MK808B）已经可以使用内置的无线网卡，而其它型号，比如MK802 IIIS或者UG007，由于使用的是MTK的芯片，没有办法找到驱动（话说国内厂商有几个遵守了GPL协议的）所以只能外接USB网卡。另外是VPU和Mali 400，<a href="http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/page__st__380">slatedroid</a>论坛里有人正在折腾。
+
+</p>
+<p>MK80X开机后一般有两种模式，正常模式和恢复(recovery)模式。所以我们如果需要Android/Linux双启动，就只需要在recovery里刷入linux的kernel，Android可以正常运行互不影响。当然你也可以直接刷入原来的kernel空间覆盖掉Android，但是这种方式并不推荐。官方的recovery似乎功能不多，只有作为u盘的功能。Bob&#39;s Finless ROM是一个修改的ROM，包含了替换recovery等img文件的工具。如果你的设备是MK808/MK808B或者UG802，就可以试试对应的Finless ROM，暂时没有针对其它型号的版本（公元2013年1月28日）。如果其它型号刷入，由于硬件不是都相同，可能会有一些问题。
+
+</p>
+<p>需要的工具有：
+
+</p>
+<ul>
+<li>显示器<br>有HDMI接口直接插上就可以了，如果是VGA或者DVI接口的可以使用转接线，淘宝上有HDMI转VGA带3.5mm音频输出的转接线</li>
+<li>RKAndroidTool v1.35<br>在<a href="http://www.armtvtech.com/armtvtechforum/viewtopic.php?f=12&amp;t=775">Bob&#39;s Finless ROM</a>的包里</li>
+<li>一个大于4G的TF卡或U盘或移动硬盘</li>
+<li>Linux和Windows<br>Windows用于刷入recovery，Linux用于格式化上面所说的TF卡或U盘，写入rootfs。这个要求似乎有点苛刻，但是你可以寻找Windows下用于Ext4文件系统格式化的工具，或者寻找Linux的刷入recovery的工具，但这可能更加麻烦。</li>
+<li>USB网卡<br>如果你的设备不是UG802/MK808</li>
+<li><a href="http://rk3066-linux.googlecode.com/files/ug802recovkernel.img">Kernel镜像</a></li>
+<li><a href="http://download.g8.net/picuntu/picuntu-linuxroot-0.9-RC2.2.tgz">Root file system(Picuntu-linuxroot-0.9-RC2.2.tgz)</a><br>你也可以使用一个<a href="http://download.g8.net/picuntu/pre-picuntu-0.9-RC2.2.tgz">安装脚本</a>来更方便地完成安装过程，但这里介绍最直接（或者麻烦？）的方式</li>
+</ul>
+<p>都准备好了的话，开刷吧！
+
+</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/blog/picuntu-installation/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-01-24T09:27:26.000Z"><a href="/blog/linux-for-rk3066-mini-pc-introduction/">Jan 24 2013</a></time>
       
       
@@ -225,17 +281,17 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/ARM/">ARM</a><small>2</small></li>
+    <li><a href="/tags/ARM/">ARM</a><small>3</small></li>
   
-    <li><a href="/tags/Android/">Android</a><small>2</small></li>
+    <li><a href="/tags/Android/">Android</a><small>3</small></li>
   
     <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
   
-    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>2</small></li>
+    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>3</small></li>
   
     <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
   
-    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+    <li><a href="/tags/Linux/">Linux</a><small>3</small></li>
   
     <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
   
@@ -245,9 +301,9 @@
   
     <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
   
-    <li><a href="/tags/Robot/">Robot</a><small>2</small></li>
+    <li><a href="/tags/Robot/">Robot</a><small>3</small></li>
   
-    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>2</small></li>
+    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>3</small></li>
   
     <li><a href="/tags/Web/">Web</a><small>1</small></li>
   

@@ -4,13 +4,114 @@
   <subtitle><![CDATA[本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.]]></subtitle>
   <link href="http://sun11.me/atom.xml" rel="self"/>
   <link href="http://sun11.me"/>
-  <updated>2013-01-24T10:29:52.750Z</updated>
+  <updated>2013-01-28T15:46:40.384Z</updated>
   <id>http://sun11.me/</id>
   <author>
     <name><![CDATA[E. Sununs]]></name>
     <email><![CDATA[sununs11@gmail.com]]></email>
   </author>
   <generator uri="http://zespia.tw/hexo">Hexo</generator>
+  <entry>
+    <title type="html"><![CDATA[ROS on ARM--Picuntu 安装配置]]></title>
+    <link href="http://sun11.me/blog/picuntu-installation/"/>
+    <id>http://sun11.me/blog/picuntu-installation/</id>
+    <published>2013-01-28T15:11:32.000Z</published>
+    <updated>2013-01-28T15:46:12.000Z</updated>
+    <content type="html"><![CDATA[<p>上篇提到一个叫做Picuntu的项目，目的是为RK3066芯片的设备移植传统Linux，目前基本的使用已经没有什么问题，UG802/MK808（不含MK808B）已经可以使用内置的无线网卡，而其它型号，比如MK802 IIIS或者UG007，由于使用的是MTK的芯片，没有办法找到驱动（话说国内厂商有几个遵守了GPL协议的）所以只能外接USB网卡。另外是VPU和Mali 400，<a href="http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/page__st__380">slatedroid</a>论坛里有人正在折腾。
+
+</p>
+<p>MK80X开机后一般有两种模式，正常模式和恢复(recovery)模式。所以我们如果需要Android/Linux双启动，就只需要在recovery里刷入linux的kernel，Android可以正常运行互不影响。当然你也可以直接刷入原来的kernel空间覆盖掉Android，但是这种方式并不推荐。官方的recovery似乎功能不多，只有作为u盘的功能。Bob&#39;s Finless ROM是一个修改的ROM，包含了替换recovery等img文件的工具。如果你的设备是MK808/MK808B或者UG802，就可以试试对应的Finless ROM，暂时没有针对其它型号的版本（公元2013年1月28日）。如果其它型号刷入，由于硬件不是都相同，可能会有一些问题。
+
+</p>
+<p>需要的工具有：
+
+</p>
+<ul>
+<li>显示器<br>有HDMI接口直接插上就可以了，如果是VGA或者DVI接口的可以使用转接线，淘宝上有HDMI转VGA带3.5mm音频输出的转接线</li>
+<li>RKAndroidTool v1.35<br>在<a href="http://www.armtvtech.com/armtvtechforum/viewtopic.php?f=12&amp;t=775">Bob&#39;s Finless ROM</a>的包里</li>
+<li>一个大于4G的TF卡或U盘或移动硬盘</li>
+<li>Linux和Windows<br>Windows用于刷入recovery，Linux用于格式化上面所说的TF卡或U盘，写入rootfs。这个要求似乎有点苛刻，但是你可以寻找Windows下用于Ext4文件系统格式化的工具，或者寻找Linux的刷入recovery的工具，但这可能更加麻烦。</li>
+<li>USB网卡<br>如果你的设备不是UG802/MK808</li>
+<li><a href="http://rk3066-linux.googlecode.com/files/ug802recovkernel.img">Kernel镜像</a></li>
+<li><a href="http://download.g8.net/picuntu/picuntu-linuxroot-0.9-RC2.2.tgz">Root file system(Picuntu-linuxroot-0.9-RC2.2.tgz)</a><br>你也可以使用一个<a href="http://download.g8.net/picuntu/pre-picuntu-0.9-RC2.2.tgz">安装脚本</a>来更方便地完成安装过程，但这里介绍最直接（或者麻烦？）的方式</li>
+</ul>
+<p>都准备好了的话，开刷吧！
+
+</p>
+<span id="more"></span>
+
+<h3><strong>1. 刷入kernel镜像</strong></h3>
+<ul>
+<li><p>把你的设备通过USB线与运行Windows的PC相连，注意不能用只用于供电的Micro USB口连接。</p>
+</li>
+<li><p>在Android中安装“终端模拟器”，打开终端模拟器输入<code>su</code>和<code>reboot bootloader</code>，设备会变成黑屏，Windows会检测到RK30的硬件。然后安装驱动，当然如果之前安装过就不需要。</p>
+</li>
+<li><p>打开RKAndroidTool,这时应该显示<code>Found RKAndroid Mass Storage Usb</code>，而不是<code>No found RKAndroid rock usb</code>，否则就是你的驱动没有安装好或者设备没有进入bootloader。</p>
+</li>
+<li><p><code>只</code>选择在recovery空间刷入recovery镜像，几秒之后刷好，立刻自动重启。</p>
+</li>
+<li><p>如果你重启以后进入recovery发现一只躺着的带着红色三角形Android，那么可能是你的recovery没有刷对。 //可能的原因是<code>recovery-from-boot.p</code>这个万恶的文件存在于你的Android系统根目录下，自动恢复原recovery，把它删掉或者重命名</p>
+</li>
+</ul>
+<p>刷好以后你将看到Linux的控制台滚屏，然后就可以进行下一步了
+
+</p>
+<h3><strong>2. 创建rootfs</strong></h3>
+<p>可以使用4GB以上容量的TF卡、U盘甚至移动硬盘来完成这步。
+
+</p>
+<ul>
+<li><p>在Linux上打开GParted，在存储设备上创建一个至少4GB的Ext4分区，卷标为<code>linuxroot</code>  //对，kernel就是根据这个卷标来找文件系统的</p>
+</li>
+<li><p>切换到root用户，解压tar压缩包，使用<code>copy -a</code>拷贝解压的所有文件和文件夹到linuxroot分区。 //注意最好不要直接解压到linuxroot分区，以我的失败经验做反例，好几次解压以后用不了就是一些文件没有完整复制过去</p>
+</li>
+</ul>
+<p>如果进不了登录界面，可能就是一些文件没有完整复制过去，或者你没有切换到root用户，又或者是其它什么原因？比如我。
+
+</p>
+<h3><strong>3. 配置</strong></h3>
+<p>首先我是没有成功用Picuntu直接进到图形登录界面的，不知道是哪里出的问题，但是用Ctrl+Alt+F2打开的控制台是可用的，用户名<code>ubuntu</code>，密码<code>ubuntu</code>，root用户密码是<code>12qwaszx</code>，登录以后输入startxfce4可以正常进入图形界面，其它一切功能正常。
+
+</p>
+<p><em>如果</em> 你的显示器分辨率不够不支持1080p，那么最好用720p，在<code>/etc/rc.local</code>里取消
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="preprocessor"># fbset 1280x720-60-32 -a	 </span></div><div class="line"><span class="preprocessor"># fbset -rgba 8/16,8/8,8/0,8/24 -a</span></div></code></pre></td></tr></table></figure>
+
+<p>这两行前面的&#39;#&#39;注释即可。
+
+</p>
+<p><em>如果</em> 你使用的是USB无线网卡，那么你的设备名应该是wlan1,首先<code>sudo ifconfig wlan1 up</code>,然后<code>ifconfig</code>应该能看到你的无线网卡，默认的<code>/etc/network/interfaces</code>是这样的：
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div></code></pre></td><td class="code"><pre><code><div class="line"> # interfaces(<span class="number">5</span>) file used by ifup(<span class="number">8</span>) and ifdown(<span class="number">8</span>)</div><div class="line"><span class="title">auto</span> lo </div><div class="line"><span class="title">iface</span> lo inet loopback</div><br><br><br><br><br><br><div class="line"><span class="title">auto</span> usbnet0</div><div class="line"><span class="title">iface</span> usbnet0 inet dhcp</div><br><br><div class="line"><span class="title">auto</span> wlan0</div><div class="line"><span class="title">iface</span> wlan0 inet dhcp</div><div class="line">      wpa-ssid <span class="type">Alok_Yamuna</span></div><div class="line">      wpa-psk abcdefgh</div></code></pre></td></tr></table></figure>
+
+<p>你需要改成
+
+</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div><div class="line-number">11</div><div class="line-number">12</div><div class="line-number">13</div><div class="line-number">14</div><div class="line-number">15</div><div class="line-number">16</div><div class="line-number">17</div></code></pre></td><td class="code"><pre><code><div class="line"> # interfaces(<span class="number">5</span>) file used by ifup(<span class="number">8</span>) and ifdown(<span class="number">8</span>)</div><div class="line"><span class="title">auto</span> lo </div><div class="line"><span class="title">iface</span> lo inet loopback</div><br><br><br><br><br><br><div class="line"><span class="title">auto</span> usbnet0</div><div class="line"><span class="title">iface</span> usbnet0 inet dhcp</div><br><br><div class="line"><span class="title">auto</span> wlan1</div><div class="line"><span class="title">iface</span> wlan1 inet dhcp</div><div class="line">      wpa-ssid your-ssid</div><div class="line">      wpa-psk your-passwd</div></code></pre></td></tr></table></figure>
+
+<p>连上网络之后一切都好办了，各种apt-get。。。
+
+</p>
+<p><em>如果</em> 你的机器刷坏了，我。。。不负责。。。
+
+</p>
+<h3>参考资料</h3>
+<ol>
+<li><a href="https://code.google.com/p/rk3066-linux/">https://code.google.com/p/rk3066-linux/</a></li>
+<li><a href="http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/">http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/</a></li>
+<li><a href="http://www.slatedroid.com/topic/46881-picuntu-09-rc-22-bug-fix-version-arrives/">http://www.slatedroid.com/topic/46881-picuntu-09-rc-22-bug-fix-version-arrives/</a></li>
+<li><a href="http://ubuntu.g8.net/">http://ubuntu.g8.net/</a></li>
+</ol>
+]]></content>
+    <category scheme="http://sun11.me/tags/Linux/" term="Linux"/>
+    <category scheme="http://sun11.me/tags/Android/" term="Android"/>
+    <category scheme="http://sun11.me/tags/Embedded-Linux/" term="Embedded Linux"/>
+    <category scheme="http://sun11.me/tags/ARM/" term="ARM"/>
+    <category scheme="http://sun11.me/tags/Robot/" term="Robot"/>
+    <category scheme="http://sun11.me/tags/Ubuntu/" term="Ubuntu"/>
+  </entry>
   <entry>
     <title type="html"><![CDATA[ROS on ARM--Linux For RK3066 Mini PC简介]]></title>
     <link href="http://sun11.me/blog/linux-for-rk3066-mini-pc-introduction/"/>
@@ -584,7 +685,7 @@
     <link href="http://sun11.me/blog/63/"/>
     <id>http://sun11.me/blog/63/</id>
     <published>2011-09-28T16:00:00.000Z</published>
-    <updated>2012-12-14T18:08:03.000Z</updated>
+    <updated>2013-01-28T15:07:35.000Z</updated>
     <content type="html"><![CDATA[<p>From: <a href="http://www.shervinemami.co.cc/faceRecognition.html/">http://www.shervinemami.co.cc/faceRecognition.html/</a>
 
 </p>
