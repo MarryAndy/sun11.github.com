@@ -33,21 +33,61 @@
 
 <body>
   <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">11zHexo</a></h1>
-  <h2><a href="/">本站作品采用知识共享署名-非商业性使用-相同方式共享 3.0 通用许可协议.</a></h2>
+  <!--<h1><a href="/">11zHexo</a></h1>-->
+
+  <div id="contenedor">
+  <ul class="cube">
+    <li class="cara"></li>
+    <li class="cara"></li>
+    <li class="cara"></li>
+    <li class="cara"></li>
+    <li class="cara"></li>
+	  <li class="cara">
+      <iframe src="/imgs/11zhexo.svg" width="100px" height="100px">
+      </iframe>
+    </li>
+  </ul>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+
+		var cube = $('.cube'),
+				offset = $('#contenedor').offset(),
+				offsetleft = (offset.left + 100),
+				offsettop = (offset.top + 100);
+
+		cube.on({
+			mousemove: function(e) {
+				$(this).css('transform','rotateX(' + (e.pageY - offsettop) + 'deg) rotateY(' + (e.pageX - offsetleft) + 'deg)');
+				$(this).addClass('noanimar').removeClass('animar');
+			},
+			mouseout: function() {
+				$(this).css('transform','rotateX(0deg) rotateY(0deg)');
+				$(this).addClass('animar').removeClass('noanimar');
+			}
+		});
+
+		//console.log('x=' + offsetleft + ', y=' + offsettop);
+});
+</script>
+<script src="/js/prefixfree.min.js"></script>
+
 </div>
 <nav id="main-nav" class="alignright">
   <ul>
     
-      <li><a href="/">Home</a></li>
+      <a href="/"><li>Home</li></a>
     
-      <li><a href="/archives">Archives</a></li>
+      <a href="/archives"><li>Archives</li></a>
     
-      <li><a href="/atom.xml">RSS</a></li>
+      <a href="/atom.xml"><li>RSS</li></a>
     
   </ul>
   <div class="clearfix"></div>
 </nav>
+
+
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
@@ -63,7 +103,7 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2012-02-20T16:00:00.000Z"><a href="/blog/106/">Feb 21 2012</a></time>
+        <time datetime="2012-02-20T16:00:00.000Z">Feb 21 2012</time>
       
       
   
@@ -113,7 +153,7 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2012-01-06T16:00:00.000Z"><a href="/blog/100/">Jan 7 2012</a></time>
+        <time datetime="2012-01-06T16:00:00.000Z">Jan 7 2012</time>
       
       
   
@@ -159,7 +199,7 @@
     <footer>
       
         
-          <div class="alignleft">
+          <div class="alignleft readmore">
             <a href="/blog/100/#more" class="more-link">Read More</a>
           </div>
         
@@ -178,7 +218,7 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2011-09-28T16:00:00.000Z"><a href="/blog/63/">Sep 29 2011</a></time>
+        <time datetime="2011-09-28T16:00:00.000Z">Sep 29 2011</time>
       
       
   
@@ -235,7 +275,7 @@ OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函�
     <footer>
       
         
-          <div class="alignleft">
+          <div class="alignleft readmore">
             <a href="/blog/63/#more" class="more-link">Read More</a>
           </div>
         
@@ -254,7 +294,7 @@ OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函�
     <header>
       
         <div class="icon"></div>
-        <time datetime="2011-08-20T16:00:00.000Z"><a href="/blog/45/">Aug 21 2011</a></time>
+        <time datetime="2011-08-20T16:00:00.000Z">Aug 21 2011</time>
       
       
   
@@ -322,7 +362,7 @@ OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函�
     <header>
       
         <div class="icon"></div>
-        <time datetime="2011-06-25T16:00:00.000Z"><a href="/blog/7/">Jun 26 2011</a></time>
+        <time datetime="2011-06-25T16:00:00.000Z">Jun 26 2011</time>
       
       
   
@@ -372,31 +412,31 @@ OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函�
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/ARM/">ARM</a><small>3</small></li>
+    <a href="/tags/ARM/"><li>ARM<small>3</small></li></a>
   
-    <li><a href="/tags/Android/">Android</a><small>3</small></li>
+    <a href="/tags/Android/"><li>Android<small>3</small></li></a>
   
-    <li><a href="/tags/Customize/">Customize</a><small>1</small></li>
+    <a href="/tags/Customize/"><li>Customize<small>1</small></li></a>
   
-    <li><a href="/tags/Embedded-Linux/">Embedded Linux</a><small>3</small></li>
+    <a href="/tags/Embedded-Linux/"><li>Embedded Linux<small>3</small></li></a>
   
-    <li><a href="/tags/Face-Recognition/">Face Recognition</a><small>1</small></li>
+    <a href="/tags/Face-Recognition/"><li>Face Recognition<small>1</small></li></a>
   
-    <li><a href="/tags/Linux/">Linux</a><small>3</small></li>
+    <a href="/tags/Linux/"><li>Linux<small>3</small></li></a>
   
-    <li><a href="/tags/OCR/">OCR</a><small>1</small></li>
+    <a href="/tags/OCR/"><li>OCR<small>1</small></li></a>
   
-    <li><a href="/tags/OpenCV/">OpenCV</a><small>3</small></li>
+    <a href="/tags/OpenCV/"><li>OpenCV<small>3</small></li></a>
   
-    <li><a href="/tags/OpenWrt/">OpenWrt</a><small>1</small></li>
+    <a href="/tags/OpenWrt/"><li>OpenWrt<small>1</small></li></a>
   
-    <li><a href="/tags/Qt/">Qt</a><small>1</small></li>
+    <a href="/tags/Qt/"><li>Qt<small>1</small></li></a>
   
-    <li><a href="/tags/Robot/">Robot</a><small>3</small></li>
+    <a href="/tags/Robot/"><li>Robot<small>3</small></li></a>
   
-    <li><a href="/tags/Ubuntu/">Ubuntu</a><small>3</small></li>
+    <a href="/tags/Ubuntu/"><li>Ubuntu<small>3</small></li></a>
   
-    <li><a href="/tags/Web/">Web</a><small>1</small></li>
+    <a href="/tags/Web/"><li>Web<small>1</small></li></a>
   
   </ul>
 </div>
@@ -410,10 +450,11 @@ OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函�
   
   &copy; 2013 E. Sununs
   
+  <br />
+  Powered by <a href="http://zespia.tw/hexo/">Hexo</a>
 </div>
-<div class="alignright" style="margin-right:300px">
-  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
-CC BY-NC-SA</a>.
+<div class="alignright license">
+<img alt="知识共享许可协议" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /> 本站作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">知识共享署名-非商业性使用-相同方式共享 3.0 未本地化版本许可协议</a>进行许可。
 </div>
 <div class="clearfix"></div>
 </footer>

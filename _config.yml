@@ -70,7 +70,7 @@ disqus_shortname: 11zhexo
 # Extensions
 ## Plugins: https://github.com/tommy351/hexo/wiki/Plugins
 ## Themes: https://github.com/tommy351/hexo/wiki/Themes
-theme: ink
+theme: paperbox
 exclude_generator:
 
 # Deployment
