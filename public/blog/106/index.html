@@ -53,7 +53,7 @@
     <li class="cara"></li>
     <li class="cara"></li>
 	  <li class="cara">
-      <iframe src="/imgs/11zhexo.svg" width="100px" height="100px">
+      <iframe src="/imgs/logo.svg" width="100px" height="100px" frameborder="no">
       </iframe>
     </li>
   </ul>
@@ -61,15 +61,14 @@
 
 <script type="text/javascript">
 	$(function(){
-
 		var cube = $('.cube'),
 				offset = $('#contenedor').offset(),
-				offsetleft = (offset.left + 100),
-				offsettop = (offset.top + 100);
+				offsetleft = (offset.left + 50),
+				offsettop = (offset.top + 50);
 
 		cube.on({
 			mousemove: function(e) {
-				$(this).css('transform','rotateX(' + (e.pageY - offsettop) + 'deg) rotateY(' + (e.pageX - offsetleft) + 'deg)');
+				$(this).css('transform','rotateX(' + (e.pageY - offsettop)*0.618 + 'deg) rotateY(' + (e.pageX - offsetleft)*0.618 + 'deg)');
 				$(this).addClass('noanimar').removeClass('animar');
 			},
 			mouseout: function() {
@@ -77,7 +76,6 @@
 				$(this).addClass('animar').removeClass('noanimar');
 			}
 		});
-
 		//console.log('x=' + offsetleft + ', y=' + offsettop);
 });
 </script>

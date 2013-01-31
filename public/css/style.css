@@ -203,11 +203,11 @@ a:hover {
   transform: rotateY(180deg) translateZ(50px);
 }
 #header #contenedor .animar {
-  -webkit-transition: all 3s;
-  -moz-transition: all 3s;
-  -o-transition: all 3s;
-  -ms-transition: all 3s;
-  transition: all 3s;
+  -webkit-transition: all 1.5s;
+  -moz-transition: all 1.5s;
+  -o-transition: all 1.5s;
+  -ms-transition: all 1.5s;
+  transition: all 1.5s;
 }
 #header #contenedor .noanimar {
   -webkit-transition: none;
