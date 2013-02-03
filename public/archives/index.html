@@ -101,6 +101,63 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-02-03T15:08:16.000Z">Feb 3 2013</time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/ros-on-arm--native-compile-ros-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3>1. 开源机器人操作系统ROS(Robot Operating System)简介</h3>
+<p>ROS（Robot Operating System）是一个开源的为机器人软件开发设计的软件框架，在异构计算机集群中提供类似操作系统的功能。它并不是一个计算机的操作系统，而是机器人的操作系统，或者称为元级操作系统（Meta Operating System）。据目前唯一一本比较官方的关于ROS的书《ROS By Example Volume 1》介绍，“The primary goal of ROS (pronounced &quot;Ross&quot;) is to provide a unified and open source
+programming framework for controlling robots in a variety of real world and simulated
+environments.”，ROS的原始目的就是为了在一系列真实和模拟的环境中控制机器人提供一个统一的开源编程框架。为了实现这一目标，ROS架构中有<a href="http://www.ros.org/wiki/ROS/Concepts">三个层次</a>的概念：文件系统级（Filesystem Level），计算图级（Computation Graph Level）和社区级（Community Level）。
+具体可以查阅<a href="http://zh.wikipedia.org/wiki/ROS">维基百科</a>和<a href="http://www.ros.org/wiki/">官网wiki</a>，这里就不过多介绍了。
+
+</p>
+<h3>2. ROS Groovy Galapagos</h3>
+<p><a href="http://www.ros.org/news/2012/12/ros-groovy-galapagos-released.html">ROS Groovy Galapagos</a>是2012年12月31日发布的ROS最新版本，主要支持Ubuntu 11.10、Ubuntu 12.04和Ubuntu 12.10。提到这个版本的原因是它采用了新的构建系统——catkin，准备逐渐取代之前的rosbuild。它解决了rosbuild当中的几个问题，让ROS可以持续发展和扩大规模，相对于rosbuild更符合文件系统层次结构标准（Filesystem Hierarchy Standard，FHS），使在其它操作系统和架构上发布ROS包更加容易。正是这个原因让我在MK802 IIIS上编译ROS的时候轻松很多，如果编译之前的版本（比如fuerte）将会遇到更多问题。
+
+</p>
+<p>因为catkin的引入，ROS文件系统级的Stacks概念被移除了，原因是Package和Stack之间依赖性跟踪出现的问题，取代的是元包（metapackage）的概念。
+
+</p>
+<h3>3. Ubuntu on ARM</h3>
+<p>ARM版Ubuntu的软件源是在<code>http://ports.ubuntu.com/</code>上，和桌面版的略有区别，我遇到的一个问题就是桌面版python-*的包ARM版几乎都没有，解决办法是使用python的包管理工具pip安装，比如桌面版上<code>apt-get install python-PACKAGENAME</code>，用<code>pip install PACKAGENAME</code>替代。据说easy_install的维护不够好，所以应该尽量用pip。
+
+</p>
+<p>我使用的是RK3066上的Picuntu，关于Picuntu请看前一篇文章。
+
+</p>
+<h3>4. 编译ROS for ARM</h3>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft readmore">
+            <a href="/blog/ros-on-arm--native-compile-ros-on-rk3066/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-01-28T15:11:32.000Z">Jan 28 2013</time>
       
       
@@ -474,90 +531,6 @@
 
 
   
-    <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-07-17T09:21:00.000Z">Jul 17 2012</time>
-      
-      
-  
-    <h1 class="title"><a href="/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/">[译]OpenCV的基础光学字符识别</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>From:<a href="http://blog.damiles.com/2008/11/basic-ocr-in-opencv/">http://blog.damiles.com/2008/11/basic-ocr-in-opencv/</a>
-
-</p>
-<h2><em><a href="https://github.com/damiles/basicOCR">Github源码</a></em></h2>
-<p>在这个教程当中我们将完成一个基础的数字光学字符识别。这包括把一个手写的数字分类进它所属的类里。
-
-</p>
-<p>为了完成它，们我将要使用我们之前的教程里所有学到的东西，我们将要使用简单的<a href="http://blog.damiles.com/?p=72">basic painter</a>和 <a href="http://blog.damiles.com/?p=84">the basic pattern recognition and classification with openCV</a> 两个教程。
-
-</p>
-<p>在一个典型的模式识别分类器里，包括三个模块：
-
-</p>
-<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/9d6e45397b7eb2ed28bafff2460e962a.gif" alt="">
-
-</p>
-<h3>预处理（信号获取和滤波）</h3>
-<h3>特征提取（特征向量的计算）</h3>
-<h3>分类（特征向量的分类）</h3>
-<p>预处理（Preprocessing）：在这个模块我们将要处理我们输入的图片，比如大小标准化，彩色图像灰度化等等。
-
-</p>
-<p>特征提取(Feature extraction)：在这个模块我们转换我们处理后的图像为一个特征向量以便于分类，它可能是像素矩阵转换成向量或者获取轮廓编码链的数据表示。
-
-</p>
-<p>分类模块获取特征向量，并训练我们的系统或者说使用一个分类方法（比如knn）把输入的特征向量分类。
-
-</p>
-<p>这个基础光学字符识别的流程图如下：
-
-</p>
-<p><img width="600px" src="http://11zpic-11zpic.stor.sinaapp.com/original/f7bb4dc01684abdfc722f2b20a53b1ba.jpg" />
-
-</p>
-<p>现在我们有由图片组成的一个训练集和一个测试集来训练和测试我们的分类器（knn）。
-
-</p>
-<p>我们有1000张手写数字的图片，每个数字100张。我们使用每个数字的50张图片来训练，另外50张来测试我们的系统。
-
-</p>
-<p><img src="http://11zpic-11zpic.stor.sinaapp.com/200/8d31c89d75a8ef4d90ebdce98d21208f.gif" alt="">
-
-</p>
-<p>接下来我们要做的第一个工作就是对所有训练集的图片预处理，为了完成它我们创建一个预处理函数。在这个函数中，我们输入一张图片和我们想要它在处理后得到的新的长和宽，这个函数讲返回一个标准大小的带有边框的图片。你可以看到更多清楚的处理流程：
-
-</p>
-<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/8b1221f56d51a478e9116d118df3b774.gif" alt="">
-
-</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft readmore">
-            <a href="/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-  
 
   <nav id="pagination">
   
@@ -582,17 +555,17 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <a href="/tags/ARM/"><li>ARM<small>3</small></li></a>
+    <a href="/tags/ARM/"><li>ARM<small>4</small></li></a>
   
-    <a href="/tags/Android/"><li>Android<small>3</small></li></a>
+    <a href="/tags/Android/"><li>Android<small>4</small></li></a>
   
     <a href="/tags/Customize/"><li>Customize<small>1</small></li></a>
   
-    <a href="/tags/Embedded-Linux/"><li>Embedded Linux<small>3</small></li></a>
+    <a href="/tags/Embedded-Linux/"><li>Embedded Linux<small>4</small></li></a>
   
     <a href="/tags/Face-Recognition/"><li>Face Recognition<small>1</small></li></a>
   
-    <a href="/tags/Linux/"><li>Linux<small>3</small></li></a>
+    <a href="/tags/Linux/"><li>Linux<small>4</small></li></a>
   
     <a href="/tags/OCR/"><li>OCR<small>1</small></li></a>
   
@@ -602,9 +575,11 @@
   
     <a href="/tags/Qt/"><li>Qt<small>1</small></li></a>
   
-    <a href="/tags/Robot/"><li>Robot<small>3</small></li></a>
+    <a href="/tags/ROS/"><li>ROS<small>1</small></li></a>
   
-    <a href="/tags/Ubuntu/"><li>Ubuntu<small>3</small></li></a>
+    <a href="/tags/Robot/"><li>Robot<small>4</small></li></a>
+  
+    <a href="/tags/Ubuntu/"><li>Ubuntu<small>4</small></li></a>
   
     <a href="/tags/Web/"><li>Web<small>1</small></li></a>
   

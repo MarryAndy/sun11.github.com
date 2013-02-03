@@ -101,6 +101,90 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2012-07-17T09:21:00.000Z">Jul 17 2012</time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/">[译]OpenCV的基础光学字符识别</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>From:<a href="http://blog.damiles.com/2008/11/basic-ocr-in-opencv/">http://blog.damiles.com/2008/11/basic-ocr-in-opencv/</a>
+
+</p>
+<h2><em><a href="https://github.com/damiles/basicOCR">Github源码</a></em></h2>
+<p>在这个教程当中我们将完成一个基础的数字光学字符识别。这包括把一个手写的数字分类进它所属的类里。
+
+</p>
+<p>为了完成它，们我将要使用我们之前的教程里所有学到的东西，我们将要使用简单的<a href="http://blog.damiles.com/?p=72">basic painter</a>和 <a href="http://blog.damiles.com/?p=84">the basic pattern recognition and classification with openCV</a> 两个教程。
+
+</p>
+<p>在一个典型的模式识别分类器里，包括三个模块：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/9d6e45397b7eb2ed28bafff2460e962a.gif" alt="">
+
+</p>
+<h3>预处理（信号获取和滤波）</h3>
+<h3>特征提取（特征向量的计算）</h3>
+<h3>分类（特征向量的分类）</h3>
+<p>预处理（Preprocessing）：在这个模块我们将要处理我们输入的图片，比如大小标准化，彩色图像灰度化等等。
+
+</p>
+<p>特征提取(Feature extraction)：在这个模块我们转换我们处理后的图像为一个特征向量以便于分类，它可能是像素矩阵转换成向量或者获取轮廓编码链的数据表示。
+
+</p>
+<p>分类模块获取特征向量，并训练我们的系统或者说使用一个分类方法（比如knn）把输入的特征向量分类。
+
+</p>
+<p>这个基础光学字符识别的流程图如下：
+
+</p>
+<p><img width="600px" src="http://11zpic-11zpic.stor.sinaapp.com/original/f7bb4dc01684abdfc722f2b20a53b1ba.jpg" />
+
+</p>
+<p>现在我们有由图片组成的一个训练集和一个测试集来训练和测试我们的分类器（knn）。
+
+</p>
+<p>我们有1000张手写数字的图片，每个数字100张。我们使用每个数字的50张图片来训练，另外50张来测试我们的系统。
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/200/8d31c89d75a8ef4d90ebdce98d21208f.gif" alt="">
+
+</p>
+<p>接下来我们要做的第一个工作就是对所有训练集的图片预处理，为了完成它我们创建一个预处理函数。在这个函数中，我们输入一张图片和我们想要它在处理后得到的新的长和宽，这个函数讲返回一个标准大小的带有边框的图片。你可以看到更多清楚的处理流程：
+
+</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/8b1221f56d51a478e9116d118df3b774.gif" alt="">
+
+</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft readmore">
+            <a href="/blog/yi-opencvde-ji-chu-guang-xue-zi-fu-shi-bie/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2012-02-20T16:00:00.000Z">Feb 21 2012</time>
       
       
@@ -410,17 +494,17 @@ OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函�
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <a href="/tags/ARM/"><li>ARM<small>3</small></li></a>
+    <a href="/tags/ARM/"><li>ARM<small>4</small></li></a>
   
-    <a href="/tags/Android/"><li>Android<small>3</small></li></a>
+    <a href="/tags/Android/"><li>Android<small>4</small></li></a>
   
     <a href="/tags/Customize/"><li>Customize<small>1</small></li></a>
   
-    <a href="/tags/Embedded-Linux/"><li>Embedded Linux<small>3</small></li></a>
+    <a href="/tags/Embedded-Linux/"><li>Embedded Linux<small>4</small></li></a>
   
     <a href="/tags/Face-Recognition/"><li>Face Recognition<small>1</small></li></a>
   
-    <a href="/tags/Linux/"><li>Linux<small>3</small></li></a>
+    <a href="/tags/Linux/"><li>Linux<small>4</small></li></a>
   
     <a href="/tags/OCR/"><li>OCR<small>1</small></li></a>
   
@@ -430,9 +514,11 @@ OpenCV里的“cvHaarDetectObjects”函数执行人脸检测，但是这个函�
   
     <a href="/tags/Qt/"><li>Qt<small>1</small></li></a>
   
-    <a href="/tags/Robot/"><li>Robot<small>3</small></li></a>
+    <a href="/tags/ROS/"><li>ROS<small>1</small></li></a>
   
-    <a href="/tags/Ubuntu/"><li>Ubuntu<small>3</small></li></a>
+    <a href="/tags/Robot/"><li>Robot<small>4</small></li></a>
+  
+    <a href="/tags/Ubuntu/"><li>Ubuntu<small>4</small></li></a>
   
     <a href="/tags/Web/"><li>Web<small>1</small></li></a>
   

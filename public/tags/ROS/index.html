@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Qt | 11zHexo</title>
+  <title>ROS | 11zHexo</title>
   <meta name="author" content="E. Sununs">
   
   
@@ -91,7 +91,7 @@
     <div id="main-col" class="alignleft"><div id="wrapper">
 
 
-<h2 class="archive-title tag">Qt</h2>
+<h2 class="archive-title tag">ROS</h2>
 
 
   
@@ -101,58 +101,47 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2011-08-20T16:00:00.000Z">Aug 21 2011</time>
+        <time datetime="2013-02-03T15:08:16.000Z">Feb 3 2013</time>
       
       
   
-    <h1 class="title"><a href="/blog/45/">一个Quick and Dirty的记事本程序</a></h1>
+    <h1 class="title"><a href="/blog/ros-on-arm--native-compile-ros-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a></h1>
   
 
     </header>
     <div class="entry">
       
-        <p>最近在学QT编程，总算是能做出一个图形界面程序了。
+        <h3>1. 开源机器人操作系统ROS(Robot Operating System)简介</h3>
+<p>ROS（Robot Operating System）是一个开源的为机器人软件开发设计的软件框架，在异构计算机集群中提供类似操作系统的功能。它并不是一个计算机的操作系统，而是机器人的操作系统，或者称为元级操作系统（Meta Operating System）。据目前唯一一本比较官方的关于ROS的书《ROS By Example Volume 1》介绍，“The primary goal of ROS (pronounced &quot;Ross&quot;) is to provide a unified and open source
+programming framework for controlling robots in a variety of real world and simulated
+environments.”，ROS的原始目的就是为了在一系列真实和模拟的环境中控制机器人提供一个统一的开源编程框架。为了实现这一目标，ROS架构中有<a href="http://www.ros.org/wiki/ROS/Concepts">三个层次</a>的概念：文件系统级（Filesystem Level），计算图级（Computation Graph Level）和社区级（Community Level）。
+具体可以查阅<a href="http://zh.wikipedia.org/wiki/ROS">维基百科</a>和<a href="http://www.ros.org/wiki/">官网wiki</a>，这里就不过多介绍了。
 
 </p>
-<p>我用的书是《C++ GUI Qt 4 编程（第二版）》(C++ GUI Programming with Qt4,Second Edition)。书上给我的第一个有主窗口的完整应用程序的例子是一个电子表格程序，那叫一个复杂啊...虽然说基本把QT库的基本内容展现出来了，可是我实在消化不了那么多东西，而且涉及到表格，太过具体，这些比较细节的东西以后未必用的上。
+<h3>2. ROS Groovy Galapagos</h3>
+<p><a href="http://www.ros.org/news/2012/12/ros-groovy-galapagos-released.html">ROS Groovy Galapagos</a>是2012年12月31日发布的ROS最新版本，主要支持Ubuntu 11.10、Ubuntu 12.04和Ubuntu 12.10。提到这个版本的原因是它采用了新的构建系统——catkin，准备逐渐取代之前的rosbuild。它解决了rosbuild当中的几个问题，让ROS可以持续发展和扩大规模，相对于rosbuild更符合文件系统层次结构标准（Filesystem Hierarchy Standard，FHS），使在其它操作系统和架构上发布ROS包更加容易。正是这个原因让我在MK802 IIIS上编译ROS的时候轻松很多，如果编译之前的版本（比如fuerte）将会遇到更多问题。
 
 </p>
-<p>所以我不打算完整的学下来，转而做一个简单的记事本程序。
+<p>因为catkin的引入，ROS文件系统级的Stacks概念被移除了，原因是Package和Stack之间依赖性跟踪出现的问题，取代的是元包（metapackage）的概念。
 
 </p>
-<p>这个程序有基本的标题栏，菜单栏，状态栏...
+<h3>3. Ubuntu on ARM</h3>
+<p>ARM版Ubuntu的软件源是在<code>http://ports.ubuntu.com/</code>上，和桌面版的略有区别，我遇到的一个问题就是桌面版python-*的包ARM版几乎都没有，解决办法是使用python的包管理工具pip安装，比如桌面版上<code>apt-get install python-PACKAGENAME</code>，用<code>pip install PACKAGENAME</code>替代。据说easy_install的维护不够好，所以应该尽量用pip。
 
 </p>
-<p>只是工具栏被我删掉了，感觉跟菜单栏比较类似，也懒得去做图标...
+<p>我使用的是RK3066上的Picuntu，关于Picuntu请看前一篇文章。
 
 </p>
-<p>我找了一下网上的教程，有直接用Qt Designer图形界面操作的，但太傻瓜化，有些功能还实现不了。还有就是书上的例子，纯代码...而我是要做一个有基本界面还可以打开和保存文件，有剪切复制粘贴功能的记事本，用Qt Designer设计UI，然后再写一些代码。
-
-</p>
-<p>所以参考了一个QT官网上的一个教程和书里的制作电子表格的示例程序，做了一个Quick and Dirty的记事本程序。
-
-</p>
-<p>之所以Dirty，是因为它甚至还不支持中文！（勿喷，勿喷，写入文件是用一个叫做QTextStream的类弄的，我什么都不知道...）
-
-</p>
-<p>同是C++初学者的我，压根搞不清状况。那么多乱七八糟的类和对象。问题是Qt Designer设计的ui对象我搞不懂怎么用代码操作，书上它是纯代码的也没讲。
-
-</p>
-<p>后来还是QtCreator这个给力的IDE好使啊，打出ui，再按点号，自动将点号转成&quot;-&gt;&quot;，然后用特殊方式显示“ui”，这是说，它找到了这个对象，原来这个对象就叫ui...查了一下前面的定义，大体上看懂了。。。
-
-</p>
-<p>把窗体初始化以后，然后就是各种信号和槽的连接...各种QT的类，揣摩各种语法规则(本人比较懒，不想查书...)，Google各种error...在这个过程中，总算是了解了基本的QT编程。
-
-</p>
-<p>最开心的事情：setShortcut(QKeySequence::XXX)是在各种操作系统上的万能钥匙啊，什么快捷键，系统给你，不用写，哈哈～
-
-</p>
-<p>代码在<a href="https://github.com/sun11/QTGUI_Writer">https://github.com/sun11/QTGUI_Writer</a></p>
+<h3>4. 编译ROS for ARM</h3>
 
       
     </div>
     <footer>
       
+        
+          <div class="alignleft readmore">
+            <a href="/blog/ros-on-arm--native-compile-ros-on-rk3066/#more" class="more-link">Read More</a>
+          </div>
         
         
       
