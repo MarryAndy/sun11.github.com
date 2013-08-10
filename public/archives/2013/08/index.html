@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>OpenWrt | 11zHexo</title>
+  <title>Archives: 2013/08 | 11zHexo</title>
   <meta name="author" content="E. Sununs">
   
   
@@ -91,7 +91,7 @@
     <div id="main-col" class="alignleft"><div id="wrapper">
 
 
-<h2 class="archive-title tag">OpenWrt</h2>
+<h2 class="archive-title">2013/08</h2>
 
 
   
@@ -101,44 +101,54 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2012-01-06T16:00:00.000Z">Jan 7 2012</time>
+        <time datetime="2013-08-10T11:45:02.000Z">Aug 10 2013</time>
       
       
   
-    <h1 class="title"><a href="/blog/100/">TL-WR703n挂载USB摄像头</a></h1>
+    <h1 class="title"><a href="/blog/rosmin-and-rossum/">Rosmin与Rossum</a></h1>
   
 
     </header>
     <div class="entry">
       
-        <p>首先刷OpenWrt,我用的是<a title="http://www.right.com.cn/forum/thread-71042-1-2.html" href="http://www.right.com.cn/forum/thread-71042-1-2.html" target="_blank">这个帖子</a>里的<a title="http://ishare.iask.sina.com.cn/f/22200677.html" href="http://ishare.iask.sina.com.cn/f/22200677.html" target="_blank">这个版本</a>，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。
+        <p>Rossum demo:
+</p>
+<embed src="http://player.youku.com/player.php/sid/XNTY0MTUwMTMy/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+
+<p>Rosmin demo:
+</p>
+<embed src="http://player.youku.com/player.php/sid/XNDg2OTMzNDEy/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+
+<h3>Rosmin</h3>
+<p>项目地址：<a href="https://code.google.com/p/wtfrobot-rosmin/">https://code.google.com/p/wtfrobot-rosmin/</a>
 
 </p>
-<p>我是按<a title="http://www.unxmail.com/read.php?187" href="http://www.unxmail.com/read.php?187" target="_blank">这个帖子</a>来操作的，把u盘分成两个区，一个ext3格式（据说比较稳定？），一个ext4格式。按照帖子成功挂载以后点开luci的System里的Software，发现空间已经是u盘那个指定分区的空间了，啊哈，想装啥就装啥。
+<p>相关文章：
 
 </p>
-<p>接下来就是摄像头了。由于路由器只有一个usb口，所以得用hub。（废话）
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/8029640/">Google ADK与arduino 开发环境搭建</a>
 
 </p>
-<p>我看到了<a title="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" href="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1" target="_blank">这个帖子</a>,软件源是不用改的，所以直接：
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/8034640/">Android下PocketSphinx的离线语音识别</a>
 
 </p>
-<p>opkg update
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173609/">Rosmin--OpenCV Color Blob Tracker on Android</a>
 
 </p>
-<p>opkg install usbutils
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173619/">Rosmin--两台Android手机的Socket双向通信</a>
 
 </p>
-<p>由于我的摄像头是杂牌的，芯片貌似不是301的，所以这跟多数人用的301方案不同。
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173631/">Rosmin--在Android上绘制小车行进路线图并标记</a>
 
 </p>
-<p>首先在win7的设备管理器查到了我的摄像头的设备信息，搜到了型号。发现和帖子里的芯片型号一样，大喜呀。
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173643/">Rosmin--折腾USB Host Shield的日子</a>
 
 </p>
-<p>然后我装了kmod-video-gspca-zc3xx（可能不用装的）和kmod-video-uvc。
+<p>Rosmin机器人是我们去年（2012年）制作的一个使用Arduino驱动的小型移动机器人，连接上Android手机，可以完成手机控制的基本运动，追踪乒乓球，以QR码为人工路标移动到指定区域，搜寻目标，视频监控等等。
 
 </p>
-<p>结果竟然很快成功了。
+<p>硬件结构：
+<img src="http://11zpic-11zpic.stor.sinaapp.com/original/54389a22c578eb6789380abdc70ea156.png" alt="">
 
 </p>
 
@@ -148,7 +158,7 @@
       
         
           <div class="alignleft readmore">
-            <a href="/blog/100/#more" class="more-link">Read More</a>
+            <a href="/blog/rosmin-and-rossum/#more" class="more-link">Read More</a>
           </div>
         
         

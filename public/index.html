@@ -97,6 +97,81 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-08-10T11:45:02.000Z">Aug 10 2013</time>
+      
+      
+  
+    <h1 class="title"><a href="/blog/rosmin-and-rossum/">Rosmin与Rossum</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Rossum demo:
+</p>
+<embed src="http://player.youku.com/player.php/sid/XNTY0MTUwMTMy/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+
+<p>Rosmin demo:
+</p>
+<embed src="http://player.youku.com/player.php/sid/XNDg2OTMzNDEy/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+
+<h3>Rosmin</h3>
+<p>项目地址：<a href="https://code.google.com/p/wtfrobot-rosmin/">https://code.google.com/p/wtfrobot-rosmin/</a>
+
+</p>
+<p>相关文章：
+
+</p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/8029640/">Google ADK与arduino 开发环境搭建</a>
+
+</p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/8034640/">Android下PocketSphinx的离线语音识别</a>
+
+</p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173609/">Rosmin--OpenCV Color Blob Tracker on Android</a>
+
+</p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173619/">Rosmin--两台Android手机的Socket双向通信</a>
+
+</p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173631/">Rosmin--在Android上绘制小车行进路线图并标记</a>
+
+</p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173643/">Rosmin--折腾USB Host Shield的日子</a>
+
+</p>
+<p>Rosmin机器人是我们去年（2012年）制作的一个使用Arduino驱动的小型移动机器人，连接上Android手机，可以完成手机控制的基本运动，追踪乒乓球，以QR码为人工路标移动到指定区域，搜寻目标，视频监控等等。
+
+</p>
+<p>硬件结构：
+<img src="http://11zpic-11zpic.stor.sinaapp.com/original/54389a22c578eb6789380abdc70ea156.png" alt="">
+
+</p>
+
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft readmore">
+            <a href="/blog/rosmin-and-rossum/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-02-03T15:08:16.000Z">Feb 3 2013</time>
       
       
@@ -452,81 +527,6 @@ environments.”，ROS的原始目的就是为了在一系列真实和模拟的�
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2012-07-25T09:16:00.000Z">Jul 25 2012</time>
-      
-      
-  
-    <h1 class="title"><a href="/blog/tiny6410de-opencv2-dot-4-2yi-zhi-bi-ji/">Tiny6410的OpenCV2.4.2移植笔记</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>关于OpenCV在ARM上的移植最经典的应该就是这篇：
-<a href="http://blog.csdn.net/noodies/article/details/5798434">编译OpenCV for arm-linux</a>
-
-</p>
-<p>去年在什么都不懂的情况下移植的时候也主要是靠这篇文章，写得很详细，如果你觉得还不够详细的话，推荐个带图的:
-<a href="http://blog.csdn.net/yr119111/article/details/7732336">opencv2.3.1在arm端的移植</a>
-
-</p>
-<p>这篇写得也不错:
-<a href="http://www.cnblogs.com/s_agapo/archive/2011/11/24/2262346.html">Linux下移植OpenCV+Qt到ARM(Tiny6410)总结</a>
-
-</p>
-<p>我的环境是Ubuntu12.04,板子是友善之臂的tiny6410。
-
-</p>
-<p>首先当然是装好arm-linux-gcc,配置环境变量，输入arm-linux-gcc -v有输出，这步就完成了。
-然后是cmake,比较方便的是用带界面的cmake-gui,要注意的地方是<strong>CMAKE_INSTALL_PREFIX</strong>和<strong>WITH_TIFF</strong>还有<strong>CMAKE_EXE_LINKER_FLAGS</strong>。
-
-</p>
-<p>第一个参数需要注意是因为我们编译的库是适用于ARM的，不应该直接放在/usr/local里，否则如果装了x86的OpenCV会有冲突，比如改成/usr/local/opencv-arm。第二个参数一般情况下需要去掉勾，因为似乎默认情况下ubuntu是没有这个支持的，要选上得自己装些什么东西。第三个参数是因为OpenCV需要这两个库的支持？我现在也还不太明白，总之加上-lrt和-lpthread就不会报错了。其它参数保持原状基本都不会报错。
-
-</p>
-<p>cmake好后下一步是make,对于双核的机器加上-j4参数速度会快很多，但是也发烫，在系统监视器里看到四个线程的CPU都是接近100%,风扇一直呼呼地响。
-
-</p>
-<p>然后是配置编译环境了，好像在2.3以后OpenCV的x86版安装好后都会有pkgconfig的.pc文件。//2.3以前的版本不清楚
-
-</p>
-<p>所以比较方便的就是用pkgconfig来配置了，它的.pc文件是在/usr/local/lib/pkgconfig下面。这是适用于PC版本的OpenCV的（因为之前已经安装好了x86的OpenCV）。但是只要把那第一行的prefix路径改成ARM版OpenCV的安装路径（也就是上面CMAKE_INSTALL_PREFIX参数的值）就可以直接用了。<a href="http://blog.csdn.net/yr119111/article/details/7732336">opencv2.3.1在arm端的移植</a>这篇帖子说再Libs里要加上-lrt -lpthread参数，我的环境下似乎不需要，但是加上也没什么问题。
-
-</p>
-<p>这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config --cflags --libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config --cflags --libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。
-我用的主要是Qt，所以在.pro文件里加上：
-
-</p>
-<pre><code><div class="line">    <span class="title">unix</span> {</div><div class="line">        <span class="title">CONFIG</span> += link_pkgconfig</div><div class="line">        PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc</div><div class="line">    }</div></code></pre>
-<p>但是编译成功后可能会显示一些警告，比如：
-
-</p>
-<pre><code><div class="line">    <span class="string">.</span><span class="string">.</span><span class="comment">/</span>.<span class="string">.</span><span class="comment">/lib/libopencv_core</span>.<span class="comment">so</span>, <span class="comment">needed</span> <span class="comment">by</span> <span class="comment">/usr/local/opencv</span>-<span class="comment">arm/lib/libopencv_highgui</span>.<span class="comment">so</span>, <span class="comment">not</span> <span class="comment">found</span> <span class="comment">(try</span> <span class="comment">using</span> <span class="literal">-</span><span class="comment">rpath</span> <span class="comment">or</span> <span class="literal">-</span><span class="comment">rpath</span>-<span class="comment">link)</div></code></pre>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft readmore">
-            <a href="/blog/tiny6410de-opencv2-dot-4-2yi-zhi-bi-ji/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
 
 <nav id="pagination">
   
@@ -572,7 +572,7 @@ environments.”，ROS的原始目的就是为了在一系列真实和模拟的�
   
     <a href="/tags/ROS/"><li>ROS<small>1</small></li></a>
   
-    <a href="/tags/Robot/"><li>Robot<small>4</small></li></a>
+    <a href="/tags/Robot/"><li>Robot<small>5</small></li></a>
   
     <a href="/tags/Ubuntu/"><li>Ubuntu<small>4</small></li></a>
   
