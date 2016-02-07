@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>WTFRobot Rosmin | 11zHexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="2012年8月，W、T、F三人陆续回到学校。
+因为共同的机器人之梦，这个团队在今年5月份组建。
+首先W同学有了一个想法，觉得可以把ARM11放在小车上，做一些图像处理的工作，然后再连上Arduino控制器控制小车运动，另外用一台Android手机来操控。
+开始考虑用纯Linux加上Qt作为图形界面，用上OpenCV来做。事实上W同学之前因为做过类似的东西对这个已经比较熟悉了。只是由于摄像头驱动以及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WTFRobot Rosmin">
+<meta property="og:url" content="http://www.sun11.me/blog/2012/wtfrobot-rosmin/index.html">
+<meta property="og:site_name" content="11zHexo">
+<meta property="og:description" content="2012年8月，W、T、F三人陆续回到学校。
+因为共同的机器人之梦，这个团队在今年5月份组建。
+首先W同学有了一个想法，觉得可以把ARM11放在小车上，做一些图像处理的工作，然后再连上Arduino控制器控制小车运动，另外用一台Android手机来操控。
+开始考虑用纯Linux加上Qt作为图形界面，用上OpenCV来做。事实上W同学之前因为做过类似的东西对这个已经比较熟悉了。只是由于摄像头驱动以及">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/ed79edf141de1d98a5f212396be5c3a8.jpg">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/b567f86412ac9a51823976c67d52b27c.jpg">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/88c8896e89dd13d2092a2cb18ea42480.jpg">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/352d794c5728cbe9748f0ce4431ef49f.jpg">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/bb3a855a31c8227a9e786ee8551008cc.jpg">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/eb075a854a9d6b082b6debca11f4bfcb.jpg">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/5084405ab64001d9edb1a2a3e91b192b.jpg">
+<meta property="og:updated_time" content="2016-02-07T12:11:30.962Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WTFRobot Rosmin">
+<meta name="twitter:description" content="2012年8月，W、T、F三人陆续回到学校。
+因为共同的机器人之梦，这个团队在今年5月份组建。
+首先W同学有了一个想法，觉得可以把ARM11放在小车上，做一些图像处理的工作，然后再连上Arduino控制器控制小车运动，另外用一台Android手机来操控。
+开始考虑用纯Linux加上Qt作为图形界面，用上OpenCV来做。事实上W同学之前因为做过类似的东西对这个已经比较熟悉了。只是由于摄像头驱动以及">
+  
+    <link rel="alternative" href="/atom.xml" title="11zHexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+    <link href="//hexo-sun11.qiniudn.com/css/fonts.css" rel="stylesheet" type="text/css">
+  
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-31707826-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <nav id="upper-nav" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <div class="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+          <a id="nav-github" class="nav-icon" href="https://github.com/sun11"></a>
+        
+      </div>
+    </nav>
+    <div id="header-title">
+      
+        <h1 id="blog-title-wrap">
+          Starsky&#39;s Blog
+        </h1>
+      
+    </div>
+    <div id="contenedor">
+      <ul class="cube">
+        <li class="cara">
+         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="100" width="100" viewBox="-50 -50 200 200">
+          <circle cx="50" cy="50" r="45" stroke-width="5" stroke="black" stroke-opacity="0.5" fill-opacity="0"/>
+          <rect x="47.5" y="27.5" width="5" height="25" rx="2.5" ry="2.5" fill="black" fill-opacity="0.5" transform="rotate(330 50 50)"/>
+          <rect x="48.5" y="16.5" width="3" height="35" rx="1.5" ry="1.5" fill="black" fill-opacity="0.5"/>
+        </svg>
+        </li>
+        <li class="cara">11z</li>
+        <li class="cara">H</li>
+        <li class="cara">E</li>
+        <li class="cara">X</li>
+        <li class="cara">O</li>
+      </ul>
+    </div>
+    <nav id="main-nav">
+      
+        <a class="main-nav-link" href="/">Home</a>
+      
+        <a class="main-nav-link" href="/archives">Archives</a>
+      
+        <a class="main-nav-link" href="/about">About</a>
+      
+      <a class="main-nav-link st-search-show-outputs">Search</a>
+    </nav>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-wtfrobot-rosmin" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2012/wtfrobot-rosmin/" class="article-date">
+  <time datetime="2012-12-15T03:27:35.000Z" itemprop="datePublished">Dec 15 2012</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      WTFRobot Rosmin
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <div class="video-container"><br><iframe height="270" width="480" src="http://player.youku.com/embed/XNDg2OTMzNDEy" frameborder="0" allowfullscreen></iframe><br></div>
+
+<p>2012年8月，W、T、F三人陆续回到学校。</p>
+<p>因为共同的机器人之梦，这个团队在今年5月份组建。</p>
+<p>首先W同学有了一个想法，觉得可以把ARM11放在小车上，做一些图像处理的工作，然后再连上Arduino控制器控制小车运动，另外用一台Android手机来操控。</p>
+<p>开始考虑用纯Linux加上Qt作为图形界面，用上OpenCV来做。事实上W同学之前因为做过类似的东西对这个已经比较熟悉了。只是由于摄像头驱动以及USB接口只支持1.1的原因，采集摄像头图像的速度非常慢，慢到无法忍受。</p>
+<p> 但是经过多次尝试，发现一款USB摄像头在ARM板厂商的测试程序当中速度很快，效果很理想，问题是厂商并没有开源这个摄像头测试程序的代码，如果要自己做驱动的话就不是一时半会能搞定的了。于是W同学又尝试了把板子刷上Android操作系统，由于有API可以调用，尽管这个程序闭源仍然可以使用。</p>
+<p>于是W同学又从C/C++版本的OpenCV转到Android版本的OpenCV，在Android测试了一下自带的示例程序，发现会花屏。尝试了很多方法都未能解决。后来ARM板的损坏也导致不得不思考新的方案。</p>
+<p>于是就到了8月份。</p>
+<p>F同学由于要做Android客户端程序学习了Android编程。于是想到直接用Android手机代替ARM11开发板，这样会省去很多麻烦。而在这时，Android手机之间的单向socket通信已经基本完成，在解决了一些小问题以后工作很稳定，速度也很快。</p>
+<p>很快，由于F同学曾经有做小车的经验，以及Arduino编程的经验，由Arduino控制的小车耗不费力地就跑了起来。<br>接下来遇到的第一个难题是Arduino与Android的通信。开始买Arduino的时候没有考虑这个问题，但现在需要与Android手机通信，主要有两个办法，蓝牙和USB，我们觉得蓝牙这个东西开关比较麻烦，也可能不够稳定，于是决定直接用USB Accessory，该特性由Android 2.3.4（平板是3.1）以上支持。开始看到很多论坛的帖子说华为中兴的手机不支持，真心捏了一把汗，还好后来证明三个人的手机都是可用的。</p>
+<p>要解决这个问题，F同学查找了很多资料，最终终于完成了Android手机（客户端）传递信息到另一台Android手机（服务器），再由这台服务器传递信息到Arduino控制小车运动。反应很灵敏，效果很不错，非常好的一个玩具遥控车。</p>
+<p>这个时候，bug只是偶尔出现，解决了以后基本就很完美了，工作都非常稳定。</p>
+<p>可是一切才刚刚开始。</p>
+<p>9月份，W研究了众多可用于Android平台上的计算机视觉库，包括OpenCV，SimpleCV，JavaCV以后，最终发现还是OpenCV比较适合，但是由于JNI接口使用觉得过于复杂，没有深入研究下去。于是利用Android上的OpenCV实现了追踪有明显颜色特征的物体（ColorBlob Track）并且绘制出其中心坐标。</p>
+<p>在T同学完成数模一段时间之后，小车的Arduino部分主要转给他负责。买好了舵机，却发现转起来吱吱地响。让舵机云台根据前面所说的图像处理得到的点的位置跟踪目标，经过一个下午调整终于调好了，可舵机已经坏得差不多了，声音很吓人。后来拆开发现里面的齿轮是塑料的！顿时觉得被坑了，180多买来的二自由度舵机云台居然如此劣质！淘宝立刻给差评！后来买了两个20多块的MG995,质量都很好一直用到现在。</p>
+<p>当然这还远远不是结束。接下来我们陆续实现了：</p>
+<ol>
+<li><p>TTS</p>
+</li>
+<li><p>小范围英文离线语音识别</p>
+</li>
+<li><p>Socket双向通信</p>
+</li>
+<li><p>各种代码的分离和整合</p>
+</li>
+</ol>
+<p>F同学开始研究利用Android服务器上的陀螺仪计算角度和客户端的地图绘制。</p>
+<p>借了一个平板过来。。。</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/ed79edf141de1d98a5f212396be5c3a8.jpg" alt=""></p>
+<a id="more"></a>
+<p>然后，设计利用超声波测距检测拐角和使用QR码作为人工路标的导航机制：</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/b567f86412ac9a51823976c67d52b27c.jpg" alt=""></p>
+<p>此图好象是刚刚调通超声波模块，但却不知这是暴风雨前的宁静。</p>
+<p>本以为超声波传感器+Arduino就一切OK了的，可后来发现事情远没有这么简单，因为Arduino Romeo的资源不足，开始认为是定时器不足导致超声波测距和USB Accessory无法使用。可后来尝试了各种方法，这个问题变得越纠结。</p>
+<p>我们于是增加了一个MSP430作为辅助板来控制超声波传感器。调了很多天之后发现还是不可行，最终发现I/O口不足。</p>
+<p>于是我们换用Google ADK。</p>
+<p>可谁知道我们第一次买来的竟然是假货，用了不到24个小时就坏了，后来淘宝退货，立刻买下了另一个原装进口的。这一耽误又是好多天，这个时候星火杯如果按照原计划已经快开始了。</p>
+<p>真假ADK：</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/88c8896e89dd13d2092a2cb18ea42480.jpg" alt=""></p>
+<p>在光棍节那天，我们终于完成了超声波和USB Accessory的共同测试！</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/352d794c5728cbe9748f0ce4431ef49f.jpg" alt=""></p>
+<p>经历了设备大换血之后，下面的一段时间，我们一直在做小车的导航。每天至少几十次的测试。小车跑过了好几百次了吧。还好星火杯也延迟又延迟，否则我们无法有很多时间来改进。</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/bb3a855a31c8227a9e786ee8551008cc.jpg" alt=""></p>
+<p>在前几天，Arduino与Android双向通信问题才完美解决，舵机转动影响陀螺仪的角度问题也基本解决。但在地图绘制方面还有一些不稳定。追踪小球上根据偏离中心距离调整速度，效果好了不少。</p>
+<p>最后来一张Rosmin的笑脸：</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/eb075a854a9d6b082b6debca11f4bfcb.jpg" alt=""></p>
+<p>哈哈，还有牺牲了一个手机壳有时还不得不举着舵机讲电话的T同学。。。</p>
+<p><img src="http://11zpic-11zpic.stor.sinaapp.com/original/5084405ab64001d9edb1a2a3e91b192b.jpg" alt=""></p>
+<p>一切还只是刚刚开始</p>
+<p style="color: #fff;">The Next is Rossum.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
+
+        <a data-url="http://www.sun11.me/blog/2012/wtfrobot-rosmin/" data-id="cikcpgpy1000fochxpj18psbb" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2012/wtfrobot-rosmin/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2013/ros-on-arm--linux-for-rk3066/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ROS on ARM--Linux For RK3066 Mini PC简介
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2012/ubuntu-1204-customization/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ubuntu12.04美化配置笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2013/rosmin-and-rossum/">Rosmin与Rossum</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/ros-on-arm--picuntu-configuration/">ROS on ARM--Picuntu 安装配置</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/ros-on-arm--linux-for-rk3066/">ROS on ARM--Linux For RK3066 Mini PC简介</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2012/wtfrobot-rosmin/">WTFRobot Rosmin</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OCR/">OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">September 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Starsky Wong<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
+</nav>
+  <!-- totop start -->
+<div id="totop">
+	<a title="To Top"></a>
+</div>
+<!-- totop end -->
+<!-- swiftype search start -->
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','rVtxziL4d6HMnCaovhgK','2.0.0');
+</script>
+
+<!-- swiftype search end -->
+
+
+<script>
+  var disqus_shortname = '11zhexo';
+  
+  var disqus_url = 'http://www.sun11.me/blog/2012/wtfrobot-rosmin/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script src="//cdn.bootcss.com/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+</div>
+</body>
+</html>
