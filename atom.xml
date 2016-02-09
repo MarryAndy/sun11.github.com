@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sun11.me/"/>
-  <updated>2016-02-07T12:15:46.722Z</updated>
+  <updated>2016-02-09T11:22:52.266Z</updated>
   <id>http://www.sun11.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.sun11.me/blog/2013/rosmin-and-rossum/"/>
     <id>http://www.sun11.me/blog/2013/rosmin-and-rossum/</id>
     <published>2013-08-10T11:45:02.000Z</published>
-    <updated>2016-02-07T12:15:46.722Z</updated>
+    <updated>2016-02-09T11:22:52.266Z</updated>
     
     <content type="html">&lt;p&gt;Rossum demo:&lt;/p&gt;
 &lt;div class=&quot;video-container&quot;&gt;&lt;br&gt;&lt;iframe height=&quot;270&quot; width=&quot;480&quot; src=&quot;http://player.youku.com/embed/XNTY0MTUwMTMy?x&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;br&gt;&lt;/div&gt;
@@ -58,15 +58,15 @@
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;基本运动：用Android设备控制小车完成基本运动，可以用控制界面的按钮和语音来操控。如前进，后退，停止，左转，右转，车身左转90度，车身右转90度，舵机云台的转动等。&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;追踪乒乓球： 由小车上的Android手机做图像处理获取小球坐标，通过Arduino控制舵机对正小球。根据小球偏离中心位置的距离调整运动速度。详见这篇：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/8034294&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/e69e6efc3938f834503de96fbe0068d6.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;追踪乒乓球： 由小车上的Android手机做图像处理获取小球坐标，通过Arduino控制舵机对正小球。根据小球偏离中心位置的距离调整运动速度。详见这篇：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/8034294&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/c15d2ab7157f666de39873659dd37697.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;以QR码为人工路标的导航： 我们设计了一个以QR码作为人工路标的导航策略，根据超声波传感器检测拐角，利用QR码提供的信息和陀螺仪传感器的信息运动到指定区域。会有一篇水论文，不过现在还没发出来。&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/c6b152e0d811b66b675a416fe8ded013.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;绘制运动轨迹： 我们利用Android上的Google Maps控件做了一个绘制小车运动轨迹的程序，由小车上手机陀螺仪获取角加速度，计算出角度。不知是我们算法不行还是手机加速度计不够精确，用加速度计算出的里程误差太大根本用不了。于是我们就给小车一个恒定的速度，综合控制命令的信息（比如前进后退停止）来绘制轨迹。在客户端可以显示出小车的运行轨迹，还有QR码路标和目标的位置。详见这篇：&lt;a href=&quot;http://blog.csdn.net/f_season/article/details/9171523&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;在Android上绘制小车行进路线图并标记&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/2685dfa7f0443ccf12d4a01a1c3b2568.jpeg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;寻找目标： 不断转动寻找目标，发现目标以后就向目标前进。根据目标区域面积判断是否足够靠近，足够靠近了就认为到达了目标自动停止。关于怎么检测目标和计算目标区域面积仍然在：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/8034294&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/e1bace65dd4c9c1c7e48d3eaaed20aa4.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;寻找目标： 不断转动寻找目标，发现目标以后就向目标前进。根据目标区域面积判断是否足够靠近，足够靠近了就认为到达了目标自动停止。关于怎么检测目标和计算目标区域面积仍然在：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/8034294&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/6d604c137f34654f216066332f1245e0.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;视频监控： 用手机的WiFi Camera应用即可，可以通过PC端的Web界面控制。&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/840de7c5837e4b7d544d47284c2d5cbd.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;视频监控： 用手机的WiFi Camera应用即可，可以通过PC端的Web界面控制。&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/2eb1613837654cb598482f7b495cc4ee.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id=&quot;Rossum&quot;&gt;&lt;a href=&quot;#Rossum&quot; class=&quot;headerlink&quot; title=&quot;Rossum&quot;&gt;&lt;/a&gt;Rossum&lt;/h3&gt;&lt;p&gt;项目地址：&lt;a href=&quot;https://code.google.com/p/wtfrobot-rossum/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://code.google.com/p/wtfrobot-rossum/&lt;/a&gt;&lt;/p&gt;
@@ -78,18 +78,18 @@
 &lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881859/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–ROSjava-android控制ROS机器人&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881889/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–ROSjava的消息发送&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881965/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–tpofinder 平面纹理物体识别&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Rossum是我们以ROS机器人操作系统为核心做的一个自主导航机器人，名字来自于《罗萨姆的万能机器人( Rossum’s Universal Robots)》里的Rossum一词。使用 Kinect 传感器模拟激光测距仪,Arduino 控制器驱动电机控制机器人运动,Atom上网本置于机器人内作为主要的处理设备。&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/5ad0fba96ad2991910975a436aeb4d9d.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Rossum是我们以ROS机器人操作系统为核心做的一个自主导航机器人，名字来自于《罗萨姆的万能机器人( Rossum’s Universal Robots)》里的Rossum一词。使用 Kinect 传感器模拟激光测距仪,Arduino 控制器驱动电机控制机器人运动,Atom上网本置于机器人内作为主要的处理设备。&lt;br&gt;&lt;img src=&quot;http://11zpic-11zpic.stor.sinaapp.com/original/7239941384c0d7713355636d212b0035.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;实现的功能：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;基本运动控制： 机器人运动模式为轮式运动,由两个驱动轮驱动机器人运&lt;br&gt;动,一个万向轮辅助,采用 PI 反馈,闭环控制机器人速度,可以精确平滑&lt;br&gt;的控制机器人的运动,同时利用编码器获取的数据,由运动学模型推算机&lt;br&gt;器人的当前坐标系位姿。&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;基本运动控制： 机器人运动模式为轮式运动,由两个驱动轮驱动机器人运动,一个万向轮辅助,采用 PI 反馈,闭环控制机器人速度,可以精确平滑地控制机器人的运动,同时利用编码器获取的数据,由运动学模型推算机器人的当前坐标系位姿。&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;语音控制： 通过 Android 手机发送语音控制机器人运动,可进行离线英文&lt;br&gt;语音识别(和Rosmin相同)，在线中文语音识别(讯飞)。&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;语音控制： 通过 Android 手机发送语音控制机器人运动,可进行离线英文语音识别(和Rosmin相同)，在线中文语音识别(讯飞)。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;跟随运动： 即turtlebot_follower，使机器人与人保持一定距离并正对人体,当人转向或移动时,机器人相应跟随人体转向和移动。&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;同时定位与地图构建(SLAM)： 移动机器人在未知环境中依靠传感器获取&lt;br&gt;的信息进行环境建模,同时利用所创建的环境地图估计其本身的位姿。&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;同时定位与地图构建(SLAM)： 移动机器人在未知环境中依靠传感器获取的信息进行环境建模,同时利用所创建的环境地图估计其本身的位姿。&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;自主导航： 在构建出静态地图的基础上,实现机器人从一个位置运动到地&lt;br&gt;图上的另一个指定位置。&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;自主导航： 在构建出静态地图的基础上,实现机器人从一个位置运动到地图上的另一个指定位置。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;物体识别： 利用tpofinder,实现识别有纹理特征的物体,如书本封面,咖啡盒等，识别后用TTS发声，通过舵机云台对准物体。详见：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/9180085&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–tpofinder 平面纹理物体识别&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
@@ -135,7 +135,7 @@
     <link href="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/"/>
     <id>http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/</id>
     <published>2013-02-03T15:08:16.000Z</published>
-    <updated>2016-02-07T12:14:38.478Z</updated>
+    <updated>2016-02-07T12:14:38.000Z</updated>
     
     <content type="html">&lt;h3 id=&quot;1-__u5F00_u6E90_u673A_u5668_u4EBA_u64CD_u4F5C_u7CFB_u7EDFROS_28Robot_Operating_System_29_u7B80_u4ECB&quot;&gt;&lt;a href=&quot;#1-__u5F00_u6E90_u673A_u5668_u4EBA_u64CD_u4F5C_u7CFB_u7EDFROS_28Robot_Operating_System_29_u7B80_u4ECB&quot; class=&quot;headerlink&quot; title=&quot;1. 开源机器人操作系统ROS(Robot Operating System)简介&quot;&gt;&lt;/a&gt;1. 开源机器人操作系统ROS(Robot Operating System)简介&lt;/h3&gt;&lt;p&gt;ROS（Robot Operating System）是一个开源的为机器人软件开发设计的软件框架，在异构计算机集群中提供类似操作系统的功能。它并不是一个计算机的操作系统，而是机器人的操作系统，或者称为元级操作系统（Meta Operating System）。据目前唯一一本比较官方的关于ROS的书《ROS By Example Volume 1》介绍，“The primary goal of ROS (pronounced “Ross”) is to provide a unified and open source&lt;br&gt;programming framework for controlling robots in a variety of real world and simulated&lt;br&gt;environments.”，ROS的原始目的就是为了在一系列真实和模拟的环境中控制机器人提供一个统一的开源编程框架。为了实现这一目标，ROS架构中有&lt;a href=&quot;http://www.ros.org/wiki/ROS/Concepts&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;三个层次&lt;/a&gt;的概念：文件系统级（Filesystem Level），计算图级（Computation Graph Level）和社区级（Community Level）。&lt;br&gt;具体可以查阅&lt;a href=&quot;http://zh.wikipedia.org/wiki/ROS&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;维基百科&lt;/a&gt;和&lt;a href=&quot;http://www.ros.org/wiki/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官网wiki&lt;/a&gt;，这里就不过多介绍了。&lt;/p&gt;
 &lt;h3 id=&quot;2-_ROS_Groovy_Galapagos&quot;&gt;&lt;a href=&quot;#2-_ROS_Groovy_Galapagos&quot; class=&quot;headerlink&quot; title=&quot;2. ROS Groovy Galapagos&quot;&gt;&lt;/a&gt;2. ROS Groovy Galapagos&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;http://www.ros.org/news/2012/12/ros-groovy-galapagos-released.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ROS Groovy Galapagos&lt;/a&gt;是2012年12月31日发布的ROS最新版本，主要支持Ubuntu 11.10、Ubuntu 12.04和Ubuntu 12.10。提到这个版本的原因是它采用了新的构建系统——catkin，准备逐渐取代之前的rosbuild。它解决了rosbuild当中的几个问题，让ROS可以持续发展和扩大规模，相对于rosbuild更符合文件系统层次结构标准（Filesystem Hierarchy Standard，FHS），使在其它操作系统和架构上发布ROS包更加容易。正是这个原因让我在MK802 IIIS上编译ROS的时候轻松很多，如果编译之前的版本（比如fuerte）将会遇到更多问题。&lt;/p&gt;
@@ -245,7 +245,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/"/>
     <id>http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/</id>
     <published>2013-01-28T15:11:32.000Z</published>
-    <updated>2016-02-07T12:12:33.510Z</updated>
+    <updated>2016-02-07T12:12:34.000Z</updated>
     
     <content type="html">&lt;p&gt;上篇提到一个叫做Picuntu的项目，目的是为RK3066芯片的设备移植传统Linux，目前基本的使用已经没有什么问题，UG802/MK808（不含MK808B）已经可以使用内置的无线网卡，而其它型号，比如MK802 IIIS或者UG007，由于使用的是MTK的芯片，没有办法找到驱动（话说国内厂商有几个遵守了GPL协议的）所以只能外接USB网卡。另外是VPU和Mali 400，&lt;a href=&quot;http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/page__st__380&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;slatedroid&lt;/a&gt;论坛里有人正在折腾。&lt;/p&gt;
 &lt;p&gt;MK80X开机后一般有两种模式，正常模式和恢复(recovery)模式。所以我们如果需要Android/Linux双启动，就只需要在recovery里刷入linux的kernel，Android可以正常运行互不影响。当然你也可以直接刷入原来的kernel空间覆盖掉Android，但是这种方式并不推荐。官方的recovery似乎功能不多，只有作为u盘的功能。Bob’s Finless ROM是一个修改的ROM，包含了替换recovery等img文件的工具。如果你的设备是MK808/MK808B或者UG802，就可以试试对应的Finless ROM，暂时没有针对其它型号的版本（公元2013年1月28日）。如果其它型号刷入，由于硬件不是都相同，可能会有一些问题。&lt;/p&gt;
@@ -336,7 +336,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/"/>
     <id>http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/</id>
     <published>2013-01-24T09:27:26.000Z</published>
-    <updated>2016-02-07T12:12:02.698Z</updated>
+    <updated>2016-02-07T12:12:02.000Z</updated>
     
     <content type="html">&lt;p&gt;&lt;a href=&quot;http://www.cnbeta.com/articles/188613.htm&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;去年6月左右&lt;/a&gt;国内厂商（瑞科美 Rikomagic）推出了一款叫做MK802的Mini PC。采用Allwinner A10/ 1GHz Cortex-A8做处理器，运行Android 4.0系统，内存512MB或1G。实际上相当于一个没有触摸屏和电池的平板，不过可以用USB OTG连接鼠标键盘，通过HDMI接口输出音视频。&lt;/p&gt;
 &lt;p&gt;“少即是多”，正因为它小，靠外部供电而非电池，有很多扩展的可能性，上市以后很火。到现在淘宝一搜MK802，会出现各种各样厂商（比如酷优乐，联力胜）的也叫做MK802或者UG802,MK803,MK808,MK809的之类的产品。可以给它刷上Linux，然后把它当成一个普通PC使用（因为驱动的原因，用自带的Android可能是更好的选择）。或者，不接显示器，做一个Headless Server？接移动硬盘做一个BT下载机？又或者，加上Arduino，连接上各种传感器，作为机器人的主控制器？总之可以做到很多平板做不到的事情。这里有一个简易对照表：&lt;a href=&quot;http://bluefox.com.tw/2012/11/22/%E5%AE%89%E5%8D%93-android-mini-pc-%E7%B0%A1%E6%98%93%E5%B0%8D%E7%85%A7%E8%A1%A8/#more-2654&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://bluefox.com.tw/2012/11/22/%E5%AE%89%E5%8D%93-android-mini-pc-%E7%B0%A1%E6%98%93%E5%B0%8D%E7%85%A7%E8%A1%A8/#more-2654&lt;/a&gt;&lt;/p&gt;
@@ -381,7 +381,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2012/wtfrobot-rosmin/"/>
     <id>http://www.sun11.me/blog/2012/wtfrobot-rosmin/</id>
     <published>2012-12-15T03:27:35.000Z</published>
-    <updated>2016-02-07T12:11:30.962Z</updated>
+    <updated>2016-02-07T12:11:30.000Z</updated>
     
     <content type="html">&lt;div class=&quot;video-container&quot;&gt;&lt;br&gt;&lt;iframe height=&quot;270&quot; width=&quot;480&quot; src=&quot;http://player.youku.com/embed/XNDg2OTMzNDEy&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;br&gt;&lt;/div&gt;
 
@@ -483,7 +483,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2012/ubuntu-1204-customization/"/>
     <id>http://www.sun11.me/blog/2012/ubuntu-1204-customization/</id>
     <published>2012-07-28T03:04:00.000Z</published>
-    <updated>2016-02-07T12:09:36.402Z</updated>
+    <updated>2016-02-07T12:09:36.000Z</updated>
     
     <content type="html">&lt;p&gt;好久没有玩美化了，前几天装了一下LinuxDeepin12.06，感觉美化做得很好，但是系统有一些问题，比如挂起或长时间锁屏后gnome-settings-daemon开不了，导致快捷键失效，主题风格变成非常好看的win95 style…搜了好多个帖子（前几年ubuntu也出过类似问题）都没解决。最后无奈换回标准Ubuntu，但是看到LinuxDeepin，搞美化的瘾又上来了。&lt;/p&gt;
 &lt;p&gt;LinuxDeepin的主题用的是从Zukitwo主题修改而来的仿Mac主题。//为啥我这么清楚？因为它的css文件里的作者没改，上一个版本的Deepin-GTK主题甚至连主题名称也没改还叫Zukitwo。&lt;/p&gt;
@@ -526,7 +526,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/"/>
     <id>http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/</id>
     <published>2012-07-25T09:16:00.000Z</published>
-    <updated>2016-02-07T12:11:49.490Z</updated>
+    <updated>2016-02-07T12:11:50.000Z</updated>
     
     <content type="html">&lt;p&gt;关于OpenCV在ARM上的移植最经典的应该就是这篇：&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/noodies/article/details/5798434&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;编译OpenCV for arm-linux&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;去年在什么都不懂的情况下移植的时候也主要是靠这篇文章，写得很详细，如果你觉得还不够详细的话，推荐个带图的:&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/yr119111/article/details/7732336&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;opencv2.3.1在arm端的移植&lt;/a&gt;&lt;/p&gt;
@@ -588,7 +588,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2012/opencv-basic-ocr/"/>
     <id>http://www.sun11.me/blog/2012/opencv-basic-ocr/</id>
     <published>2012-07-17T09:21:00.000Z</published>
-    <updated>2016-02-07T13:17:22.886Z</updated>
+    <updated>2016-02-07T13:17:22.000Z</updated>
     
     <content type="html">&lt;p&gt;From:&lt;a href=&quot;http://blog.damiles.com/2008/11/basic-ocr-in-opencv/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.damiles.com/2008/11/basic-ocr-in-opencv/&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;Github_u6E90_u7801&quot;&gt;&lt;a href=&quot;#Github_u6E90_u7801&quot; class=&quot;headerlink&quot; title=&quot;Github源码&quot;&gt;&lt;/a&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/damiles/basicOCR&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Github源码&lt;/a&gt;&lt;/em&gt;&lt;/h2&gt;&lt;p&gt;在这个教程当中我们将完成一个基础的数字光学字符识别。这包括把一个手写的数字分类进它所属的类里。&lt;/p&gt;
@@ -666,7 +666,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2012/xdjw-forum/"/>
     <id>http://www.sun11.me/blog/2012/xdjw-forum/</id>
     <published>2012-02-20T16:00:00.000Z</published>
-    <updated>2016-02-07T11:58:59.214Z</updated>
+    <updated>2016-02-07T11:59:00.000Z</updated>
     
     <content type="html">&lt;p&gt;经过路由器和网关的两层端口映射和两个防火墙端口的开启，CentOS 6.2 + Apache + vsftpd 的小型论坛总算基本建好了。&lt;/p&gt;
 &lt;p&gt;&lt;del&gt;地址是&lt;a href=&quot;http://210.27.10.208/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://210.27.10.208/&lt;/a&gt;,仅供西电校内访问。&lt;/del&gt;&lt;/p&gt;
@@ -694,7 +694,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/"/>
     <id>http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/</id>
     <published>2012-01-06T16:00:00.000Z</published>
-    <updated>2016-02-07T12:01:55.106Z</updated>
+    <updated>2016-02-07T12:01:56.000Z</updated>
     
     <content type="html">&lt;p&gt;首先刷OpenWrt,我用的是&lt;a title=&quot;http://www.right.com.cn/forum/thread-71042-1-2.html&quot; href=&quot;http://www.right.com.cn/forum/thread-71042-1-2.html&quot; target=&quot;_blank&quot;&gt;这个帖子&lt;/a&gt;里的&lt;a title=&quot;http://ishare.iask.sina.com.cn/f/22200677.html&quot; href=&quot;http://ishare.iask.sina.com.cn/f/22200677.html&quot; target=&quot;_blank&quot;&gt;这个版本&lt;/a&gt;，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。&lt;/p&gt;
 &lt;p&gt;我是按&lt;a title=&quot;http://www.unxmail.com/read.php?187&quot; href=&quot;http://www.unxmail.com/read.php?187&quot; target=&quot;_blank&quot;&gt;这个帖子&lt;/a&gt;来操作的，把u盘分成两个区，一个ext3格式（据说比较稳定？），一个ext4格式。按照帖子成功挂载以后点开luci的System里的Software，发现空间已经是u盘那个指定分区的空间了，啊哈，想装啥就装啥。&lt;/p&gt;
@@ -755,7 +755,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2011/face-recognition-introduction-translation/"/>
     <id>http://www.sun11.me/blog/2011/face-recognition-introduction-translation/</id>
     <published>2011-09-28T16:00:00.000Z</published>
-    <updated>2016-02-07T12:47:33.282Z</updated>
+    <updated>2016-02-07T12:47:34.000Z</updated>
     
     <content type="html">&lt;p&gt;From: &lt;a href=&quot;http://www.shervinemami.co.cc/faceRecognition.html/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.shervinemami.co.cc/faceRecognition.html/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Translated by 11&lt;/p&gt;
@@ -880,7 +880,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2011/quick-dirty-text-writer/"/>
     <id>http://www.sun11.me/blog/2011/quick-dirty-text-writer/</id>
     <published>2011-08-20T16:00:00.000Z</published>
-    <updated>2016-02-07T11:48:20.690Z</updated>
+    <updated>2016-02-07T11:48:20.000Z</updated>
     
     <content type="html">&lt;p&gt;最近在学QT编程，总算是能做出一个图形界面程序了。&lt;/p&gt;
 &lt;p&gt;我用的书是《C++ GUI Qt 4 编程（第二版）》(C++ GUI Programming with Qt4,Second Edition)。书上给我的第一个有主窗口的完整应用程序的例子是一个电子表格程序，那叫一个复杂啊…虽然说基本把QT库的基本内容展现出来了，可是我实在消化不了那么多东西，而且涉及到表格，太过具体，这些比较细节的东西以后未必用的上。&lt;/p&gt;
@@ -914,7 +914,7 @@ rosmake -a
     <link href="http://www.sun11.me/blog/2011/hello-world/"/>
     <id>http://www.sun11.me/blog/2011/hello-world/</id>
     <published>2011-06-25T16:00:00.000Z</published>
-    <updated>2016-02-07T12:20:45.458Z</updated>
+    <updated>2016-02-07T12:20:46.000Z</updated>
     
     <content type="html">&lt;p&gt;&lt;strong&gt;Hello World!&lt;/strong&gt;&lt;/p&gt;
 </content>

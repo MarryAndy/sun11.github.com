@@ -35,16 +35,16 @@ Android下PocketSphinx的离线语音识别
 Rosmin–OpenCV Color Blob Tracker on An">
 <meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/54389a22c578eb6789380abdc70ea156.png">
 <meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/fa93e566fdba33847d86c97c66e9f6fa.png">
-<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/e69e6efc3938f834503de96fbe0068d6.png">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/c15d2ab7157f666de39873659dd37697.jpg">
 <meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/c6b152e0d811b66b675a416fe8ded013.png">
 <meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/2685dfa7f0443ccf12d4a01a1c3b2568.jpeg">
-<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/e1bace65dd4c9c1c7e48d3eaaed20aa4.png">
-<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/840de7c5837e4b7d544d47284c2d5cbd.png">
-<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/5ad0fba96ad2991910975a436aeb4d9d.png">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/6d604c137f34654f216066332f1245e0.jpg">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/2eb1613837654cb598482f7b495cc4ee.jpg">
+<meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/7239941384c0d7713355636d212b0035.png">
 <meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/1aeabdfde10505cca6a2d87994b19dcf.png">
 <meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/0123ae700d696feab9ee6379956a1512.jpg">
 <meta property="og:image" content="http://11zpic-11zpic.stor.sinaapp.com/original/a26081e9e8c6b4a7f6a87984574eac06.jpg">
-<meta property="og:updated_time" content="2016-02-07T12:15:46.722Z">
+<meta property="og:updated_time" content="2016-02-09T11:22:52.266Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rosmin与Rossum">
 <meta name="twitter:description" content="Rossum demo:
@@ -200,15 +200,15 @@ ga('send', 'pageview');
 <ol>
 <li><p>基本运动：用Android设备控制小车完成基本运动，可以用控制界面的按钮和语音来操控。如前进，后退，停止，左转，右转，车身左转90度，车身右转90度，舵机云台的转动等。</p>
 </li>
-<li><p>追踪乒乓球： 由小车上的Android手机做图像处理获取小球坐标，通过Arduino控制舵机对正小球。根据小球偏离中心位置的距离调整运动速度。详见这篇：<a href="http://blog.csdn.net/sununs11/article/details/8034294" target="_blank" rel="external">Rosmin–OpenCV Color Blob Tracker on Android</a><br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/e69e6efc3938f834503de96fbe0068d6.png" alt=""></p>
+<li><p>追踪乒乓球： 由小车上的Android手机做图像处理获取小球坐标，通过Arduino控制舵机对正小球。根据小球偏离中心位置的距离调整运动速度。详见这篇：<a href="http://blog.csdn.net/sununs11/article/details/8034294" target="_blank" rel="external">Rosmin–OpenCV Color Blob Tracker on Android</a><br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/c15d2ab7157f666de39873659dd37697.jpg" alt=""></p>
 </li>
 <li><p>以QR码为人工路标的导航： 我们设计了一个以QR码作为人工路标的导航策略，根据超声波传感器检测拐角，利用QR码提供的信息和陀螺仪传感器的信息运动到指定区域。会有一篇水论文，不过现在还没发出来。<br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/c6b152e0d811b66b675a416fe8ded013.png" alt=""></p>
 </li>
 <li><p>绘制运动轨迹： 我们利用Android上的Google Maps控件做了一个绘制小车运动轨迹的程序，由小车上手机陀螺仪获取角加速度，计算出角度。不知是我们算法不行还是手机加速度计不够精确，用加速度计算出的里程误差太大根本用不了。于是我们就给小车一个恒定的速度，综合控制命令的信息（比如前进后退停止）来绘制轨迹。在客户端可以显示出小车的运行轨迹，还有QR码路标和目标的位置。详见这篇：<a href="http://blog.csdn.net/f_season/article/details/9171523" target="_blank" rel="external">在Android上绘制小车行进路线图并标记</a><br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/2685dfa7f0443ccf12d4a01a1c3b2568.jpeg" alt=""></p>
 </li>
-<li><p>寻找目标： 不断转动寻找目标，发现目标以后就向目标前进。根据目标区域面积判断是否足够靠近，足够靠近了就认为到达了目标自动停止。关于怎么检测目标和计算目标区域面积仍然在：<a href="http://blog.csdn.net/sununs11/article/details/8034294" target="_blank" rel="external">Rosmin–OpenCV Color Blob Tracker on Android</a><br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/e1bace65dd4c9c1c7e48d3eaaed20aa4.png" alt=""></p>
+<li><p>寻找目标： 不断转动寻找目标，发现目标以后就向目标前进。根据目标区域面积判断是否足够靠近，足够靠近了就认为到达了目标自动停止。关于怎么检测目标和计算目标区域面积仍然在：<a href="http://blog.csdn.net/sununs11/article/details/8034294" target="_blank" rel="external">Rosmin–OpenCV Color Blob Tracker on Android</a><br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/6d604c137f34654f216066332f1245e0.jpg" alt=""></p>
 </li>
-<li><p>视频监控： 用手机的WiFi Camera应用即可，可以通过PC端的Web界面控制。<br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/840de7c5837e4b7d544d47284c2d5cbd.png" alt=""></p>
+<li><p>视频监控： 用手机的WiFi Camera应用即可，可以通过PC端的Web界面控制。<br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/2eb1613837654cb598482f7b495cc4ee.jpg" alt=""></p>
 </li>
 </ol>
 <h3 id="Rossum"><a href="#Rossum" class="headerlink" title="Rossum"></a>Rossum</h3><p>项目地址：<a href="https://code.google.com/p/wtfrobot-rossum/" target="_blank" rel="external">https://code.google.com/p/wtfrobot-rossum/</a></p>
@@ -220,18 +220,18 @@ ga('send', 'pageview');
 <p><a href="http://blog.csdn.net/wtfrobot/article/details/9881859/" target="_blank" rel="external">Rossum–ROSjava-android控制ROS机器人</a></p>
 <p><a href="http://blog.csdn.net/wtfrobot/article/details/9881889/" target="_blank" rel="external">Rossum–ROSjava的消息发送</a></p>
 <p><a href="http://blog.csdn.net/wtfrobot/article/details/9881965/" target="_blank" rel="external">Rossum–tpofinder 平面纹理物体识别</a></p>
-<p>Rossum是我们以ROS机器人操作系统为核心做的一个自主导航机器人，名字来自于《罗萨姆的万能机器人( Rossum’s Universal Robots)》里的Rossum一词。使用 Kinect 传感器模拟激光测距仪,Arduino 控制器驱动电机控制机器人运动,Atom上网本置于机器人内作为主要的处理设备。<br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/5ad0fba96ad2991910975a436aeb4d9d.png" alt=""></p>
+<p>Rossum是我们以ROS机器人操作系统为核心做的一个自主导航机器人，名字来自于《罗萨姆的万能机器人( Rossum’s Universal Robots)》里的Rossum一词。使用 Kinect 传感器模拟激光测距仪,Arduino 控制器驱动电机控制机器人运动,Atom上网本置于机器人内作为主要的处理设备。<br><img src="http://11zpic-11zpic.stor.sinaapp.com/original/7239941384c0d7713355636d212b0035.png" alt=""></p>
 <p>实现的功能：</p>
 <ol>
-<li><p>基本运动控制： 机器人运动模式为轮式运动,由两个驱动轮驱动机器人运<br>动,一个万向轮辅助,采用 PI 反馈,闭环控制机器人速度,可以精确平滑<br>的控制机器人的运动,同时利用编码器获取的数据,由运动学模型推算机<br>器人的当前坐标系位姿。</p>
+<li><p>基本运动控制： 机器人运动模式为轮式运动,由两个驱动轮驱动机器人运动,一个万向轮辅助,采用 PI 反馈,闭环控制机器人速度,可以精确平滑地控制机器人的运动,同时利用编码器获取的数据,由运动学模型推算机器人的当前坐标系位姿。</p>
 </li>
-<li><p>语音控制： 通过 Android 手机发送语音控制机器人运动,可进行离线英文<br>语音识别(和Rosmin相同)，在线中文语音识别(讯飞)。</p>
+<li><p>语音控制： 通过 Android 手机发送语音控制机器人运动,可进行离线英文语音识别(和Rosmin相同)，在线中文语音识别(讯飞)。</p>
 </li>
 <li><p>跟随运动： 即turtlebot_follower，使机器人与人保持一定距离并正对人体,当人转向或移动时,机器人相应跟随人体转向和移动。</p>
 </li>
-<li><p>同时定位与地图构建(SLAM)： 移动机器人在未知环境中依靠传感器获取<br>的信息进行环境建模,同时利用所创建的环境地图估计其本身的位姿。</p>
+<li><p>同时定位与地图构建(SLAM)： 移动机器人在未知环境中依靠传感器获取的信息进行环境建模,同时利用所创建的环境地图估计其本身的位姿。</p>
 </li>
-<li><p>自主导航： 在构建出静态地图的基础上,实现机器人从一个位置运动到地<br>图上的另一个指定位置。</p>
+<li><p>自主导航： 在构建出静态地图的基础上,实现机器人从一个位置运动到地图上的另一个指定位置。</p>
 </li>
 <li><p>物体识别： 利用tpofinder,实现识别有纹理特征的物体,如书本封面,咖啡盒等，识别后用TTS发声，通过舵机云台对准物体。详见：<a href="http://blog.csdn.net/sununs11/article/details/9180085" target="_blank" rel="external">Rossum–tpofinder 平面纹理物体识别</a></p>
 </li>
@@ -252,7 +252,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/rosmin-and-rossum/" data-id="cikct6342000yvjhxvy9nh5f3" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/rosmin-and-rossum/" data-id="cikfbnn5o000y4otonpdw5s60" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/rosmin-and-rossum/#disqus_thread" class="article-comment-link">Comments</a>
         
