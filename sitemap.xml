@@ -2,23 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.sun11.me/about/index.html</loc>
-    <lastmod>2016-02-09T12:05:57.397Z</lastmod>
+    <loc>http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/</loc>
+    <lastmod>2016-02-10T12:50:24.813Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/</loc>
+    <lastmod>2016-02-10T12:46:47.813Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/</loc>
+    <lastmod>2016-02-10T12:40:20.560Z</lastmod>
   </url>
   
   <url>
     <loc>http://www.sun11.me/blog/2013/rosmin-and-rossum/</loc>
-    <lastmod>2016-02-09T11:22:52.266Z</lastmod>
+    <lastmod>2016-02-10T12:00:56.443Z</lastmod>
   </url>
   
   <url>
-    <loc>http://www.sun11.me/blog/2012/opencv-basic-ocr/</loc>
-    <lastmod>2016-02-07T13:17:22.000Z</lastmod>
+    <loc>http://www.sun11.me/blog/2012/wtfrobot-rosmin/</loc>
+    <lastmod>2016-02-10T12:00:26.476Z</lastmod>
   </url>
   
   <url>
-    <loc>http://www.sun11.me/blog/2011/face-recognition-introduction-translation/</loc>
-    <lastmod>2016-02-07T12:47:34.000Z</lastmod>
+    <loc>http://www.sun11.me/about/index.html</loc>
+    <lastmod>2016-02-10T08:04:31.488Z</lastmod>
   </url>
   
   <url>
@@ -27,38 +37,13 @@
   </url>
   
   <url>
-    <loc>http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/</loc>
-    <lastmod>2016-02-07T12:14:38.000Z</lastmod>
-  </url>
-  
-  <url>
     <loc>http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/</loc>
     <lastmod>2016-02-07T12:12:34.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/</loc>
-    <lastmod>2016-02-07T12:12:02.000Z</lastmod>
-  </url>
-  
-  <url>
     <loc>http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/</loc>
     <lastmod>2016-02-07T12:11:50.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.sun11.me/blog/2012/wtfrobot-rosmin/</loc>
-    <lastmod>2016-02-07T12:11:30.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.sun11.me/blog/2012/ubuntu-1204-customization/</loc>
-    <lastmod>2016-02-07T12:09:36.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/</loc>
-    <lastmod>2016-02-07T12:01:56.000Z</lastmod>
   </url>
   
   <url>
