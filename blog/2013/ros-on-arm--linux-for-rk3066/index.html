@@ -15,9 +15,9 @@
 <meta property="og:site_name" content="11zHexo">
 <meta property="og:description" content="去年6月左右国内厂商（瑞科美 Rikomagic）推出了一款叫做MK802的Mini PC。采用Allwinner A10/ 1GHz Cortex-A8做处理器，运行Android 4.0系统，内存512MB或1G。实际上相当于一个没有触摸屏和电池的平板，不过可以用USB OTG连接鼠标键盘，通过HDMI接口输出音视频。
 “少即是多”，正因为它小，靠外部供电而非电池，有很多扩展的可能性，上市以后">
-<meta property="og:image" content="http://hexo-sun11.qiniudn.com/images/7f826aef8756ce136c0262bd5a49a17f.jpg">
-<meta property="og:image" content="http://hexo-sun11.qiniudn.com/images/eccbaf8ff5d4a416e546a1f2e18401b7.jpg">
-<meta property="og:updated_time" content="2016-02-10T12:50:24.813Z">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/7f826aef8756ce136c0262bd5a49a17f.jpg">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/eccbaf8ff5d4a416e546a1f2e18401b7.jpg">
+<meta property="og:updated_time" content="2016-02-12T18:01:11.860Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ROS on ARM--Linux For RK3066 Mini PC简介">
 <meta name="twitter:description" content="去年6月左右国内厂商（瑞科美 Rikomagic）推出了一款叫做MK802的Mini PC。采用Allwinner A10/ 1GHz Cortex-A8做处理器，运行Android 4.0系统，内存512MB或1G。实际上相当于一个没有触摸屏和电池的平板，不过可以用USB OTG连接鼠标键盘，通过HDMI接口输出音视频。
@@ -132,8 +132,8 @@ ga('send', 'pageview');
 <p>“少即是多”，正因为它小，靠外部供电而非电池，有很多扩展的可能性，上市以后很火。到现在淘宝一搜MK802，会出现各种各样厂商（比如酷优乐，联力胜）的也叫做MK802或者UG802,MK803,MK808,MK809的之类的产品。可以给它刷上Linux，然后把它当成一个普通PC使用（因为驱动的原因，用自带的Android可能是更好的选择）。或者，不接显示器，做一个Headless Server？接移动硬盘做一个BT下载机？又或者，加上Arduino，连接上各种传感器，作为机器人的主控制器？总之可以做到很多平板做不到的事情。这里有一个<a href="http://bluefox.com.tw/2012/11/22/%E5%AE%89%E5%8D%93-android-mini-pc-%E7%B0%A1%E6%98%93%E5%B0%8D%E7%85%A7%E8%A1%A8/#more-2654" target="_blank" rel="external">简易对照表</a>。</p>
 <p>MK802的第一代产品是使用全志A10芯片的，在半年后看来这个芯片性能不够强了，运行桌面Ubuntu不是很流畅，但是它的Android ROM和Linux的支持已经比较完善了。后面有一个MK802 II是它的升级版，改动不大，系统基本也可以通用。</p>
 <p>接下来出现了一个UG802,它不是由原来MK802的厂商瑞科美生产的，而是一个叫做酷优乐的公司。在搜索引擎上搜索“酷优乐”这个词都搜不到这个公司的网站。我是问淘宝客服才知道这个公司的网站的（kuyoule.cn），它是第一个使用RK3066芯片（1.66GHz,双核A9）的Mini PC。然后又出现了一个MK808（不知道是哪个产商的）ROM提升到8G，后来的MK808B增加了蓝牙，改进了WiFi天线（原来的好像WiFi信号不太好）。然后瑞科美才推出MK802 III，同样是使用RK3066芯片，不过个人感觉可能质量和ROM支持好一些。然后就是去年12月份推出的MK802 IIIS了，我买的就是这个。</p>
-<p><img src="http://hexo-sun11.qiniudn.com/images/7f826aef8756ce136c0262bd5a49a17f.jpg" alt=""></p>
-<p><img src="http://hexo-sun11.qiniudn.com/images/eccbaf8ff5d4a416e546a1f2e18401b7.jpg" alt=""></p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/7f826aef8756ce136c0262bd5a49a17f.jpg" alt=""></p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/eccbaf8ff5d4a416e546a1f2e18401b7.jpg" alt=""></p>
 <a id="more"></a>
 <p>RK3066的linux源码从一个西班牙的公司释出，然后AndrewDB开始开发，<a href="http://www.slatedroid.com/topic/40717-ubuntu-linux-for-the-ug802" target="_blank" rel="external">成功跑上了Ubuntu 12.10</a>。</p>
 <p>AndrewDB开发了一段时间，放出了kernel镜像和rootfs，最后的版本是Pre-Alpha 0.3,在MK802 III/UG802/MK808/UG007/iMito MX1等RK3066芯片的设备上都测试正常。然后他放出了一个Roadmap，就在论坛里神秘消失了==，再也没有出现。。。大神们都是神龙见首不见尾么。。。</p>
@@ -148,7 +148,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/" data-id="cikjz99x30014fgto1ifwezaw" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/" data-id="cikk0cy6f0014hwto3u8p9to9" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/#disqus_thread" class="article-comment-link">Comments</a>
         

@@ -17,8 +17,8 @@
 <meta property="og:description" content="首先刷OpenWrt,我用的是这个帖子里的这个版本，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。
 我是按这个帖子来操作的，把u盘分成两个区，一个ext3格式（据说比较稳定？），一个ext4格式。按照帖子成功挂载以后点开luci的System里的Software，发现空间已经是u盘那个指定分区的空间了，啊哈，想装啥就装啥。
 接下来就是摄像">
-<meta property="og:image" content="http://hexo-sun11.qiniudn.com/images/54539106a4e5c87797caf47aa5676976.png">
-<meta property="og:updated_time" content="2016-02-10T12:40:20.560Z">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/54539106a4e5c87797caf47aa5676976.png">
+<meta property="og:updated_time" content="2016-02-12T18:01:07.997Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TL-WR703n挂载USB摄像头">
 <meta name="twitter:description" content="首先刷OpenWrt,我用的是这个帖子里的这个版本，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。
@@ -149,7 +149,7 @@ opkg install usbutils
 <pre><code>mjpg_streamer -i &quot;input_uvc.so -y -d /dev/video0&quot; -o &quot;output_http.so -p 8080 -w /www/camwww&quot;
 </code></pre><p>就可以在 <code>http://192.168.0.1:8080/?action=stream</code> 看到视频了。</p>
 <p>我把画质调到了30,显示速度还可以。</p>
-<p><img src="http://hexo-sun11.qiniudn.com/images/54539106a4e5c87797caf47aa5676976.png" alt=""></p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/54539106a4e5c87797caf47aa5676976.png" alt=""></p>
 <p>关于输入配置参数：</p>
 <pre><code>-y 是关键，默认启动是mjpeg格式，这个就报错。改成YUV格式
 
@@ -175,7 +175,7 @@ opkg install usbutils
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenWrt/">OpenWrt</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/" data-id="cikjz99wh000ifgto3jzotpml" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/" data-id="cikk0cy5q000ihwto0zh1bq7k" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/#disqus_thread" class="article-comment-link">Comments</a>
         
