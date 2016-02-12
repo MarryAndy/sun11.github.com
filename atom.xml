@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sun11.me/"/>
-  <updated>2016-02-10T12:00:56.443Z</updated>
+  <updated>2016-02-12T17:34:14.403Z</updated>
   <id>http://www.sun11.me/</id>
   
   <author>
@@ -14,6 +14,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo主题Paperbox</title>
+    <link href="http://www.sun11.me/blog/2016/hexo-theme-paperbox/"/>
+    <id>http://www.sun11.me/blog/2016/hexo-theme-paperbox/</id>
+    <published>2016-02-12T15:56:11.000Z</published>
+    <updated>2016-02-12T17:34:14.403Z</updated>
+    
+    <content type="html">&lt;p&gt;&lt;img src=&quot;http://hexo-sun11.qiniudn.com/images/hexo-theme-paperbox/responsive-design.png&quot; alt=&quot;Responsive Design&quot;&gt;&lt;/p&gt;
+&lt;p&gt;基于基于Landscape主题的Landscape-Plus主题修改而来的主题，带有几张纸和一个会动的&lt;em&gt;纸盒子&lt;/em&gt;。&lt;/p&gt;
+&lt;p&gt;3年前折腾Hexo的时候看到自带的light主题，风格很喜欢，感觉很简洁，只是有点&lt;em&gt;太&lt;/em&gt;简洁了…&lt;/p&gt;
+&lt;p&gt;于是自己动手改造。发现light主题的文章背景和widget背景都有点像纸的样子，就有了个想法，把所有的东西都变成纸！碰巧在&lt;a href=&quot;http://cssdeck.com/labs/9avpkiv8vl&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;cssdeck&lt;/a&gt;看到了一个很酷的用CSS做成的立方体，于是直接拿来做成了一个&lt;code&gt;纸盒子&lt;/code&gt;，即Paperbox。然后给文章的白色背景增加了卷起边角的阴影，这就是当时的Paperbox主题：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://hexo-sun11.qiniudn.com/images/hexo-theme-paperbox/old-paperbox-theme1.png&quot; alt=&quot;Old Paperbox&quot;&gt;&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;&lt;img src=&quot;http://hexo-sun11.qiniudn.com/images/hexo-theme-paperbox/old-paperbox-theme2.png&quot; alt=&quot;Old Paperbox&quot;&gt;&lt;/p&gt;
+&lt;p&gt;然而当时对移动设备的响应式设计几乎一无所知，所以这个主题在移动设备下简直就是一团糟。。。后来Hexo2.4以后有了Landscape主题，于是我就把Paperbox再修改了一次，不过当时精力有限对github的操作也是每次用了就忘，木有上传更新代码。。。只用到了自己的博客上。&lt;/p&gt;
+&lt;p&gt;有一篇关于苹果网站首页CSS特效的&lt;a href=&quot;http://blog.zhusee.in/post/40014919870/curved-shadow-by-css-box-shadow&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;文章&lt;/a&gt;，用这个效果替换了原来的边角卷起（原来的边角卷起在文章内容比较长的时候貌似会出现问题）。然后用上了CSS的动画让纸盒子&lt;a href=&quot;http://cssdeck.com/labs/htore5cz&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;动&lt;/a&gt;了起来，主导航栏也重新设计了一下，效果就跟现在的一样。不过这样的主题仍然存在不少bug，很多主题在PC上看起来很正常，但是到了宽度只有320点的iPhone 4-5s上面的时候就各种毛病了。。。&lt;/p&gt;
+&lt;p&gt;然后。。。就到了现在，来填坑了。。。&lt;/p&gt;
+&lt;p&gt;时间已经是2016年，Hexo已经进化到了3.1.1。。。作者更新得真他妈快。。。&lt;/p&gt;
+&lt;p&gt;Landscape有了一个叫做Landscape-plus的衍生主题，有不少功能增强，所以我就以它为起点，把原来的外观再照搬过去。不过搬过去的过程中发现不少显示细节上的问题，强迫症不能忍…比如，把浏览器窗口缩小至移动设备大小，点开导航按钮，然后再最大化。。。（完全不是一个正常用户干的事！蛇精病!)，不过我就是不能忍地把它给修复了。。。&lt;/p&gt;
+&lt;p&gt;还有，页面里每个文章都有分享按钮，如果点了一篇文章的分享按钮不关闭，再点另一个分享按钮不关闭，回来再点原来文章的分享按钮，突然失灵了。。。（同样蛇精病！）但我还是不能忍地修好了。。。&lt;/p&gt;
+&lt;p&gt;还有底部分页器（Paginator）的&lt;code&gt;...&lt;/code&gt;在移动设备界面也显示出来，我把它给隐藏了。。。&lt;/p&gt;
+&lt;p&gt;还有很多这样的小细节问题，都给解决了。&lt;/p&gt;
+&lt;p&gt;最头疼的是mathjax的公式，因为不管怎么改CSS我发现公式太长都会溢出文章元素外，后来改用catx的&lt;a href=&quot;https://github.com/akfish/hexo-math&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo-math插件&lt;/a&gt;，加上这句css：&lt;/p&gt;
+&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;.MathJax_Display&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;overflow-x&lt;/span&gt;: &lt;span class=&quot;tag&quot;&gt;auto&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;就解决了。。。(不过在某些渲染器下不存在这个类，这我就撒手不管了…)&lt;/p&gt;
+&lt;p&gt;另外对主题原生的分享按钮做了增强，把Pinterest换成了Linkedin，毕竟Pinterest上的大多都是图片。。。然后加上了国内的四个社交网站，微博，人人，QQ空间，微信，用jquery的qrcode插件生成文章链接的QR码用来做微信的分享。百度的那个分享感觉太累赘（而且还有js的warning），还和swiftype有冲突，干脆就删掉了。&lt;/p&gt;
+&lt;p&gt;文章目录（TOC）的添加是参考的&lt;a href=&quot;http://kuangqi.me/tricks/enable-table-of-contents-on-hexo/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这篇文章&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;最后来测试一下Mathjax的公式显示：&lt;/p&gt;
+&lt;span&gt;$$i\hbar\frac{\partial \psi}{\partial t}
+= \frac{-\hbar^2}{2m} \left(
+\frac{\partial^2}{\partial x^2}
++ \frac{\partial^2}{\partial y^2}
++ \frac{\partial^2}{\partial z^2}
+\right) \psi + V \psi.$$&lt;/span&gt;&lt;!-- Has MathJax --&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://hexo-sun11.qiniudn.com/images/hexo-theme-paperbox/responsive-design.png&quot; alt=&quot;Responsive Design&quot;&gt;&lt;/p&gt;
+&lt;p&gt;基于基于Landscape主题的Landscape-Plus主题修改而来的主题，带有几张纸和一个会动的&lt;em&gt;纸盒子&lt;/em&gt;。&lt;/p&gt;
+&lt;p&gt;3年前折腾Hexo的时候看到自带的light主题，风格很喜欢，感觉很简洁，只是有点&lt;em&gt;太&lt;/em&gt;简洁了…&lt;/p&gt;
+&lt;p&gt;于是自己动手改造。发现light主题的文章背景和widget背景都有点像纸的样子，就有了个想法，把所有的东西都变成纸！碰巧在&lt;a href=&quot;http://cssdeck.com/labs/9avpkiv8vl&quot;&gt;cssdeck&lt;/a&gt;看到了一个很酷的用CSS做成的立方体，于是直接拿来做成了一个&lt;code&gt;纸盒子&lt;/code&gt;，即Paperbox。然后给文章的白色背景增加了卷起边角的阴影，这就是当时的Paperbox主题：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://hexo-sun11.qiniudn.com/images/hexo-theme-paperbox/old-paperbox-theme1.png&quot; alt=&quot;Old Paperbox&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Customize" scheme="http://www.sun11.me/tags/Customize/"/>
+    
+      <category term="Web" scheme="http://www.sun11.me/tags/Web/"/>
+    
+  </entry>
   
   <entry>
     <title>Rosmin与Rossum</title>

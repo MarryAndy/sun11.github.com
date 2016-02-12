@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sun11.me/blog/2016/hexo-theme-paperbox/</loc>
+    <lastmod>2016-02-12T17:34:14.403Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/</loc>
     <lastmod>2016-02-10T12:50:24.813Z</lastmod>
   </url>
