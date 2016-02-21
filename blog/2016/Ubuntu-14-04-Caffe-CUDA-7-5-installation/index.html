@@ -5,17 +5,21 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   
-  <title>11zHexo</title>
+  <title>Ubuntu14.04 安装 Caffe+CUDA 7.5 | 11zHexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="11zHexo">
-<meta property="og:url" content="http://www.sun11.me/index.html">
+  <meta name="description" content="Caffe官网的 安装说明 实在太简单了点，主要是参考的 Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明 和 Ubuntu14.04下安装Caffe总结 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。
+1. Caffe依赖包12sudo apt-get install build-essential  # basic requireme">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu14.04 安装 Caffe+CUDA 7.5">
+<meta property="og:url" content="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/index.html">
 <meta property="og:site_name" content="11zHexo">
-<meta property="og:description">
+<meta property="og:description" content="Caffe官网的 安装说明 实在太简单了点，主要是参考的 Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明 和 Ubuntu14.04下安装Caffe总结 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。
+1. Caffe依赖包12sudo apt-get install build-essential  # basic requireme">
+<meta property="og:updated_time" content="2016-02-21T12:32:59.837Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="11zHexo">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Ubuntu14.04 安装 Caffe+CUDA 7.5">
+<meta name="twitter:description" content="Caffe官网的 安装说明 实在太简单了点，主要是参考的 Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明 和 Ubuntu14.04下安装Caffe总结 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。
+1. Caffe依赖包12sudo apt-get install build-essential  # basic requireme">
   
     <link rel="alternative" href="/atom.xml" title="11zHexo" type="application/atom+xml">
   
@@ -97,9 +101,7 @@ ga('send', 'pageview');
 </header>
 
     <div class="outer">
-      <section id="main">
-  
-    <article id="post-Ubuntu-14-04-Caffe-CUDA-7-5-installation" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-Ubuntu-14-04-Caffe-CUDA-7-5-installation" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" class="article-date">
   <time datetime="2016-02-21T12:21:30.000Z" itemprop="datePublished">Feb 21 2016</time>
@@ -114,8 +116,8 @@ ga('send', 'pageview');
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/">Ubuntu14.04 安装 Caffe+CUDA 7.5</a>
+    <h1 class="article-title" itemprop="name">
+      Ubuntu14.04 安装 Caffe+CUDA 7.5
     </h1>
   
 
@@ -123,6 +125,11 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">Contents</strong>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_Caffe_u4F9D_u8D56_u5305"><span class="toc-text">1. Caffe依赖包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-__u5B89_u88C5CUDA_7-5"><span class="toc-text">2. 安装CUDA 7.5</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1__u7981_u7528nouveau_u9A71_u52A8"><span class="toc-text">2.1 禁用nouveau驱动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2__u5B89_u88C5CUDA"><span class="toc-text">2.2 安装CUDA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3__u914D_u7F6E_u73AF_u5883_u53D8_u91CF"><span class="toc-text">2.3 配置环境变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4__u7F16_u8BD1SAMPLE"><span class="toc-text">2.4 编译SAMPLE</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-__u5B89_u88C5cuDNN"><span class="toc-text">3. 安装cuDNN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-__u5B89_u88C5BLAS"><span class="toc-text">4. 安装BLAS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-__u5B89_u88C5Anaconda"><span class="toc-text">5. 安装Anaconda</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1__u5B89_u88C5pyenv"><span class="toc-text">5.1 安装pyenv</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2__u7528pyenv_u5B89_u88C5Anaconda"><span class="toc-text">5.2 用pyenv安装Anaconda</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-__u5B89_u88C5OpenCV"><span class="toc-text">6. 安装OpenCV</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-__u5B89_u88C5Caffe"><span class="toc-text">7. 安装Caffe</span></a></li></ol>
+          </div>
         
         <p>Caffe官网的 <a href="http://caffe.berkeleyvision.org/installation.html" target="_blank" rel="external">安装说明</a> 实在太简单了点，主要是参考的 <a href="https://gist.github.com/bearpaw/c38ef18ec45ba6548ec0#file-caffe-ubuntu-14-04-64bit-cuda-6-5-md" target="_blank" rel="external">Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明</a> 和 <a href="http://weibo.com/p/2304189db078090102vdvx" target="_blank" rel="external">Ubuntu14.04下安装Caffe总结</a> 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。</p>
 <h3 id="1-_Caffe_u4F9D_u8D56_u5305"><a href="#1-_Caffe_u4F9D_u8D56_u5305" class="headerlink" title="1. Caffe依赖包"></a>1. Caffe依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential  <span class="comment"># basic requirement</span></span><br><span class="line">sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev protobuf-compiler <span class="comment">#required by caffe</span></span><br></pre></td></tr></table></figure>
@@ -210,260 +217,27 @@ PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
   </div>
   </div>
   
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2016/hexo-theme-paperbox/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hexo主题Paperbox</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 
-
-  
-    <article id="post-hexo-theme-paperbox" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2016/hexo-theme-paperbox/" class="article-date">
-  <time datetime="2016-02-12T15:56:11.000Z" itemprop="datePublished">Feb 12 2016</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/hexo-theme-paperbox/">Hexo主题Paperbox</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/hexo-theme-paperbox/responsive-design.png" alt="Responsive Design"></p>
-<p>基于基于Landscape主题的Landscape-Plus主题修改而来的主题，带有几张纸和一个会动的<strong>纸盒子</strong>。</p>
-<p>3年前折腾Hexo的时候看到自带的light主题，风格很喜欢，感觉很简洁，只是有点<strong>太</strong>简洁了…</p>
-<p>于是自己动手改造。发现light主题的文章背景和widget背景都有点像纸的样子，就有了个想法，把所有的东西都变成纸！碰巧在<a href="http://cssdeck.com/labs/9avpkiv8vl">cssdeck</a>看到了一个很酷的用CSS做成的立方体，于是直接拿来做成了一个<code>纸盒子</code>，即Paperbox。然后给文章的白色背景增加了卷起边角的阴影，这就是当时的Paperbox主题：</p>
-<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/hexo-theme-paperbox/old-paperbox-theme1.png" alt="Old Paperbox"></p>
-        
-          <p class="article-more-link">
-            <a href="/blog/2016/hexo-theme-paperbox/#more">Read More</a>
-          </p>
-        
-      
+  <section id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Customize/">Customize</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
+  </section>
 
-        <a data-url="http://www.sun11.me/blog/2016/hexo-theme-paperbox/" data-id="cikwj2qpb001fq0to2entk5q9" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2016/hexo-theme-paperbox/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-rosmin-and-rossum" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2013/rosmin-and-rossum/" class="article-date">
-  <time datetime="2013-08-10T11:45:02.000Z" itemprop="datePublished">Aug 10 2013</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2013/rosmin-and-rossum/">Rosmin与Rossum</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Rossum demo:</p>
-<div class="video-container"><br><iframe  height=270 width=480 src="http://player.youku.com/embed/XNTY0MTUwMTMy?x" frameborder=0 allowfullscreen></iframe><br></div>
-
-<p>Rosmin demo:</p>
-<div class="video-container"><br><iframe  height=270 width=480 src="http://player.youku.com/embed/XNDg2OTMzNDEy" frameborder=0 allowfullscreen></iframe><br></div>
-
-<h3 id="Rosmin"><a href="#Rosmin" class="headerlink" title="Rosmin"></a>Rosmin</h3><p>项目地址：<a href="https://code.google.com/p/wtfrobot-rosmin/">https://code.google.com/p/wtfrobot-rosmin/</a></p>
-<p>相关文章：</p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/8029640/">Rosmin–OpenCV Color Blob Tracker on Android</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/8034640/">Android下PocketSphinx的离线语音识别</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173609/">Rosmin–OpenCV Color Blob Tracker on Android</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173619/">Rosmin–两台Android手机的Socket双向通信</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173631/">Rosmin–在Android上绘制小车行进路线图并标记</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173643/">Rosmin–折腾USB Host Shield的日子</a></p>
-<p>Rosmin机器人是我们去年（2012年）制作的一个使用Arduino驱动的小型移动机器人，连接上Android手机，可以完成手机控制的基本运动，追踪乒乓球，以QR码为人工路标移动到指定区域，搜寻目标，视频监控等等。</p>
-<p>硬件结构：<br><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/54389a22c578eb6789380abdc70ea156.png" alt=""></p>
-        
-          <p class="article-more-link">
-            <a href="/blog/2013/rosmin-and-rossum/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2013/rosmin-and-rossum/" data-id="cikwj2qoi000sq0to9ujejn2k" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2013/rosmin-and-rossum/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ros-on-arm--native-compilation-on-rk3066" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/" class="article-date">
-  <time datetime="2013-02-03T15:08:16.000Z" itemprop="datePublished">Feb 3 2013</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="1-__u5F00_u6E90_u673A_u5668_u4EBA_u64CD_u4F5C_u7CFB_u7EDFROS_28Robot_Operating_System_29_u7B80_u4ECB"><a href="#1-__u5F00_u6E90_u673A_u5668_u4EBA_u64CD_u4F5C_u7CFB_u7EDFROS_28Robot_Operating_System_29_u7B80_u4ECB" class="headerlink" title="1. 开源机器人操作系统ROS(Robot Operating System)简介"></a>1. 开源机器人操作系统ROS(Robot Operating System)简介</h3><p>ROS（Robot Operating System）是一个开源的为机器人软件开发设计的软件框架，在异构计算机集群中提供类似操作系统的功能。它并不是一个计算机的操作系统，而是机器人的操作系统，或者称为元级操作系统（Meta Operating System）。据目前唯一一本比较官方的关于ROS的书《ROS By Example Volume 1》介绍，“The primary goal of ROS (pronounced “Ross”) is to provide a unified and open source<br>programming framework for controlling robots in a variety of real world and simulated<br>environments.”，ROS的原始目的就是为了在一系列真实和模拟的环境中控制机器人提供一个统一的开源编程框架。为了实现这一目标，ROS架构中有<a href="http://www.ros.org/wiki/ROS/Concepts">三个层次</a>的概念：文件系统级（Filesystem Level），计算图级（Computation Graph Level）和社区级（Community Level）。<br>具体可以查阅<a href="http://zh.wikipedia.org/wiki/ROS">维基百科</a>和<a href="http://www.ros.org/wiki/">官网wiki</a>，这里就不过多介绍了。</p>
-<h3 id="2-_ROS_Groovy_Galapagos"><a href="#2-_ROS_Groovy_Galapagos" class="headerlink" title="2. ROS Groovy Galapagos"></a>2. ROS Groovy Galapagos</h3><p><a href="http://www.ros.org/news/2012/12/ros-groovy-galapagos-released.html">ROS Groovy Galapagos</a>是2012年12月31日发布的ROS最新版本，主要支持Ubuntu 11.10、Ubuntu 12.04和Ubuntu 12.10。提到这个版本的原因是它采用了新的构建系统——catkin，准备逐渐取代之前的rosbuild。它解决了rosbuild当中的几个问题，让ROS可以持续发展和扩大规模，相对于rosbuild更符合文件系统层次结构标准（Filesystem Hierarchy Standard，FHS），使在其它操作系统和架构上发布ROS包更加容易。正是这个原因让我在MK802 IIIS上编译ROS的时候轻松很多，如果编译之前的版本（比如fuerte）将会遇到更多问题。</p>
-<p>因为catkin的引入，ROS文件系统级的Stacks概念被移除了，原因是Package和Stack之间依赖性跟踪出现的问题，取代的是元包（metapackage）的概念。</p>
-<h3 id="3-_Ubuntu_on_ARM"><a href="#3-_Ubuntu_on_ARM" class="headerlink" title="3. Ubuntu on ARM"></a>3. Ubuntu on ARM</h3><p>ARM版Ubuntu的软件源是在<code>http://ports.ubuntu.com/</code>上，和桌面版的略有区别，我遇到的一个问题就是桌面版python-*的包ARM版几乎都没有，解决办法是使用python的包管理工具pip安装，比如桌面版上<code>apt-get install python-PACKAGENAME</code>，用<code>pip install PACKAGENAME</code>替代。据说easy_install的维护不够好，所以应该尽量用pip。</p>
-<p>我使用的是RK3066上的Picuntu，关于Picuntu请看前一篇文章。</p>
-<h3 id="4-__u7F16_u8BD1ROS_for_ARM"><a href="#4-__u7F16_u8BD1ROS_for_ARM" class="headerlink" title="4. 编译ROS for ARM"></a>4. 编译ROS for ARM</h3>
-        
-          <p class="article-more-link">
-            <a href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/">ROS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/" data-id="cikwj2qop000uq0toez6l3ne5" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ros-on-arm--picuntu-configuration" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2013/ros-on-arm--picuntu-configuration/" class="article-date">
-  <time datetime="2013-01-28T15:11:32.000Z" itemprop="datePublished">Jan 28 2013</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2013/ros-on-arm--picuntu-configuration/">ROS on ARM--Picuntu 安装配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上篇提到一个叫做Picuntu的项目，目的是为RK3066芯片的设备移植传统Linux，目前基本的使用已经没有什么问题，UG802/MK808（不含MK808B）已经可以使用内置的无线网卡，而其它型号，比如MK802 IIIS或者UG007，由于使用的是MTK的芯片，没有办法找到驱动（话说国内厂商有几个遵守了GPL协议的）所以只能外接USB网卡。另外是VPU和Mali 400，<a href="http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/page__st__380">slatedroid</a>论坛里有人正在折腾。</p>
-<p>MK80X开机后一般有两种模式，正常模式和恢复(recovery)模式。所以我们如果需要Android/Linux双启动，就只需要在recovery里刷入linux的kernel，Android可以正常运行互不影响。当然你也可以直接刷入原来的kernel空间覆盖掉Android，但是这种方式并不推荐。官方的recovery似乎功能不多，只有作为u盘的功能。Bob’s Finless ROM是一个修改的ROM，包含了替换recovery等img文件的工具。如果你的设备是MK808/MK808B或者UG802，就可以试试对应的Finless ROM，暂时没有针对其它型号的版本（公元2013年1月28日）。如果其它型号刷入，由于硬件不是都相同，可能会有一些问题。</p>
-<p>需要的工具有：</p>
-<ul>
-<li>显示器<br>有HDMI接口直接插上就可以了，如果是VGA或者DVI接口的可以使用转接线，淘宝上有HDMI转VGA带3.5mm音频输出的转接线</li>
-<li>RKAndroidTool v1.35<br>在<a href="http://www.armtvtech.com/armtvtechforum/viewtopic.php?f=12&amp;t=775">Bob’s Finless ROM</a>的包里</li>
-<li>一个大于4G的TF卡或U盘或移动硬盘</li>
-<li>Linux和Windows<br>Windows用于刷入recovery，Linux用于格式化上面所说的TF卡或U盘，写入rootfs。这个要求似乎有点苛刻，但是你可以寻找Windows下用于Ext4文件系统格式化的工具，或者寻找Linux的刷入recovery的工具，但这可能更加麻烦。</li>
-<li>USB网卡<br>如果你的设备不是UG802/MK808</li>
-<li><a href="http://rk3066-linux.googlecode.com/files/ug802recovkernel.img">Kernel镜像</a></li>
-<li><a href="http://download.g8.net/picuntu/picuntu-linuxroot-0.9-RC2.2.tgz">Root file system(Picuntu-linuxroot-0.9-RC2.2.tgz)</a><br>你也可以使用一个<a href="http://download.g8.net/picuntu/pre-picuntu-0.9-RC2.2.tgz">安装脚本</a>来更方便地完成安装过程，但这里介绍最直接（或者麻烦？）的方式</li>
-</ul>
-<p>都准备好了的话，开刷吧！</p>
-        
-          <p class="article-more-link">
-            <a href="/blog/2013/ros-on-arm--picuntu-configuration/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/" data-id="cikwj2qoy0013q0to5xgxpx4u" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
 </section>
       
       <aside id="sidebar">
@@ -564,11 +338,13 @@ PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
 <script>
   var disqus_shortname = '11zhexo';
   
+  var disqus_url = 'http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

@@ -99,6 +99,63 @@ ga('send', 'pageview');
     <div class="outer">
       <section id="main">
   
+    <article id="post-ros-on-arm--linux-for-rk3066" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2013/ros-on-arm--linux-for-rk3066/" class="article-date">
+  <time datetime="2013-01-24T09:27:26.000Z" itemprop="datePublished">Jan 24 2013</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2013/ros-on-arm--linux-for-rk3066/">ROS on ARM--Linux For RK3066 Mini PC简介</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.cnbeta.com/articles/188613.htm">去年6月左右</a>国内厂商（瑞科美 Rikomagic）推出了一款叫做MK802的Mini PC。采用Allwinner A10/ 1GHz Cortex-A8做处理器，运行Android 4.0系统，内存512MB或1G。实际上相当于一个没有触摸屏和电池的平板，不过可以用USB OTG连接鼠标键盘，通过HDMI接口输出音视频。</p>
+<p>“少即是多”，正因为它小，靠外部供电而非电池，有很多扩展的可能性，上市以后很火。到现在淘宝一搜MK802，会出现各种各样厂商（比如酷优乐，联力胜）的也叫做MK802或者UG802,MK803,MK808,MK809的之类的产品。可以给它刷上Linux，然后把它当成一个普通PC使用（因为驱动的原因，用自带的Android可能是更好的选择）。或者，不接显示器，做一个Headless Server？接移动硬盘做一个BT下载机？又或者，加上Arduino，连接上各种传感器，作为机器人的主控制器？总之可以做到很多平板做不到的事情。这里有一个<a href="http://bluefox.com.tw/2012/11/22/%E5%AE%89%E5%8D%93-android-mini-pc-%E7%B0%A1%E6%98%93%E5%B0%8D%E7%85%A7%E8%A1%A8/#more-2654">简易对照表</a>。</p>
+<p>MK802的第一代产品是使用全志A10芯片的，在半年后看来这个芯片性能不够强了，运行桌面Ubuntu不是很流畅，但是它的Android ROM和Linux的支持已经比较完善了。后面有一个MK802 II是它的升级版，改动不大，系统基本也可以通用。</p>
+<p>接下来出现了一个UG802,它不是由原来MK802的厂商瑞科美生产的，而是一个叫做酷优乐的公司。在搜索引擎上搜索“酷优乐”这个词都搜不到这个公司的网站。我是问淘宝客服才知道这个公司的网站的（kuyoule.cn），它是第一个使用RK3066芯片（1.66GHz,双核A9）的Mini PC。然后又出现了一个MK808（不知道是哪个产商的）ROM提升到8G，后来的MK808B增加了蓝牙，改进了WiFi天线（原来的好像WiFi信号不太好）。然后瑞科美才推出MK802 III，同样是使用RK3066芯片，不过个人感觉可能质量和ROM支持好一些。然后就是去年12月份推出的MK802 IIIS了，我买的就是这个。</p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/7f826aef8756ce136c0262bd5a49a17f.jpg" alt=""></p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/eccbaf8ff5d4a416e546a1f2e18401b7.jpg" alt=""></p>
+        
+          <p class="article-more-link">
+            <a href="/blog/2013/ros-on-arm--linux-for-rk3066/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
+
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/" data-id="cikwj2qp30019q0to51u4xvj7" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-wtfrobot-rosmin" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2012/wtfrobot-rosmin/" class="article-date">
@@ -165,7 +222,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/wtfrobot-rosmin/" data-id="cikkjpvvx0008iktor8wkbquj" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/wtfrobot-rosmin/" data-id="cikwj2qnu0008q0to64re59qo" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/wtfrobot-rosmin/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -233,7 +290,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cikkjpvwg000dikto5d5b7v90" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cikwj2qo7000kq0torextcn8z" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -288,7 +345,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/xdjw-forum/" data-id="cikkjpvvg0002ikto58x37dgm" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/xdjw-forum/" data-id="cikwj2qnf0002q0tojftmzuuc" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/xdjw-forum/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -350,70 +407,9 @@ opkg install usbutils
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenWrt/">OpenWrt</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/" data-id="cikkjpvwp000iiktotjjx6knf" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/" data-id="cikwj2qoc000oq0to8dglzays" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-quick-dirty-text-writer" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2011/quick-dirty-text-writer/" class="article-date">
-  <time datetime="2011-08-20T16:00:00.000Z" itemprop="datePublished">Aug 21 2011</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2011/quick-dirty-text-writer/">一个Quick and Dirty的记事本程序</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <p>最近在学QT编程，总算是能做出一个图形界面程序了。</p>
-<p>我用的书是《C++ GUI Qt 4 编程（第二版）》(C++ GUI Programming with Qt4,Second Edition)。书上给我的第一个有主窗口的完整应用程序的例子是一个电子表格程序，那叫一个复杂啊…虽然说基本把QT库的基本内容展现出来了，可是我实在消化不了那么多东西，而且涉及到表格，太过具体，这些比较细节的东西以后未必用的上。</p>
-<p>所以我不打算完整的学下来，转而做一个简单的记事本程序。</p>
-<p>这个程序有基本的标题栏，菜单栏，状态栏…</p>
-<p>只是工具栏被我删掉了，感觉跟菜单栏比较类似，也懒得去做图标…</p>
-<p>我找了一下网上的教程，有直接用Qt Designer图形界面操作的，但太傻瓜化，有些功能还实现不了。还有就是书上的例子，纯代码…而我是要做一个有基本界面还可以打开和保存文件，有剪切复制粘贴功能的记事本，用Qt Designer设计UI，然后再写一些代码。</p>
-<p>所以参考了一个QT官网上的一个教程和书里的制作电子表格的示例程序，做了一个Quick and Dirty的记事本程序。</p>
-<p>之所以Dirty，是因为它甚至还不支持中文！（勿喷，勿喷，写入文件是用一个叫做QTextStream的类弄的，我什么都不知道…）</p>
-<p>同是C++初学者的我，压根搞不清状况。那么多乱七八糟的类和对象。问题是Qt Designer设计的ui对象我搞不懂怎么用代码操作，书上它是纯代码的也没讲。</p>
-<p>后来还是QtCreator这个给力的IDE好使啊，打出ui，再按点号，自动将点号转成”-&gt;”，然后用特殊方式显示“ui”，这是说，它找到了这个对象，原来这个对象就叫ui…查了一下前面的定义，大体上看懂了。。。</p>
-<p>把窗体初始化以后，然后就是各种信号和槽的连接…各种QT的类，揣摩各种语法规则(本人比较懒，不想查书…)，Google各种error…在这个过程中，总算是了解了基本的QT编程。</p>
-<p>最开心的事情：setShortcut(QKeySequence::XXX)是在各种操作系统上的万能钥匙啊，什么快捷键，系统给你，不用写，哈哈～</p>
-<p>代码在<a href="https://github.com/sun11/QTGUI_Writer" target="_blank" rel="external">https://github.com/sun11/QTGUI_Writer</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Qt/">Qt</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2011/quick-dirty-text-writer/" data-id="cikkjpvvs0005iktogqxq3los" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2011/quick-dirty-text-writer/#disqus_thread" class="article-comment-link">Comments</a>
         
       </div>
     </footer>
@@ -442,6 +438,10 @@ opkg install usbutils
       <ul>
         
           <li>
+            <a href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/">Ubuntu14.04 安装 Caffe+CUDA 7.5</a>
+          </li>
+        
+          <li>
             <a href="/blog/2016/hexo-theme-paperbox/">Hexo主题Paperbox</a>
           </li>
         
@@ -457,10 +457,6 @@ opkg install usbutils
             <a href="/blog/2013/ros-on-arm--picuntu-configuration/">ROS on ARM--Picuntu 安装配置</a>
           </li>
         
-          <li>
-            <a href="/blog/2013/ros-on-arm--linux-for-rk3066/">ROS on ARM--Linux For RK3066 Mini PC简介</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -470,7 +466,7 @@ opkg install usbutils
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -479,7 +475,7 @@ opkg install usbutils
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
