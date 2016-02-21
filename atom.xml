@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sun11.me/"/>
-  <updated>2016-02-21T12:32:59.837Z</updated>
+  <updated>2016-02-21T12:39:54.801Z</updated>
   <id>http://www.sun11.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/"/>
     <id>http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/</id>
     <published>2016-02-21T12:21:30.000Z</published>
-    <updated>2016-02-21T12:32:59.837Z</updated>
+    <updated>2016-02-21T12:39:54.801Z</updated>
     
     <content type="html">&lt;p&gt;Caffe官网的 &lt;a href=&quot;http://caffe.berkeleyvision.org/installation.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安装说明&lt;/a&gt; 实在太简单了点，主要是参考的 &lt;a href=&quot;https://gist.github.com/bearpaw/c38ef18ec45ba6548ec0#file-caffe-ubuntu-14-04-64bit-cuda-6-5-md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明&lt;/a&gt; 和 &lt;a href=&quot;http://weibo.com/p/2304189db078090102vdvx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Ubuntu14.04下安装Caffe总结&lt;/a&gt; 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。&lt;/p&gt;
 &lt;h3 id=&quot;1-_Caffe_u4F9D_u8D56_u5305&quot;&gt;&lt;a href=&quot;#1-_Caffe_u4F9D_u8D56_u5305&quot; class=&quot;headerlink&quot; title=&quot;1. Caffe依赖包&quot;&gt;&lt;/a&gt;1. Caffe依赖包&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install build-essential  &lt;span class=&quot;comment&quot;&gt;# basic requirement&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev protobuf-compiler &lt;span class=&quot;comment&quot;&gt;#required by caffe&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -31,6 +31,7 @@ options nouveau modeset=0
 &lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&quot;2-2__u5B89_u88C5CUDA&quot;&gt;&lt;a href=&quot;#2-2__u5B89_u88C5CUDA&quot; class=&quot;headerlink&quot; title=&quot;2.2 安装CUDA&quot;&gt;&lt;/a&gt;2.2 安装CUDA&lt;/h4&gt;&lt;p&gt;在NVIDIA开发者&lt;a href=&quot;https://developer.nvidia.com/cuda-downloads&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官网&lt;/a&gt;下载CUDA 7.5，我直接用的deb包，因为觉得比较方便。可以直接双击打开安装，也可以用命令行：&lt;/p&gt;
 &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo dpkg -i cuda-repo-&amp;lt;distro&amp;gt;_&amp;lt;version&amp;gt;_&amp;lt;architecture&amp;gt;.deb&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get update&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install cuda&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;都说要禁用lightdm安装cuda，但是用deb包安装的话没有关掉lightdm也没有遇到什么问题。安装完CUDA以后使用的就是nvidia闭源驱动了。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h4 id=&quot;2-3__u914D_u7F6E_u73AF_u5883_u53D8_u91CF&quot;&gt;&lt;a href=&quot;#2-3__u914D_u7F6E_u73AF_u5883_u53D8_u91CF&quot; class=&quot;headerlink&quot; title=&quot;2.3 配置环境变量&quot;&gt;&lt;/a&gt;2.3 配置环境变量&lt;/h4&gt;&lt;p&gt;在&lt;code&gt;/etc/profile&lt;/code&gt;中添加：&lt;/p&gt;
 &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;export&lt;/span&gt; PATH=&lt;span class=&quot;variable&quot;&gt;$PATH&lt;/span&gt;:/usr/&lt;span class=&quot;built_in&quot;&gt;local&lt;/span&gt;/cuda/bin&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;创建文件&lt;code&gt;/etc/ld.so.conf.d/cuda.conf&lt;/code&gt;:&lt;/p&gt;
@@ -94,7 +95,15 @@ PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
     
     <summary type="html">
     
-      &lt;p&gt;Caffe官网的 &lt;a href=&quot;http://caffe.berkeleyvision.org/installation.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安装说明&lt;/a&gt; 实在太简单了点，主要是参考的 &lt;a href=&quot;http
+      &lt;p&gt;Caffe官网的 &lt;a href=&quot;http://caffe.berkeleyvision.org/installation.html&quot;&gt;安装说明&lt;/a&gt; 实在太简单了点，主要是参考的 &lt;a href=&quot;https://gist.github.com/bearpaw/c38ef18ec45ba6548ec0#file-caffe-ubuntu-14-04-64bit-cuda-6-5-md&quot;&gt;Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明&lt;/a&gt; 和 &lt;a href=&quot;http://weibo.com/p/2304189db078090102vdvx&quot;&gt;Ubuntu14.04下安装Caffe总结&lt;/a&gt; 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。&lt;/p&gt;
+&lt;h3 id=&quot;1-_Caffe_u4F9D_u8D56_u5305&quot;&gt;&lt;a href=&quot;#1-_Caffe_u4F9D_u8D56_u5305&quot; class=&quot;headerlink&quot; title=&quot;1. Caffe依赖包&quot;&gt;&lt;/a&gt;1. Caffe依赖包&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install build-essential  &lt;span class=&quot;comment&quot;&gt;# basic requirement&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev protobuf-compiler &lt;span class=&quot;comment&quot;&gt;#required by caffe&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;2-__u5B89_u88C5CUDA_7-5&quot;&gt;&lt;a href=&quot;#2-__u5B89_u88C5CUDA_7-5&quot; class=&quot;headerlink&quot; title=&quot;2. 安装CUDA 7.5&quot;&gt;&lt;/a&gt;2. 安装CUDA 7.5&lt;/h3&gt;&lt;h4 id=&quot;2-1__u7981_u7528nouveau_u9A71_u52A8&quot;&gt;&lt;a href=&quot;#2-1__u7981_u7528nouveau_u9A71_u52A8&quot; class=&quot;headerlink&quot; title=&quot;2.1 禁用nouveau驱动&quot;&gt;&lt;/a&gt;2.1 禁用nouveau驱动&lt;/h4&gt;&lt;p&gt;我作死地相信了上述第二篇文章的话，没有禁用nouveau驱动，结果第一次重启神奇地成功了，第二次重启就无法登陆。。。后来用recovery mode禁用了nouveau。所以一定要禁用nouveau：&lt;/p&gt;
+&lt;p&gt;创建文件&lt;code&gt;/etc/modprobe.d/blacklist-nouveau.conf&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;blacklist nouveau
+options nouveau modeset=0
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&quot;2-2__u5B89_u88C5CUDA&quot;&gt;&lt;a href=&quot;#2-2__u5B89_u88C5CUDA&quot; class=&quot;headerlink&quot; title=&quot;2.2 安装CUDA&quot;&gt;&lt;/a&gt;2.2 安装CUDA&lt;/h4&gt;&lt;p&gt;在NVIDIA开发者&lt;a href=&quot;https://developer.nvidia.com/cuda-downloads&quot;&gt;官网&lt;/a&gt;下载CUDA 7.5，我直接用的deb包，因为觉得比较方便。可以直接双击打开安装，也可以用命令行：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo dpkg -i cuda-repo-&amp;lt;distro&amp;gt;_&amp;lt;version&amp;gt;_&amp;lt;architecture&amp;gt;.deb&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get update&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install cuda&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;都说要禁用lightdm安装cuda，但是用deb包安装的话没有关掉lightdm也没有遇到什么问题。安装完CUDA以后使用的就是nvidia闭源驱动了。&lt;/p&gt;
     
     </summary>
     

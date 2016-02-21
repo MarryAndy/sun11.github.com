@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="11zHexo">
 <meta property="og:description" content="Caffe官网的 安装说明 实在太简单了点，主要是参考的 Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明 和 Ubuntu14.04下安装Caffe总结 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。
 1. Caffe依赖包12sudo apt-get install build-essential  # basic requireme">
-<meta property="og:updated_time" content="2016-02-21T12:32:59.837Z">
+<meta property="og:updated_time" content="2016-02-21T12:39:54.801Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu14.04 安装 Caffe+CUDA 7.5">
 <meta name="twitter:description" content="Caffe官网的 安装说明 实在太简单了点，主要是参考的 Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明 和 Ubuntu14.04下安装Caffe总结 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。
@@ -140,6 +140,7 @@ options nouveau modeset=0
 </code></pre><h4 id="2-2__u5B89_u88C5CUDA"><a href="#2-2__u5B89_u88C5CUDA" class="headerlink" title="2.2 安装CUDA"></a>2.2 安装CUDA</h4><p>在NVIDIA开发者<a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="external">官网</a>下载CUDA 7.5，我直接用的deb包，因为觉得比较方便。可以直接双击打开安装，也可以用命令行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i cuda-repo-&lt;distro&gt;_&lt;version&gt;_&lt;architecture&gt;.deb</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install cuda</span><br></pre></td></tr></table></figure>
 <p>都说要禁用lightdm安装cuda，但是用deb包安装的话没有关掉lightdm也没有遇到什么问题。安装完CUDA以后使用的就是nvidia闭源驱动了。</p>
+<a id="more"></a>
 <h4 id="2-3__u914D_u7F6E_u73AF_u5883_u53D8_u91CF"><a href="#2-3__u914D_u7F6E_u73AF_u5883_u53D8_u91CF" class="headerlink" title="2.3 配置环境变量"></a>2.3 配置环境变量</h4><p>在<code>/etc/profile</code>中添加：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/cuda/bin</span><br></pre></td></tr></table></figure>
 <p>创建文件<code>/etc/ld.so.conf.d/cuda.conf</code>:</p>
@@ -207,7 +208,7 @@ PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PRML/">PRML</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cikwj2qnz000dq0tov6n89fpd" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cikwjmj9g000dtsto1bomcg4u" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/#disqus_thread" class="article-comment-link">Comments</a>
         
