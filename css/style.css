@@ -451,7 +451,8 @@ body {
     bottom: 60px;
   }
 }
-#blog-title-wrap {
+#blog-title {
+  text-decoration: none;
   color: #fff;
   font-size: 2em;
   font-weight: bold;
