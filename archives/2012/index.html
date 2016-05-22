@@ -41,6 +41,16 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Analytics -->
 
+  
+<script type="text/javascript">
+var isWX = /micromessenger/i.test(navigator.userAgent);
+if (isWX) {
+  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
+  window.stop ? window.stop() : document.execCommand("Stop");
+}
+</script>
+
+
 </head>
 
 <body>
@@ -273,15 +283,18 @@ ga('send', 'pageview');
       zoom: "None"
     },
     showMathMenu: false,
+    jax: ["input/TeX","output/CommonHTML"],
+    extensions: ["tex2jax.js"],
     TeX: {
+      extensions: ["AMSmath.js","AMSsymbols.js"],
       equationNumbers: {
         autoNumber: "AMS"
       }
-    }
+    },
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js"></script>
 
 
 

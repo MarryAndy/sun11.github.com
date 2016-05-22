@@ -41,6 +41,16 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Analytics -->
 
+  
+<script type="text/javascript">
+var isWX = /micromessenger/i.test(navigator.userAgent);
+if (isWX) {
+  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
+  window.stop ? window.stop() : document.execCommand("Stop");
+}
+</script>
+
+
 </head>
 
 <body>
@@ -155,7 +165,7 @@ sigma(m,n)&=\sigma_0\cdot 2^{m-1}\cdot k^{n-1}
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CV/">CV</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/" data-id="cioif444c0009wctoqfotxciu" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/" data-id="cioikdpr6000thgtobcp93dif" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -215,7 +225,7 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PRML/">PRML</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cioif444m000gwcto9qxth40o" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cioikdpsn001khgtojz2x1fmo" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -271,7 +281,7 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Customize/">Customize</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/hexo-theme-paperbox/" data-id="cioif443t0003wctogfl55z64" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/hexo-theme-paperbox/" data-id="cioikdpqa0002hgtojkuopgv9" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/hexo-theme-paperbox/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -342,7 +352,7 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/rosmin-and-rossum/" data-id="cioif444g000bwctouaqtem9d" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/rosmin-and-rossum/" data-id="cioikdpr9000uhgtoedfzpkel" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/rosmin-and-rossum/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -399,7 +409,7 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/">ROS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/" data-id="cioif44490007wctoml650efd" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/" data-id="cioikdprd000whgtoogu05kmj" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -504,15 +514,18 @@ options nouveau modeset=0
       zoom: "None"
     },
     showMathMenu: false,
+    jax: ["input/TeX","output/CommonHTML"],
+    extensions: ["tex2jax.js"],
     TeX: {
+      extensions: ["AMSmath.js","AMSsymbols.js"],
       equationNumbers: {
         autoNumber: "AMS"
       }
-    }
+    },
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js"></script>
 
 
 

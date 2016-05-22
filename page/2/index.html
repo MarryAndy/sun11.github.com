@@ -41,6 +41,16 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Analytics -->
 
+  
+<script type="text/javascript">
+var isWX = /micromessenger/i.test(navigator.userAgent);
+if (isWX) {
+  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
+  window.stop ? window.stop() : document.execCommand("Stop");
+}
+</script>
+
+
 </head>
 
 <body>
@@ -148,7 +158,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/" data-id="cioif44450006wcto6pq7vqq5" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/" data-id="cioikdpqn0005hgto2p1h39gx" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -205,7 +215,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/" data-id="cioif44400004wctodxy91eq4" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/" data-id="cioikdpqe0003hgtomjojbv0r" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -288,7 +298,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/wtfrobot-rosmin/" data-id="cioif444v000mwctoiufyeqj0" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/wtfrobot-rosmin/" data-id="cioikdpsj001ghgtod59u6w4p" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/wtfrobot-rosmin/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -356,7 +366,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cioif444j000ewctop90060z0" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cioikdprj0010hgto62n1r0ro" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -411,7 +421,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/xdjw-forum/" data-id="cioif444o000iwcto5qnavnx5" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/xdjw-forum/" data-id="cioikdpsl001ihgto1qzf3e6e" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/xdjw-forum/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -516,15 +526,18 @@ ga('send', 'pageview');
       zoom: "None"
     },
     showMathMenu: false,
+    jax: ["input/TeX","output/CommonHTML"],
+    extensions: ["tex2jax.js"],
     TeX: {
+      extensions: ["AMSmath.js","AMSsymbols.js"],
       equationNumbers: {
         autoNumber: "AMS"
       }
-    }
+    },
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js"></script>
 
 
 
