@@ -110,7 +110,7 @@ ga('send', 'pageview');
       <section id="main"><article id="post-opencv-242-porting-to-tiny6410" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2012/opencv-242-porting-to-tiny6410/" class="article-date">
-  <time datetime="2012-07-25T09:16:00.000Z" itemprop="datePublished">Jul 25 2012</time>
+  <time datetime="2012-07-25T08:16:00.000Z" itemprop="datePublished">Jul 25 2012</time>
 </h3>
     
   </div>
@@ -141,18 +141,18 @@ ga('send', 'pageview');
 <p>cmake好后下一步是make,对于双核的机器加上-j4参数速度会快很多，但是也发烫，在系统监视器里看到四个线程的CPU都是接近100%,风扇一直呼呼地响。</p>
 <p>然后是配置编译环境了，好像在2.3以后OpenCV的x86版安装好后都会有pkgconfig的.pc文件。//2.3以前的版本不清楚</p>
 <p>所以比较方便的就是用pkgconfig来配置了，它的.pc文件是在/usr/local/lib/pkgconfig下面。这是适用于PC版本的OpenCV的（因为之前已经安装好了x86的OpenCV）。但是只要把那第一行的prefix路径改成ARM版OpenCV的安装路径（也就是上面CMAKE_INSTALL_PREFIX参数的值）就可以直接用了。<a href="http://blog.csdn.net/yr119111/article/details/7732336" target="_blank" rel="external">opencv2.3.1在arm端的移植</a>这篇帖子说再Libs里要加上-lrt -lpthread参数，我的环境下似乎不需要，但是加上也没什么问题。</p>
-<p>这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config –cflags –libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config –cflags –libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。<br>我用的主要是Qt，所以在.pro文件里加上：</p>
-<pre><code>unix {
-    CONFIG += link_pkgconfig
-    PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc
-}
+<p>这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config —cflags —libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config —cflags —libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。<br>我用的主要是Qt，所以在.pro文件里加上：</p>
+<pre><code>    unix {
+        CONFIG += link_pkgconfig
+        PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc
+    }
 </code></pre><p>但是编译成功后可能会显示一些警告，比如：</p>
-<pre><code>../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
+<pre><code>    ../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
 </code></pre><a id="more"></a>
 <p>这个警告在我的情况下只要把opencv-arm/lib里的.so文件全部放到/opt/FriendlyARM/toolschain/4.5.1/arm-none-linux-gnueabi/sys-root/lib下面就可以解决，但事实上不管这条警告也不会出什么问题，不会影响到程序的运行。//去年移植的时候就一直没管</p>
 <p>但是耗费我四天的根本就不是这些问题有木有啊！我要开始吐槽了有木有啊！</p>
 <p>首先要吐槽一下u盘，有个以前编译好的程序放在u盘上一直不能运行，报错</p>
-<pre><code>../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
+<pre><code>    ../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
 </code></pre><p>和编译时那个警告一样，害得我以为是那个警告必须解决掉。后来折腾了好久发现只要把程序拷到板子的存储介质上就直接能运行了！尼玛啊是文件系统还是权限的神马问题啊！于是我就换成用nfs挂载了。</p>
 <p>现在去年编译的那个程序是能运行了，可是新编译的程序都不能和OpenCV库连上，也是报相同的错，好吧，我试过把.so文件放在/lib下，放在/usr/local/opencv-arm/lib下，两个都放，甚至还试过新建好多个文件夹，放在/opt/FriendlyARM/toolschain/4.5.1/arm-none-linux-gnueabi/sys-root/lib下，结果都一样！只有老的程序能运行，新编译的都不行。后来脑袋终于开窍了，既然老程序可以运行，说明我移植的OpenCV库没有问题。于是我尝试直接用armm-linux-gcc编译了一个简单的程序，发现运行正常？！然后不知什么想法让我把新编译的程序拷贝到/mnt下，也就是nfs挂载的那个目录，神奇的事情发生了，它正常运行了！！！</p>
 <p>那么，这究竟是什么原理呢？我到现在还没搞明白。nfs挂载以后，所有挂载的文件都相当于自己原本文件系统里的文件么？还是有权限什么的问题呢？</p>
@@ -164,7 +164,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cin7i9gj40009i8towaf9u6wl" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cioie38fg000e4wto9t49hph3" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -215,6 +215,10 @@ ga('send', 'pageview');
       <ul>
         
           <li>
+            <a href="/blog/2016/sift-implementation-in-matlab/">SIFT算法的Matlab实现</a>
+          </li>
+        
+          <li>
             <a href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/">Ubuntu14.04 安装 Caffe+CUDA 7.5</a>
           </li>
         
@@ -230,10 +234,6 @@ ga('send', 'pageview');
             <a href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a>
           </li>
         
-          <li>
-            <a href="/blog/2013/ros-on-arm--picuntu-configuration/">ROS on ARM--Picuntu 安装配置</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -243,7 +243,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CV/">CV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -252,7 +252,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -282,11 +282,31 @@ ga('send', 'pageview');
   
   <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
 </nav>
-  <!-- totop start -->
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {
+      zoom: "None"
+    },
+    showMathMenu: false,
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+<!-- totop start -->
 <div id="totop">
 	<a title="To Top"></a>
 </div>
 <!-- totop end -->
+
 <!-- swiftype search start -->
 
 <script type="text/javascript">
@@ -316,13 +336,13 @@ ga('send', 'pageview');
 </script>
 
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-<script src="//cdn.bootcss.com/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
 
 
-  <link rel="stylesheet" href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.css">
-  <script src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
 <script src="/js/script.js"></script>

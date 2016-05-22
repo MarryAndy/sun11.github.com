@@ -115,8 +115,8 @@ button::-moz-focus-inner {
   font-family: FontAwesome;
   font-style: normal;
   font-weight: normal;
-  src: url("//cdn.bootcss.com/font-awesome/4.5.0/fonts/fontawesome-webfont.eot?v=#4.2.0");
-  src: url("//cdn.bootcss.com/font-awesome/4.5.0/fonts/fontawesome-webfont.eot?#iefix&v=#4.2.0") format("embedded-opentype"), url("//cdn.bootcss.com/font-awesome/4.5.0/fonts/fontawesome-webfont.woff?v=#4.2.0") format("woff"), url("//cdn.bootcss.com/font-awesome/4.5.0/fonts/fontawesome-webfont.ttf?v=#4.2.0") format("truetype"), url("//cdn.bootcss.com/font-awesome/4.5.0/fonts/fontawesome-webfont.svg#fontawesomeregular?v=#4.2.0") format("svg");
+  src: url("//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/fonts/fontawesome-webfont.eot?v=#4.2.0");
+  src: url("//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/fonts/fontawesome-webfont.eot?#iefix&v=#4.2.0") format("embedded-opentype"), url("//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/fonts/fontawesome-webfont.woff?v=#4.2.0") format("woff"), url("//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/fonts/fontawesome-webfont.ttf?v=#4.2.0") format("truetype"), url("//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/fonts/fontawesome-webfont.svg#fontawesomeregular?v=#4.2.0") format("svg");
 }
 html,
 body,
@@ -901,6 +901,7 @@ a.article-title:hover {
   color: #444;
   padding: 0 20px;
   word-wrap: break-word;
+  overflow-x: auto;
 }
 .article-entry:before,
 .article-entry:after {
@@ -914,6 +915,7 @@ a.article-title:hover {
 .article-entry table {
   line-height: 1.6em;
   margin: 1.6em 0;
+  font-size: 1.1em;
 }
 .article-entry h1,
 .article-entry h2,
@@ -956,18 +958,19 @@ a.article-title:hover {
   border: none;
 }
 .article-entry table {
-  width: 100%;
+  max-width: 100%;
+  margin: 1.6em auto;
   border-collapse: collapse;
   border-spacing: 0;
 }
 .article-entry th {
   font-weight: bold;
   border-bottom: 3px solid #aaa;
-  padding-bottom: 0.5em;
+  padding: 10px 5px;
 }
 .article-entry td {
   border-bottom: 1px solid #aaa;
-  padding: 10px 0;
+  padding: 10px 5px;
 }
 .article-entry blockquote {
   font-family: "Droid Serif", Georgia, Serif;
@@ -1023,8 +1026,20 @@ a.article-title:hover {
   height: 100%;
   margin-top: 0;
 }
-.article-entry .MathJax_Display {
+.article-entry .table-container {
+  overflow: auto;
+}
+.article-entry .table-container th,
+.article-entry .table-container td {
+  max-width: 100px;
+}
+.article-entry .MathJax_Display,
+.article-entry .MJXc-display {
   overflow-x: auto;
+}
+.article-entry .MathJax_Display >span,
+.article-entry .MJXc-display >span {
+  padding: 0.5em;
 }
 .toc-article {
   background: #f5f5f5;
@@ -1077,6 +1092,7 @@ a.article-title:hover {
   line-height: 1em;
   padding: 6px 15px;
   font-weight: 300;
+  font-size: 14px;
   text-shadow: 0 1px 1px #fff;
   text-align: center;
   text-indent: 0px;
@@ -1637,6 +1653,7 @@ a.article-title:hover {
 .article-entry pre code {
   background: none;
   text-shadow: none;
+  font-size: 1.1em;
   padding: 0;
   border: none;
 }

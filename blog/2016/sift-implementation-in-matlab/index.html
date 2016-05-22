@@ -1,0 +1,495 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  
+  <title>SIFT算法的Matlab实现 | Starsky&#39;s Blog - 11zHexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这是一次作业，内容是给出两张图像，检测特征点和匹配特征点。要求不能用诸如OpenCV的现成特征点检测函数。于是就只能造轮子了，写了这个Matlab版的sift。（其实就是把c语言的opensift翻译成了matlab
+以下是算法流程，其实网上的类似博文已经很多了，只不过我看的过程中也看得不很明白，只能对照着好几个看，所以干脆自己又写了一遍。下面的图均来自于参考资料中，然而参考资料的图也是来自于参考">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SIFT算法的Matlab实现">
+<meta property="og:url" content="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/index.html">
+<meta property="og:site_name" content="Starsky's Blog - 11zHexo">
+<meta property="og:description" content="这是一次作业，内容是给出两张图像，检测特征点和匹配特征点。要求不能用诸如OpenCV的现成特征点检测函数。于是就只能造轮子了，写了这个Matlab版的sift。（其实就是把c语言的opensift翻译成了matlab
+以下是算法流程，其实网上的类似博文已经很多了，只不过我看的过程中也看得不很明白，只能对照着好几个看，所以干脆自己又写了一遍。下面的图均来自于参考资料中，然而参考资料的图也是来自于参考">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/pyr.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/extrem
+um.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
+descr_sampling.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
+rotation.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/i
+nterpolation.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/book-result.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/scene-result.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/match-result.png">
+<meta property="og:updated_time" content="2016-05-22T08:47:56.734Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SIFT算法的Matlab实现">
+<meta name="twitter:description" content="这是一次作业，内容是给出两张图像，检测特征点和匹配特征点。要求不能用诸如OpenCV的现成特征点检测函数。于是就只能造轮子了，写了这个Matlab版的sift。（其实就是把c语言的opensift翻译成了matlab
+以下是算法流程，其实网上的类似博文已经很多了，只不过我看的过程中也看得不很明白，只能对照着好几个看，所以干脆自己又写了一遍。下面的图均来自于参考资料中，然而参考资料的图也是来自于参考">
+<meta name="twitter:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/pyr.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Starsky&#39;s Blog - 11zHexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link href="//7d9hqq.com1.z0.glb.clouddn.com/css/fonts.css" rel="stylesheet" type="text/css">
+  
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-31707826-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <nav id="upper-nav" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <div class="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+          <a id="nav-github" class="nav-icon" href="https://github.com/sun11"></a>
+        
+      </div>
+    </nav>
+    <div id="header-title">
+      
+        <h1 id="blog-title-wrap">
+          Starsky&#39;s Blog
+        </h1>
+      
+    </div>
+    <div id="contenedor">
+      <ul class="cube">
+        <li class="cara">
+         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="100" width="100" viewBox="-50 -50 200 200">
+          <circle cx="50" cy="50" r="45" stroke-width="5" stroke="black" stroke-opacity="0.5" fill-opacity="0"/>
+          <rect x="47.5" y="27.5" width="5" height="25" rx="2.5" ry="2.5" fill="black" fill-opacity="0.5" transform="rotate(330 50 50)"/>
+          <rect x="48.5" y="16.5" width="3" height="35" rx="1.5" ry="1.5" fill="black" fill-opacity="0.5"/>
+        </svg>
+        </li>
+        <li class="cara">11z</li>
+        <li class="cara">H</li>
+        <li class="cara">E</li>
+        <li class="cara">X</li>
+        <li class="cara">O</li>
+      </ul>
+    </div>
+    <nav id="main-nav">
+      
+        <a class="main-nav-link" href="/">Home</a>
+      
+        <a class="main-nav-link" href="/archives">Archives</a>
+      
+        <a class="main-nav-link" href="/about">About</a>
+      
+      <a class="main-nav-link st-search-show-outputs">Search</a>
+    </nav>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-sift-implementation-in-matlab" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2016/sift-implementation-in-matlab/" class="article-date">
+  <time datetime="2016-05-16T15:52:46.000Z" itemprop="datePublished">May 17 2016</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SIFT算法的Matlab实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">Contents</strong>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-构建尺度空间"><span class="toc-text">1. 构建尺度空间</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-构建高斯金字塔"><span class="toc-text">1.1 构建高斯金字塔</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-构建高斯差分金字塔"><span class="toc-text">1.2 构建高斯差分金字塔</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-检测极值点"><span class="toc-text">1.3 检测极值点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-关键点精确定位"><span class="toc-text">2. 关键点精确定位</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-去除低反差-low-contrast-的点"><span class="toc-text">2.1 去除低反差(low contrast)的点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-消除边缘响应"><span class="toc-text">2.2 消除边缘响应</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-方向指定"><span class="toc-text">3. 方向指定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-关键点描述子"><span class="toc-text">4. 关键点描述子</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-描述子采样区域"><span class="toc-text">4.1 描述子采样区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-旋转至主方向"><span class="toc-text">4.2 旋转至主方向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-三线性插值"><span class="toc-text">4.3 三线性插值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-生成描述子"><span class="toc-text">4.4 生成描述子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-匹配"><span class="toc-text">5. 匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-一些废话"><span class="toc-text">6. 一些废话</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-性能优化"><span class="toc-text">6.1 性能优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-运行结果"><span class="toc-text">6.2 运行结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-源代码"><span class="toc-text">6.3 源代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li></ol>
+          </div>
+        
+        <p>这是一次作业，内容是给出两张图像，检测特征点和匹配特征点。要求不能用诸如OpenCV的现成特征点检测函数。于是就只能造轮子了，写了这个Matlab版的sift。<del>（其实就是把c语言的opensift翻译成了matlab</del></p>
+<p>以下是算法流程，其实网上的类似博文已经很多了，只不过我看的过程中也看得不很明白，只能对照着好几个看，所以干脆自己又写了一遍。下面的图均来自于参考资料中，然而参考资料的图也是来自于参考资料的参考资料中。</p>
+<h3 id="1-构建尺度空间"><a href="#1-构建尺度空间" class="headerlink" title="1. 构建尺度空间"></a>1. 构建尺度空间</h3><blockquote>
+<p>定理1 对图像做 <script type="math/tex">\sigma = \sigma_1</script> 的高斯平滑，再做一次 <script type="math/tex">\sigma = \sigma_2</script> 的高斯平滑，等效于对原图像做一次 <script type="math/tex">\sigma = \sqrt{\sigma_1^2+\sigma_2^2}</script> 的高斯平滑。</p>
+</blockquote>
+<h4 id="1-1-构建高斯金字塔"><a href="#1-1-构建高斯金字塔" class="headerlink" title="1.1 构建高斯金字塔"></a>1.1 构建高斯金字塔</h4><p>高斯卷积核是实现尺度变换的唯一线性核（Koenderink, 1984; Lindeberg, 1994）。</p>
+<p>一幅图像的尺度空间被定义为对其做可变尺度的高斯卷积：</p>
+<script type="math/tex; mode=display">
+\begin{split}
+L(x,y,\sigma)&=G(x,y,\sigma) * I(x,y)\\
+其中G(x,y,\sigma)&=\frac{1}{2\pi\sigma^2}e^{-(x^2+y^2)/2\sigma^2}
+\end{split}</script><p>对于给定的彩色图像，转化为灰度图像，用不同大小的<script type="math/tex">\sigma</script>做高斯平滑（按照 3<script type="math/tex">\sigma</script> 准则，高斯核矩阵的大小设为 <script type="math/tex">(6\sigma+1)\cdot(6\sigma+1)</script> ，并保证行和列为奇数），再此基础上将图像降采样得到不同大小的组(octave)，每组若干图像(interval)。详细描述如下：</p>
+<p>为了得到更多的特征点，将图像扩大为原来的两倍。假设原图像已有 <script type="math/tex">\sigma=0.5</script> 的高斯平滑，而我们需要第一个octave的第一张图像的 <script type="math/tex">\sigma=1.6</script> ，按照定理1，我们要对扩大两倍的图像做一次高斯平滑，<script type="math/tex">\sigma=\sqrt{1.6^2-(0.5\times2)^2}</script> 。</p>
+<p>上一个octave的图像的长度和宽度分别是下一个octave的图像的两倍。因此图像组数(octaves)可由图像大小决定，将其设为 <script type="math/tex">log_2(min(height,width))</script> <script type="math/tex">-\ 2</script> ，这样将使顶层octave图像的长度和宽度最小值在8像素左右。</p>
+<p>设第m个octave的第n张图像相对于原始图像的参数<script type="math/tex">\sigma</script>为 <script type="math/tex">sigma(m,n)</script>，则<script type="math/tex">sigma(1,1)=\sigma_0=1.6</script>。每个octave有s+1张图像（即intervals），这样得到的高斯差分金字塔(DoG)每个octave将有s张图像，我们设s为3。为了满足在不同octave间尺度的连续性，并使 <script type="math/tex">sigma(m,n)=</script> <script type="math/tex">2 \cdot sigma(m-1,n)</script>，按照定理1，则：</p>
+<script type="math/tex; mode=display">
+\begin{split}
+sigma(1,n)&=\sigma_0\cdot k^{n-1},其中k=2^{1/s}\\
+sigma(m,n)&=\sigma_0\cdot 2^{m-1}\cdot k^{n-1}
+\end{split}</script><p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/pyr.png" alt="Parameter Sigma"></p>
+<a id="more"></a>
+<p>如上图所示，在第一个octave中尺度为<script type="math/tex">k^3\cdot \sigma_0</script>的“最后”一张图像进行下采样得到第二个octave的第一张图像，尺度仍为<script type="math/tex">k^3\cdot \sigma_0=2\cdot \sigma_0</script>。</p>
+<p>但实际上我们需要做出更多不同尺度的高斯平滑图像，这是因为在后续高斯差分金字塔的极值检测中，需要前后两级尺度都存在图像。如图中红框所示，高斯差分金字塔中每个octave有s幅图像，则需要高斯金字塔中每个octave包含s+3幅图像。其中第s+1幅图像用作下一个octave第一幅图像的降采样。</p>
+<p>具体实现中并未对单幅图像多次进行高斯平滑，而是由上一幅图像进行高斯平滑得到下一幅图像并迭代之，按照定理1计算<script type="math/tex">\sigma</script>。</p>
+<h4 id="1-2-构建高斯差分金字塔"><a href="#1-2-构建高斯差分金字塔" class="headerlink" title="1.2 构建高斯差分金字塔"></a>1.2 构建高斯差分金字塔</h4><p>对两幅高斯金字塔的图像作差。</p>
+<h4 id="1-3-检测极值点"><a href="#1-3-检测极值点" class="headerlink" title="1.3 检测极值点"></a>1.3 检测极值点</h4><p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/extrem
+um.png" alt="Extremum"></p>
+<p>如上图，与前后两幅图像及自身的共26个邻域像素点比较灰度值检测极值。</p>
+<h3 id="2-关键点精确定位"><a href="#2-关键点精确定位" class="headerlink" title="2. 关键点精确定位"></a>2. 关键点精确定位</h3><p>检测到的极值点是离散的，通过三元二次函数拟合来精确确定关键点的位置和尺度，达到亚像素精度。以某关键点为中心的尺度空间函数 <script type="math/tex">D(x,y,intvl)</script> 的二次泰勒展开式为：</p>
+<script type="math/tex; mode=display">
+D(\mathbf{X}) = D + \frac{\partial D}{\partial\mathbf{X}}^T\mathbf{X} + \frac{1}{2}\mathbf{X}^T\frac{\partial ^2D}{\partial\mathbf{X}^2}\mathbf{X}</script><p>其中等号右边第一个D为某关键点处的灰度值， <script type="math/tex">\mathbf{X}=(x,y,intvl)^T</script> 是以此点为中心的偏移量，由于 <script type="math/tex">D(\mathbf{X})</script> 是离散的，其导数用差分法求得。令 <script type="math/tex">D(\mathbf{X})</script> 导数为零，得到精确极值位置的偏移量为：</p>
+<script type="math/tex; mode=display">
+\mathbf{\hat{X}}=-\frac{\partial ^2D}{\partial \mathbf{X}^2}^{-1}\frac{\partial D}{\partial\mathbf{X}}</script><p>若<script type="math/tex">\mathbf{\hat{X}}</script>在任意一个维度大于0.5，说明极值点精确位置距离另一个点更近，应该将关键点定位于更近的那个位置。定位到新点后再进行相同操作，若迭代5次位置仍不收敛，则不认为此点为关键点。设定图像边缘img_border，若关键点落在图像边缘区域（以img_border为宽度的矩形外框）也不认为此点为关键点。</p>
+<h4 id="2-1-去除低反差-low-contrast-的点"><a href="#2-1-去除低反差-low-contrast-的点" class="headerlink" title="2.1 去除低反差(low contrast)的点"></a>2.1 去除低反差(low contrast)的点</h4><p>精确极值点处函数值：</p>
+<script type="math/tex; mode=display">
+D(\mathbf{\hat{X}}) = D + \frac{1}{2}\frac{\partial D}{\partial\mathbf{X}}^T\mathbf{\hat{X}}</script><p>若 <script type="math/tex">|D(\mathbf{\hat{X}})|<0.04/s</script> ，同样不认为此点是极值点。在此过程中保存极值点的数据ddata，为特征的构建做准备。计算出<script type="math/tex">\sigma\_octv</script>，即位于一个相同的octave内的尺度，某个octave内第n张图像的 <script type="math/tex">\sigma\_octv= \sigma_0\cdot k^{intvl-1}</script> ，此处intvl为精确定位后的intvl。</p>
+<h4 id="2-2-消除边缘响应"><a href="#2-2-消除边缘响应" class="headerlink" title="2.2 消除边缘响应"></a>2.2 消除边缘响应</h4><p>高斯差分函数有较强的边缘响应，对于比较像边缘的点应该去除掉。这样的点的特征为在某个方向有较大主曲率，而在垂直的方向主曲率很小。</p>
+<p>设r为大主曲率与小主曲率的比值，H为关键点处的Hessian矩阵，则有（具体推导可见Lowe的论文）：</p>
+<script type="math/tex; mode=display">\frac{Tr(H)^2}{Det(H)}=\frac{(r+1)^2}{r}</script><p>若满足：</p>
+<script type="math/tex; mode=display">
+\frac{Tr(H)^2}{Det(H)}<\frac{(r_t+1)^2}{r_t},其中r_t为一阈值，设为10</script><p>说明此处r较小，认为此关键点不位于边缘，否则则去除该点。</p>
+<h3 id="3-方向指定"><a href="#3-方向指定" class="headerlink" title="3. 方向指定"></a>3. 方向指定</h3><p>根据关键点的局部特性为每个关键点指定一个方向，可以具备旋转不变性。关键点局部特性在检测到关键点的高斯差分金字塔图像临近的高斯金字塔图像中计算。在关键点3σ邻域窗口计算梯度和方向分布，计算方式如下：</p>
+<script type="math/tex; mode=display">
+\begin{split}
+m(x,y)&=\sqrt{[L(x+1,y)-L(x-1,y)]^2+[L(x,y+1)-L(x,y-1)]^2}\\
+\theta(x,y)&=tan^{-1}\{[L(x,y+1)-L(x,y-1)]/[L(x+1,y)-L(x-1,y)]\}
+\end{split}</script><p>此处的x正方向向右，y正方向向上。其中L为关键点在上述精确定位后所处尺度的灰度值，m(x,y)为梯度的幅值，<script type="math/tex">\theta(x,y)</script>为关键点处梯度方向的弧度（范围为<script type="math/tex">(-\pi,\pi]</script>）。将360度的方向划分为36个区域(bins),第一个区域的范围是<script type="math/tex">[\frac{35\pi}{36},\frac{37\pi}{36})</script>,按逆时针方向依次划分。对m(x,y)按 <script type="math/tex">\sigma=1.5\sigma\_octv</script> 的高斯分布，在 <script type="math/tex">3\sigma=3\cdot1.5\sigma\_octv</script> 的邻域窗口加权计算，得到36个方向的直方图。然后对直方图进行两次平滑处理，即按0.25,0.5,0.25的大小对每3个连续的bin加权两次。</p>
+<p>直方图最大值的方向代表该关键点的主方向，对于其他峰值，若大于或等于主方向值的80%，则再分配一个方向。所以对于一个关键点，可能会有多个对应的方向，将带有方向的关键点定义为feature，则一个关键点可能对应多个feature。由于第一个octave是双倍大小的图像，feature的坐标和尺度应转换到原始图像所在的octave处理。最后用抛物插值精确定位feature的方向。</p>
+<p>对于x为-1,0,1，y为l,c,r的三个点来说，抛物插值得到极值点的x为：</p>
+<script type="math/tex; mode=display">
+0.5\cdot\frac{l-r}{l-2c+r}</script><h3 id="4-关键点描述子"><a href="#4-关键点描述子" class="headerlink" title="4. 关键点描述子"></a>4. 关键点描述子</h3><p>上一步已得到具有主方向的关键点，即feature，下一步是对feature的邻域进行采样，形成对该局部图像的描述，然后可用某种度量方法对描述进行匹配。<br>Lowe提出的sift描述子是一个 <script type="math/tex">4\times4\times8=128</script> 维的向量。描述子的数学形式可定义为 <script type="math/tex">h(x,y,\theta)</script> ，其中的x,y代表 <script type="math/tex">4\times4=16</script> 个图像区域的位置，<script type="math/tex">\theta</script>即梯度方向，只能取8个值。<script type="math/tex">h(x,y,\theta)</script>的值就是在(x,y)代表的图像区域计算得到的在<script type="math/tex">\theta</script>方向的梯度大小。</p>
+<h4 id="4-1-描述子采样区域"><a href="#4-1-描述子采样区域" class="headerlink" title="4.1 描述子采样区域"></a>4.1 描述子采样区域</h4><p>这16个图像区域中的每一个区域均为 <script type="math/tex">3\sigma\_octv</script> 像素，因此16个区域的半边长为 <script type="math/tex">4\times3\sigma\_octv/2</script> ，考虑到后续操作需要三线性插值，采样区域半边长设为 <script type="math/tex">(4+1)\times3\sigma\_octv/2</script> ，又由于旋转操作，这个值需要乘以<script type="math/tex">\sqrt{2}</script>，得到 <script type="math/tex">radius=(4+1)\times</script> <script type="math/tex">\sqrt{2}\times3\sigma\_octv/2</script> 。</p>
+<p>如下图所示，图中 <script type="math/tex">m=3,</script> <script type="math/tex">B_p=4,\sigma=\sigma\_octv</script> 。</p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
+descr_sampling.png" alt="Sampling Area"></p>
+<h4 id="4-2-旋转至主方向"><a href="#4-2-旋转至主方向" class="headerlink" title="4.2 旋转至主方向"></a>4.2 旋转至主方向</h4><p>为了使描述符具有旋转不变性，将坐标轴旋转至关键点主方向。设i，j分别为采样点相对关键点的行偏移量和列偏移量，i = -radius:radius，j = -radius:radius，关键点左上角i和j均为负数。关键点主方向为<script type="math/tex">\theta</script>，范围是<script type="math/tex">(-\pi,\pi]</script>。</p>
+<blockquote>
+<p>定理2 在右手平面直角坐标系中，向量(x,y)逆时针旋转<script type="math/tex">\theta</script>，得到的向量(x’,y’)为：</p>
+<script type="math/tex; mode=display">
+  \begin{bmatrix}
+    x'\\
+    y'
+  \end{bmatrix}
+  =\begin{bmatrix}
+    cos\theta & -sin\theta \\
+    sin\theta & cos\theta
+  \end{bmatrix}
+  \begin{bmatrix}
+    x\\
+    y
+  \end{bmatrix}</script></blockquote>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
+rotation.png" alt="Rotation"></p>
+<p>在左图以关键点为中心建立右手平面直角坐标系o-uv，u的正方向与左图<script type="math/tex">\mathbf{x}</script>方向相同，v的正方向与左图<script type="math/tex">\mathbf{y}</script>方向相反。左图中<script type="math/tex">\mathbf{x}</script>=(1,0),<script type="math/tex">\mathbf{y}</script>=(0,-1)，将<script type="math/tex">\mathbf{x}</script>,<script type="math/tex">\mathbf{y}</script>代入定理2的公式，得到右图中 <script type="math/tex">\mathbf{x'}=(cos\theta,sin\theta),</script> <script type="math/tex">\mathbf{y'}=(sin\theta,-cos\theta)</script> 。其中<script type="math/tex">\theta</script>为左图坐标系旋转到右图坐标系的角度，在上图中为一负数。设图像中有一点按左图的<script type="math/tex">\mathbf{x}</script>,<script type="math/tex">\mathbf{y}</script>可表示为 <script type="math/tex">j \cdot\mathbf{x} + i\cdot\mathbf{y}</script> ，按右图中的<script type="math/tex">\mathbf{x'}</script>,<script type="math/tex">\mathbf{y'}</script>可表示为 <script type="math/tex">j'\cdot\mathbf{x'}+i'\cdot\mathbf{y'}</script> ，则有：</p>
+<script type="math/tex; mode=display">
+  j\begin{bmatrix}
+  1\\
+  0
+  \end{bmatrix}
+  +i\begin{bmatrix}
+  0\\
+  -1
+  \end{bmatrix}
+  =j'\begin{bmatrix}
+  cos\theta\\
+  sin\theta
+  \end{bmatrix}
+  +i'\begin{bmatrix}
+  sin\theta\\
+  -cos\theta
+  \end{bmatrix}</script><p>解得 <script type="math/tex">j'=j\cdot cosθ-i\cdot sinθ,</script> <script type="math/tex">i'=j\cdot sinθ+i\cdot cosθ</script> 。</p>
+<p>得到新的行、列偏移量后，将 <script type="math/tex">3\sigma\_octv</script> 设为单位长度，并将中心转移至最左上角区域中心，得到新的坐标r_bin和c_bin。对梯度方向弧度值减去主方向弧度，并设 <script type="math/tex">\frac{2\pi}{8}</script> 为一个单位，得到o_bin。</p>
+<p>采样点的梯度幅值按照 <script type="math/tex">\sigma=0.5\cdot4\cdot3\sigma\_octv</script> （即16个区域边长的一半）的高斯函数加权：</p>
+<script type="math/tex; mode=display">
+w=m(a+j,b+i)\cdot e^{\frac{-j'^2+i'^2}{2\sigma^2}}</script><p>其中a，b为关键点在高斯金字塔图像中的位置坐标。</p>
+<h4 id="4-3-三线性插值"><a href="#4-3-三线性插值" class="headerlink" title="4.3 三线性插值"></a>4.3 三线性插值</h4><p>上述过程中构造了一个三维的bin空间，如4.1中右图所示，维度包括r_bin，c_bin和o_bin。注意最上层格子和最底层格子是相连的，因为0度等于360度。所有带有三维坐标的梯度幅值都将分配到三维格子里。</p>
+<p>为了减少一个梯度幅值从一个格子漂移(shift)到另一个格子引起的描述子突变，需要对梯度值做三线性插值。也就是根据三维坐标计算距离周围格子的距离，按距离的倒数计算权重，将梯度幅值按权重分配到临近的格子里。</p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/i
+nterpolation.png" alt="Trilinear Interpolation"></p>
+<p>某点在三维bin空间的坐标为<script type="math/tex">(r\_bin，c\_bin，o\_bin)</script>，求出<script type="math/tex">r=\lfloor r\_bin\rfloor,</script> <script type="math/tex">c=\lfloor c\_bin\rfloor,</script> <script type="math/tex">o=\lfloor o\_bin\rfloor,</script> <script type="math/tex">dr=r\_bin-r,</script> <script type="math/tex">dc=c\_bin-c,</script> <script type="math/tex">do=o\_bin-o</script>，它的梯度幅值最多可能分配到周围的8个格子中。计算公式如下：</p>
+<script type="math/tex; mode=display">
+\begin{split}
+&weightedValue[r+i+1][c+j+1][((o+k)\ mod\ 8)+1]\\
+=&\ w\cdot dr^i\cdot(1-dr)^{1-i}\cdot dc^j\cdot(1-dc)^{1-j}\cdot do^k\cdot(1-do)^{1-k}
+\end{split}</script><p>其中i，j，k均可取0或1，weightedValue下标加1的目的是使下标从1开始。</p>
+<p>为简化计算，可改为：</p>
+<script type="math/tex; mode=display">
+\begin{split}
+&weightedValue[r+i+1][c+j+1][((o+k)\ mod\ 8)+1]\\
+=&\ w\cdot(0.5+(dr-0.5)(2i-1))\cdot(0.5+(dc-0.5)(2j-1))\cdot\\
+&\ (0.5+(do-0.5)(2k-1))
+\end{split}</script><h4 id="4-4-生成描述子"><a href="#4-4-生成描述子" class="headerlink" title="4.4 生成描述子"></a>4.4 生成描述子</h4><p>将上述直方图数组按顺序排列可转换为一个128维的向量。</p>
+<p>为了减少光照变化的影响，对该向量进行归一化处理。非线性光照变化仍可能导致梯度幅值的较大变化，然而影响梯度方向的可能性较小。因此对于超过阈值0.2的梯度幅值设为0.2，然后再进行一次归一化。最后将描述子按照对应高斯金字塔图像的尺度大小排序。</p>
+<h3 id="5-匹配"><a href="#5-匹配" class="headerlink" title="5. 匹配"></a>5. 匹配</h3><p>描述子向量已经归一化，所以可直接用向量之间的夹角进行匹配，相当于球面距离。图像A 的描述子匹配图像B最近的两个描述子点积之比小于0.6，则认为匹配成功。</p>
+<h3 id="6-一些废话"><a href="#6-一些废话" class="headerlink" title="6. 一些废话"></a>6. 一些废话</h3><h4 id="6-1-性能优化"><a href="#6-1-性能优化" class="headerlink" title="6.1 性能优化"></a>6.1 性能优化</h4><p>因为用的是Matlab，所以不注重性能。然而又不得不注重性能，因为第一次跑通程序的时候跑了一晚上都没跑完一半！也就是一张图片的描述子都没算完。后来发现是因为在运行次数最多的for循环(描述子计算中的梯度计算)里用到了cell数组。把对这个cell数组的查询操作提到两重循环前以后，这个程序好像跑了半个小时左右跑出结果了。然而还是太慢，于是我又用Matlab的计时分析工具分析了程序最耗时的地方:</p>
+<ul>
+<li>把cell数组的查询尽可能减少</li>
+<li>充分利用Matlab的向量操作</li>
+<li>一些没用的参数给去掉了（如计算梯度时的三个返回值合并到了一个二维数组）</li>
+<li>一个三维数组折叠成了一维的（hist）</li>
+</ul>
+<p>程序里用了很多全局变量，是因为我把函数分成了文件而不是放在一个文件，为了节省点内存（以及方便）只能这么做（虽然据说Matlab在不改变变量的情况下函数传值等于引用，然而我并不清楚究竟是怎样的）。把for循环换成parfor的时候提示，parfor里似乎不推荐用全局变量，而且实际运行的时候全局变量似乎也会影响性能，于是我把全局变量复制成了局部的再放进parfor里。</p>
+<p>我还发现一个奇葩的问题，在运行次数最多的计算梯度的函数里用zeros(1,2)创建一个数组竟然也耗时非常多，改成[0 0]就好了。</p>
+<p>经过这些修改后，在开启parallel pool的情况下运行时间缩短到了7分钟左右。<dev>（然而Lowe的C语言版本只要十几秒</dev></p>
+<h4 id="6-2-运行结果"><a href="#6-2-运行结果" class="headerlink" title="6.2 运行结果"></a>6.2 运行结果</h4><p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/book-result.png" alt="Book"></p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/scene-result.png" alt="Scene"></p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/match-result.png" alt="Match"></p>
+<p>这次作业老师给的是两张768x1024的图片，分别检测到5288和4798个特征点，最后匹配了906对点。用Lowe的siftDemoV4跑出来的结果是1252对匹配。</p>
+<p>这个程序的参数基本都是参照opensift，但最后的匹配用的是Lowe的方案。Lowe的实现毕竟不太一样，运行的结果和opensift有一些差异。以下是匹配<code>siftDemoV4.zip</code>里的<code>scene.pgm</code>和<code>book.pgm</code>的结果：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Item</th>
+<th style="text-align:right">siftDemoV4</th>
+<th style="text-align:right">opensift</th>
+<th style="text-align:right">sw-sift</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">scene.pgm</td>
+<td style="text-align:right">1021</td>
+<td style="text-align:right">746</td>
+<td style="text-align:right">766</td>
+</tr>
+<tr>
+<td style="text-align:left">book.pgm</td>
+<td style="text-align:right">882</td>
+<td style="text-align:right">740</td>
+<td style="text-align:right">741</td>
+</tr>
+<tr>
+<td style="text-align:left">Matched</td>
+<td style="text-align:right">98</td>
+<td style="text-align:right">84</td>
+<td style="text-align:right">58</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>sw-sift和opensift的区别主要是在高斯平滑和匹配算法上。opensift的高斯平滑用的是OpenCV的CVSmooth函数，匹配用的是欧式距离（而且把描述子乘以512从double类型转成了int）。和opensift相比，sw-sift检测到的特征点数量很接近，但是匹配数量较少，所以可改进的地方主要是匹配算法（然而我不想改了==）。另外，我发现高斯平滑的核矩阵大小对结果有很大影响，根据<script type="math/tex">3\sigma</script>准则它的宽度应该是 <script type="math/tex">(6\sigma+1)\cdot(6\sigma+1)</script> ，然而有人设成 <script type="math/tex">(3\sigma+1)\cdot(3\sigma+1)</script> 却取得了更多特征点，因此调整这个参数再用其它参数限制错误数量或许可以得到更好的结果。</p>
+<h4 id="6-3-源代码"><a href="#6-3-源代码" class="headerlink" title="6.3 源代码"></a>6.3 源代码</h4><p>代码发布在github: <a href="https://github.com/sun11/sw-sift" target="_blank" rel="external">sw-sift</a>，请注意sift是有专利的。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>David G. Lowe, “Distinctive image features from scale-invariant keypoints,” International Journal of Computer Vision, 60, 2 (2004), pp. 91-110. <a href="http://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf" target="_blank" rel="external">[PDF]</a> <a href="http://www.cs.ubc.ca/~lowe/keypoints/siftDemoV4.zip" target="_blank" rel="external">[CODE]</a><br>Rob Hess, OpenSIFT源码: <a href="https://github.com/robwhess/opensift" target="_blank" rel="external">https://github.com/robwhess/opensift</a><br>zddhub, SIFT算法详解: <a href="http://blog.csdn.net/zddblog/article/details/7521424" target="_blank" rel="external">http://blog.csdn.net/zddblog/article/details/7521424</a><br>Rachel Zhang, SIFT特征提取分析: <a href="http://blog.csdn.net/abcjennifer/article/details/7639681" target="_blank" rel="external">http://blog.csdn.net/abcjennifer/article/details/7639681</a><br>JiePro, SIFT算法：特征描述子: <a href="http://www.cnblogs.com/JiePro/p/sift_4.html" target="_blank" rel="external">http://www.cnblogs.com/JiePro/p/sift_4.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CV/">CV</a></li></ul>
+
+        <a data-url="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/" data-id="cioie38f9000a4wtomne4p5dh" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ubuntu14.04 安装 Caffe+CUDA 7.5</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2016/sift-implementation-in-matlab/">SIFT算法的Matlab实现</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/">Ubuntu14.04 安装 Caffe+CUDA 7.5</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/hexo-theme-paperbox/">Hexo主题Paperbox</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/rosmin-and-rossum/">Rosmin与Rossum</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CV/">CV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Starsky Wong<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
+</nav>
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {
+      zoom: "None"
+    },
+    showMathMenu: false,
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+<!-- totop start -->
+<div id="totop">
+	<a title="To Top"></a>
+</div>
+<!-- totop end -->
+
+<!-- swiftype search start -->
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','rVtxziL4d6HMnCaovhgK','2.0.0');
+</script>
+
+<!-- swiftype search end -->
+
+
+<script>
+  var disqus_shortname = '11zhexo';
+  
+  var disqus_url = 'http://www.sun11.me/blog/2016/sift-implementation-in-matlab/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

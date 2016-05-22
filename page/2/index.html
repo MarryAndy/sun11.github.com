@@ -99,10 +99,74 @@ ga('send', 'pageview');
     <div class="outer">
       <section id="main">
   
+    <article id="post-ros-on-arm--picuntu-configuration" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2013/ros-on-arm--picuntu-configuration/" class="article-date">
+  <time datetime="2013-01-28T14:11:32.000Z" itemprop="datePublished">Jan 28 2013</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2013/ros-on-arm--picuntu-configuration/">ROS on ARM--Picuntu 安装配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上篇提到一个叫做Picuntu的项目，目的是为RK3066芯片的设备移植传统Linux，目前基本的使用已经没有什么问题，UG802/MK808（不含MK808B）已经可以使用内置的无线网卡，而其它型号，比如MK802 IIIS或者UG007，由于使用的是MTK的芯片，没有办法找到驱动（话说国内厂商有几个遵守了GPL协议的）所以只能外接USB网卡。另外是VPU和Mali 400，<a href="http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/page__st__380">slatedroid</a>论坛里有人正在折腾。</p>
+<p>MK80X开机后一般有两种模式，正常模式和恢复(recovery)模式。所以我们如果需要Android/Linux双启动，就只需要在recovery里刷入linux的kernel，Android可以正常运行互不影响。当然你也可以直接刷入原来的kernel空间覆盖掉Android，但是这种方式并不推荐。官方的recovery似乎功能不多，只有作为u盘的功能。Bob’s Finless ROM是一个修改的ROM，包含了替换recovery等img文件的工具。如果你的设备是MK808/MK808B或者UG802，就可以试试对应的Finless ROM，暂时没有针对其它型号的版本（公元2013年1月28日）。如果其它型号刷入，由于硬件不是都相同，可能会有一些问题。</p>
+<p>需要的工具有：</p>
+<ul>
+<li>显示器<br>有HDMI接口直接插上就可以了，如果是VGA或者DVI接口的可以使用转接线，淘宝上有HDMI转VGA带3.5mm音频输出的转接线</li>
+<li>RKAndroidTool v1.35<br>在<a href="http://www.armtvtech.com/armtvtechforum/viewtopic.php?f=12&amp;t=775">Bob’s Finless ROM</a>的包里</li>
+<li>一个大于4G的TF卡或U盘或移动硬盘</li>
+<li>Linux和Windows<br>Windows用于刷入recovery，Linux用于格式化上面所说的TF卡或U盘，写入rootfs。这个要求似乎有点苛刻，但是你可以寻找Windows下用于Ext4文件系统格式化的工具，或者寻找Linux的刷入recovery的工具，但这可能更加麻烦。</li>
+<li>USB网卡<br>如果你的设备不是UG802/MK808</li>
+<li><a href="http://rk3066-linux.googlecode.com/files/ug802recovkernel.img">Kernel镜像</a></li>
+<li><a href="http://download.g8.net/picuntu/picuntu-linuxroot-0.9-RC2.2.tgz">Root file system(Picuntu-linuxroot-0.9-RC2.2.tgz)</a><br>你也可以使用一个<a href="http://download.g8.net/picuntu/pre-picuntu-0.9-RC2.2.tgz">安装脚本</a>来更方便地完成安装过程，但这里介绍最直接（或者麻烦？）的方式</li>
+</ul>
+<p>都准备好了的话，开刷吧！</p>
+        
+          <p class="article-more-link">
+            <a href="/blog/2013/ros-on-arm--picuntu-configuration/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
+
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/" data-id="cioie38f200074wtoirm12pe6" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-ros-on-arm--linux-for-rk3066" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2013/ros-on-arm--linux-for-rk3066/" class="article-date">
-  <time datetime="2013-01-24T09:27:26.000Z" itemprop="datePublished">Jan 24 2013</time>
+  <time datetime="2013-01-24T08:27:26.000Z" itemprop="datePublished">Jan 24 2013</time>
 </h3>
     
   </div>
@@ -141,7 +205,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/" data-id="cin7i9gim0003i8to83ihmpo2" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/" data-id="cioie38eu00044wtou1v9wltp" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -159,7 +223,7 @@ ga('send', 'pageview');
     <article id="post-wtfrobot-rosmin" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2012/wtfrobot-rosmin/" class="article-date">
-  <time datetime="2012-12-15T03:27:35.000Z" itemprop="datePublished">Dec 15 2012</time>
+  <time datetime="2012-12-15T02:27:35.000Z" itemprop="datePublished">Dec 15 2012</time>
 </h3>
     
   </div>
@@ -180,7 +244,9 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <div class="video-container"><br><iframe  height=270 width=480 src="http://player.youku.com/embed/XNDg2OTMzNDEy" frameborder=0 allowfullscreen></iframe><br></div>
+        <div class="video-container">
+<iframe  height=270 width=480 src="http://player.youku.com/embed/XNDg2OTMzNDEy" frameborder=0 allowfullscreen></iframe>
+</div>
 
 <p>2012年8月，W、T、F三人陆续回到学校。</p>
 <p>因为共同的机器人之梦，这个团队在今年5月份组建。</p>
@@ -222,7 +288,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/wtfrobot-rosmin/" data-id="cin7i9gja000di8todbuoy867" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/wtfrobot-rosmin/" data-id="cioie38fn000i4wtod4h0zo1i" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/wtfrobot-rosmin/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -240,7 +306,7 @@ ga('send', 'pageview');
     <article id="post-opencv-242-porting-to-tiny6410" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2012/opencv-242-porting-to-tiny6410/" class="article-date">
-  <time datetime="2012-07-25T09:16:00.000Z" itemprop="datePublished">Jul 25 2012</time>
+  <time datetime="2012-07-25T08:16:00.000Z" itemprop="datePublished">Jul 25 2012</time>
 </h3>
     
   </div>
@@ -270,13 +336,13 @@ ga('send', 'pageview');
 <p>cmake好后下一步是make,对于双核的机器加上-j4参数速度会快很多，但是也发烫，在系统监视器里看到四个线程的CPU都是接近100%,风扇一直呼呼地响。</p>
 <p>然后是配置编译环境了，好像在2.3以后OpenCV的x86版安装好后都会有pkgconfig的.pc文件。//2.3以前的版本不清楚</p>
 <p>所以比较方便的就是用pkgconfig来配置了，它的.pc文件是在/usr/local/lib/pkgconfig下面。这是适用于PC版本的OpenCV的（因为之前已经安装好了x86的OpenCV）。但是只要把那第一行的prefix路径改成ARM版OpenCV的安装路径（也就是上面CMAKE_INSTALL_PREFIX参数的值）就可以直接用了。<a href="http://blog.csdn.net/yr119111/article/details/7732336">opencv2.3.1在arm端的移植</a>这篇帖子说再Libs里要加上-lrt -lpthread参数，我的环境下似乎不需要，但是加上也没什么问题。</p>
-<p>这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config –cflags –libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config –cflags –libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。<br>我用的主要是Qt，所以在.pro文件里加上：</p>
-<pre><code>unix {
-    CONFIG += link_pkgconfig
-    PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc
-}
+<p>这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config —cflags —libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config —cflags —libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。<br>我用的主要是Qt，所以在.pro文件里加上：</p>
+<pre><code>    unix {
+        CONFIG += link_pkgconfig
+        PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc
+    }
 </code></pre><p>但是编译成功后可能会显示一些警告，比如：</p>
-<pre><code>../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
+<pre><code>    ../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
 </code></pre>
         
           <p class="article-more-link">
@@ -290,7 +356,7 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cin7i9gj40009i8towaf9u6wl" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cioie38fg000e4wto9t49hph3" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -308,7 +374,7 @@ ga('send', 'pageview');
     <article id="post-xdjw-forum" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2012/xdjw-forum/" class="article-date">
-  <time datetime="2012-02-20T16:00:00.000Z" itemprop="datePublished">Feb 21 2012</time>
+  <time datetime="2012-02-20T15:00:00.000Z" itemprop="datePublished">Feb 21 2012</time>
 </h3>
     
   </div>
@@ -345,71 +411,9 @@ ga('send', 'pageview');
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/xdjw-forum/" data-id="cin7i9gkx001xi8tozgbb6k4g" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/xdjw-forum/" data-id="cioie38fs000l4wto6hldx0sr" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/xdjw-forum/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tl-wr703n-usb-camera" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2012/tl-wr703n-usb-camera/" class="article-date">
-  <time datetime="2012-01-06T16:00:00.000Z" itemprop="datePublished">Jan 7 2012</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2012/tl-wr703n-usb-camera/">TL-WR703n挂载USB摄像头</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先刷OpenWrt,我用的是<a href="http://www.right.com.cn/forum/thread-71042-1-2.html">这个帖子</a>里的<a href="http://ishare.iask.sina.com.cn/f/22200677.html&quot; href=&quot;http://ishare.iask.sina.com.cn/f/22200677.html">这个版本</a>，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。</p>
-<p>我是按<a href="http://www.unxmail.com/read.php?187&quot; href=&quot;http://www.unxmail.com/read.php?187">这个帖子</a>来操作的，把u盘分成两个区，一个ext3格式（据说比较稳定？），一个ext4格式。按照帖子成功挂载以后点开luci的System里的Software，发现空间已经是u盘那个指定分区的空间了，啊哈，想装啥就装啥。</p>
-<p>接下来就是摄像头了。由于路由器只有一个usb口，所以得用hub。（废话）</p>
-<p>我看到了<a href="http://www.openwrt.org.cn/bbs/forum.php?mod=viewthread&amp;tid=6105&amp;extra=&amp;page=1">这个帖子</a>,软件源是不用改的，所以直接：</p>
-<pre><code>opkg update
-
-opkg install usbutils
-</code></pre><p>由于我的摄像头是杂牌的，芯片貌似不是301的，所以这跟多数人用的301方案不同。</p>
-<p>首先在win7的设备管理器查到了我的摄像头的设备信息，搜到了型号。发现和帖子里的芯片型号一样，大喜呀。</p>
-<p>然后我装了kmod-video-gspca-zc3xx（可能不用装的）和kmod-video-uvc。</p>
-<p>结果竟然很快成功了。</p>
-        
-          <p class="article-more-link">
-            <a href="/blog/2012/tl-wr703n-usb-camera/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenWrt/">OpenWrt</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/" data-id="cin7i9gix0006i8todva43plv" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/#disqus_thread" class="article-comment-link">Comments</a>
         
       </div>
     </footer>
@@ -438,6 +442,10 @@ opkg install usbutils
       <ul>
         
           <li>
+            <a href="/blog/2016/sift-implementation-in-matlab/">SIFT算法的Matlab实现</a>
+          </li>
+        
+          <li>
             <a href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/">Ubuntu14.04 安装 Caffe+CUDA 7.5</a>
           </li>
         
@@ -453,10 +461,6 @@ opkg install usbutils
             <a href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a>
           </li>
         
-          <li>
-            <a href="/blog/2013/ros-on-arm--picuntu-configuration/">ROS on ARM--Picuntu 安装配置</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -466,7 +470,7 @@ opkg install usbutils
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CV/">CV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -475,7 +479,7 @@ opkg install usbutils
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -505,11 +509,31 @@ opkg install usbutils
   
   <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
 </nav>
-  <!-- totop start -->
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {
+      zoom: "None"
+    },
+    showMathMenu: false,
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+<!-- totop start -->
 <div id="totop">
 	<a title="To Top"></a>
 </div>
 <!-- totop end -->
+
 <!-- swiftype search start -->
 
 <script type="text/javascript">
@@ -537,13 +561,13 @@ opkg install usbutils
 </script>
 
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-<script src="//cdn.bootcss.com/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
 
 
-  <link rel="stylesheet" href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.css">
-  <script src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
 <script src="/js/script.js"></script>

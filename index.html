@@ -99,10 +99,81 @@ ga('send', 'pageview');
     <div class="outer">
       <section id="main">
   
+    <article id="post-sift-implementation-in-matlab" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2016/sift-implementation-in-matlab/" class="article-date">
+  <time datetime="2016-05-16T15:52:46.000Z" itemprop="datePublished">May 17 2016</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/sift-implementation-in-matlab/">SIFT算法的Matlab实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这是一次作业，内容是给出两张图像，检测特征点和匹配特征点。要求不能用诸如OpenCV的现成特征点检测函数。于是就只能造轮子了，写了这个Matlab版的sift。<del>（其实就是把c语言的opensift翻译成了matlab</del></p>
+<p>以下是算法流程，其实网上的类似博文已经很多了，只不过我看的过程中也看得不很明白，只能对照着好几个看，所以干脆自己又写了一遍。下面的图均来自于参考资料中，然而参考资料的图也是来自于参考资料的参考资料中。</p>
+<h3 id="1-构建尺度空间"><a href="#1-构建尺度空间" class="headerlink" title="1. 构建尺度空间"></a>1. 构建尺度空间</h3><blockquote>
+<p>定理1 对图像做 <script type="math/tex">\sigma = \sigma_1</script> 的高斯平滑，再做一次 <script type="math/tex">\sigma = \sigma_2</script> 的高斯平滑，等效于对原图像做一次 <script type="math/tex">\sigma = \sqrt{\sigma_1^2+\sigma_2^2}</script> 的高斯平滑。</p>
+</blockquote>
+<h4 id="1-1-构建高斯金字塔"><a href="#1-1-构建高斯金字塔" class="headerlink" title="1.1 构建高斯金字塔"></a>1.1 构建高斯金字塔</h4><p>高斯卷积核是实现尺度变换的唯一线性核（Koenderink, 1984; Lindeberg, 1994）。</p>
+<p>一幅图像的尺度空间被定义为对其做可变尺度的高斯卷积：</p>
+<script type="math/tex; mode=display">
+\begin{split}
+L(x,y,\sigma)&=G(x,y,\sigma) * I(x,y)\\
+其中G(x,y,\sigma)&=\frac{1}{2\pi\sigma^2}e^{-(x^2+y^2)/2\sigma^2}
+\end{split}</script><p>对于给定的彩色图像，转化为灰度图像，用不同大小的<script type="math/tex">\sigma</script>做高斯平滑（按照 3<script type="math/tex">\sigma</script> 准则，高斯核矩阵的大小设为 <script type="math/tex">(6\sigma+1)\cdot(6\sigma+1)</script> ，并保证行和列为奇数），再此基础上将图像降采样得到不同大小的组(octave)，每组若干图像(interval)。详细描述如下：</p>
+<p>为了得到更多的特征点，将图像扩大为原来的两倍。假设原图像已有 <script type="math/tex">\sigma=0.5</script> 的高斯平滑，而我们需要第一个octave的第一张图像的 <script type="math/tex">\sigma=1.6</script> ，按照定理1，我们要对扩大两倍的图像做一次高斯平滑，<script type="math/tex">\sigma=\sqrt{1.6^2-(0.5\times2)^2}</script> 。</p>
+<p>上一个octave的图像的长度和宽度分别是下一个octave的图像的两倍。因此图像组数(octaves)可由图像大小决定，将其设为 <script type="math/tex">log_2(min(height,width))</script> <script type="math/tex">-\ 2</script> ，这样将使顶层octave图像的长度和宽度最小值在8像素左右。</p>
+<p>设第m个octave的第n张图像相对于原始图像的参数<script type="math/tex">\sigma</script>为 <script type="math/tex">sigma(m,n)</script>，则<script type="math/tex">sigma(1,1)=\sigma_0=1.6</script>。每个octave有s+1张图像（即intervals），这样得到的高斯差分金字塔(DoG)每个octave将有s张图像，我们设s为3。为了满足在不同octave间尺度的连续性，并使 <script type="math/tex">sigma(m,n)=</script> <script type="math/tex">2 \cdot sigma(m-1,n)</script>，按照定理1，则：</p>
+<script type="math/tex; mode=display">
+\begin{split}
+sigma(1,n)&=\sigma_0\cdot k^{n-1},其中k=2^{1/s}\\
+sigma(m,n)&=\sigma_0\cdot 2^{m-1}\cdot k^{n-1}
+\end{split}</script><p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/pyr.png" alt="Parameter Sigma"></p>
+        
+          <p class="article-more-link">
+            <a href="/blog/2016/sift-implementation-in-matlab/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CV/">CV</a></li></ul>
+
+        <a data-url="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/" data-id="cioie38f9000a4wtomne4p5dh" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Ubuntu-14-04-Caffe-CUDA-7-5-installation" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" class="article-date">
-  <time datetime="2016-02-21T12:21:30.000Z" itemprop="datePublished">Feb 21 2016</time>
+  <time datetime="2016-02-21T11:21:30.000Z" itemprop="datePublished">Feb 21 2016</time>
 </h3>
     
   </div>
@@ -144,7 +215,7 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PRML/">PRML</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cin7i9gj6000ai8to64zzngjz" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cioie38fk000g4wtowz2flz2w" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -162,7 +233,7 @@ options nouveau modeset=0
     <article id="post-hexo-theme-paperbox" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2016/hexo-theme-paperbox/" class="article-date">
-  <time datetime="2016-02-12T15:56:11.000Z" itemprop="datePublished">Feb 12 2016</time>
+  <time datetime="2016-02-12T14:56:11.000Z" itemprop="datePublished">Feb 12 2016</time>
 </h3>
     
   </div>
@@ -200,7 +271,7 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Customize/">Customize</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/hexo-theme-paperbox/" data-id="cin7i9gih0002i8toaerbj5uw" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/hexo-theme-paperbox/" data-id="cioie38en00034wtov60ehv5v" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/hexo-theme-paperbox/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -218,7 +289,7 @@ options nouveau modeset=0
     <article id="post-rosmin-and-rossum" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2013/rosmin-and-rossum/" class="article-date">
-  <time datetime="2013-08-10T11:45:02.000Z" itemprop="datePublished">Aug 10 2013</time>
+  <time datetime="2013-08-10T10:45:02.000Z" itemprop="datePublished">Aug 10 2013</time>
 </h3>
     
   </div>
@@ -240,19 +311,23 @@ options nouveau modeset=0
     <div class="article-entry" itemprop="articleBody">
       
         <p>Rossum demo:</p>
-<div class="video-container"><br><iframe  height=270 width=480 src="http://player.youku.com/embed/XNTY0MTUwMTMy?x" frameborder=0 allowfullscreen></iframe><br></div>
+<div class="video-container">
+<iframe  height=270 width=480 src="http://player.youku.com/embed/XNTY0MTUwMTMy?x" frameborder=0 allowfullscreen></iframe>
+</div>
 
 <p>Rosmin demo:</p>
-<div class="video-container"><br><iframe  height=270 width=480 src="http://player.youku.com/embed/XNDg2OTMzNDEy" frameborder=0 allowfullscreen></iframe><br></div>
+<div class="video-container">
+<iframe  height=270 width=480 src="http://player.youku.com/embed/XNDg2OTMzNDEy" frameborder=0 allowfullscreen></iframe>
+</div>
 
 <h3 id="Rosmin"><a href="#Rosmin" class="headerlink" title="Rosmin"></a>Rosmin</h3><p>项目地址：<a href="https://code.google.com/p/wtfrobot-rosmin/">https://code.google.com/p/wtfrobot-rosmin/</a></p>
 <p>相关文章：</p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/8029640/">Rosmin–OpenCV Color Blob Tracker on Android</a></p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/8029640/">Rosmin—OpenCV Color Blob Tracker on Android</a></p>
 <p><a href="http://blog.csdn.net/wtfrobot/article/details/8034640/">Android下PocketSphinx的离线语音识别</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173609/">Rosmin–OpenCV Color Blob Tracker on Android</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173619/">Rosmin–两台Android手机的Socket双向通信</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173631/">Rosmin–在Android上绘制小车行进路线图并标记</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173643/">Rosmin–折腾USB Host Shield的日子</a></p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173609/">Rosmin—OpenCV Color Blob Tracker on Android</a></p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173619/">Rosmin—两台Android手机的Socket双向通信</a></p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173631/">Rosmin—在Android上绘制小车行进路线图并标记</a></p>
+<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173643/">Rosmin—折腾USB Host Shield的日子</a></p>
 <p>Rosmin机器人是我们去年（2012年）制作的一个使用Arduino驱动的小型移动机器人，连接上Android手机，可以完成手机控制的基本运动，追踪乒乓球，以QR码为人工路标移动到指定区域，搜寻目标，视频监控等等。</p>
 <p>硬件结构：<br><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/54389a22c578eb6789380abdc70ea156.png" alt=""></p>
         
@@ -267,7 +342,7 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/rosmin-and-rossum/" data-id="cin7i9gjd000fi8tonkadges6" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/rosmin-and-rossum/" data-id="cioie38f600094wtoftghfbdg" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/rosmin-and-rossum/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -285,7 +360,7 @@ options nouveau modeset=0
     <article id="post-ros-on-arm--native-compilation-on-rk3066" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/" class="article-date">
-  <time datetime="2013-02-03T15:08:16.000Z" itemprop="datePublished">Feb 3 2013</time>
+  <time datetime="2013-02-03T14:08:16.000Z" itemprop="datePublished">Feb 3 2013</time>
 </h3>
     
   </div>
@@ -324,73 +399,9 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/">ROS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/" data-id="cin7i9gj20008i8towgrgwbnu" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/" data-id="cioie38ez00064wtok9ft1qic" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ros-on-arm--picuntu-configuration" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2013/ros-on-arm--picuntu-configuration/" class="article-date">
-  <time datetime="2013-01-28T15:11:32.000Z" itemprop="datePublished">Jan 28 2013</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2013/ros-on-arm--picuntu-configuration/">ROS on ARM--Picuntu 安装配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上篇提到一个叫做Picuntu的项目，目的是为RK3066芯片的设备移植传统Linux，目前基本的使用已经没有什么问题，UG802/MK808（不含MK808B）已经可以使用内置的无线网卡，而其它型号，比如MK802 IIIS或者UG007，由于使用的是MTK的芯片，没有办法找到驱动（话说国内厂商有几个遵守了GPL协议的）所以只能外接USB网卡。另外是VPU和Mali 400，<a href="http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/page__st__380">slatedroid</a>论坛里有人正在折腾。</p>
-<p>MK80X开机后一般有两种模式，正常模式和恢复(recovery)模式。所以我们如果需要Android/Linux双启动，就只需要在recovery里刷入linux的kernel，Android可以正常运行互不影响。当然你也可以直接刷入原来的kernel空间覆盖掉Android，但是这种方式并不推荐。官方的recovery似乎功能不多，只有作为u盘的功能。Bob’s Finless ROM是一个修改的ROM，包含了替换recovery等img文件的工具。如果你的设备是MK808/MK808B或者UG802，就可以试试对应的Finless ROM，暂时没有针对其它型号的版本（公元2013年1月28日）。如果其它型号刷入，由于硬件不是都相同，可能会有一些问题。</p>
-<p>需要的工具有：</p>
-<ul>
-<li>显示器<br>有HDMI接口直接插上就可以了，如果是VGA或者DVI接口的可以使用转接线，淘宝上有HDMI转VGA带3.5mm音频输出的转接线</li>
-<li>RKAndroidTool v1.35<br>在<a href="http://www.armtvtech.com/armtvtechforum/viewtopic.php?f=12&amp;t=775">Bob’s Finless ROM</a>的包里</li>
-<li>一个大于4G的TF卡或U盘或移动硬盘</li>
-<li>Linux和Windows<br>Windows用于刷入recovery，Linux用于格式化上面所说的TF卡或U盘，写入rootfs。这个要求似乎有点苛刻，但是你可以寻找Windows下用于Ext4文件系统格式化的工具，或者寻找Linux的刷入recovery的工具，但这可能更加麻烦。</li>
-<li>USB网卡<br>如果你的设备不是UG802/MK808</li>
-<li><a href="http://rk3066-linux.googlecode.com/files/ug802recovkernel.img">Kernel镜像</a></li>
-<li><a href="http://download.g8.net/picuntu/picuntu-linuxroot-0.9-RC2.2.tgz">Root file system(Picuntu-linuxroot-0.9-RC2.2.tgz)</a><br>你也可以使用一个<a href="http://download.g8.net/picuntu/pre-picuntu-0.9-RC2.2.tgz">安装脚本</a>来更方便地完成安装过程，但这里介绍最直接（或者麻烦？）的方式</li>
-</ul>
-<p>都准备好了的话，开刷吧！</p>
-        
-          <p class="article-more-link">
-            <a href="/blog/2013/ros-on-arm--picuntu-configuration/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/" data-id="cin7i9giw0005i8tow8vdwqzy" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/#disqus_thread" class="article-comment-link">Comments</a>
         
       </div>
     </footer>
@@ -419,6 +430,10 @@ options nouveau modeset=0
       <ul>
         
           <li>
+            <a href="/blog/2016/sift-implementation-in-matlab/">SIFT算法的Matlab实现</a>
+          </li>
+        
+          <li>
             <a href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/">Ubuntu14.04 安装 Caffe+CUDA 7.5</a>
           </li>
         
@@ -434,10 +449,6 @@ options nouveau modeset=0
             <a href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a>
           </li>
         
-          <li>
-            <a href="/blog/2013/ros-on-arm--picuntu-configuration/">ROS on ARM--Picuntu 安装配置</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -447,7 +458,7 @@ options nouveau modeset=0
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CV/">CV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -456,7 +467,7 @@ options nouveau modeset=0
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -486,11 +497,31 @@ options nouveau modeset=0
   
   <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
 </nav>
-  <!-- totop start -->
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {
+      zoom: "None"
+    },
+    showMathMenu: false,
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+
+<!-- totop start -->
 <div id="totop">
 	<a title="To Top"></a>
 </div>
 <!-- totop end -->
+
 <!-- swiftype search start -->
 
 <script type="text/javascript">
@@ -518,13 +549,13 @@ options nouveau modeset=0
 </script>
 
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-<script src="//cdn.bootcss.com/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
 
 
-  <link rel="stylesheet" href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.css">
-  <script src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
 <script src="/js/script.js"></script>

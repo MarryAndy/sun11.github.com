@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sun11.me/"/>
-  <updated>2016-02-21T12:39:54.801Z</updated>
+  <updated>2016-05-22T08:47:56.734Z</updated>
   <id>http://www.sun11.me/</id>
   
   <author>
@@ -16,11 +16,214 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>SIFT算法的Matlab实现</title>
+    <link href="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/"/>
+    <id>http://www.sun11.me/blog/2016/sift-implementation-in-matlab/</id>
+    <published>2016-05-16T15:52:46.000Z</published>
+    <updated>2016-05-22T08:47:56.734Z</updated>
+    
+    <content type="html">&lt;p&gt;这是一次作业，内容是给出两张图像，检测特征点和匹配特征点。要求不能用诸如OpenCV的现成特征点检测函数。于是就只能造轮子了，写了这个Matlab版的sift。&lt;del&gt;（其实就是把c语言的opensift翻译成了matlab&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;以下是算法流程，其实网上的类似博文已经很多了，只不过我看的过程中也看得不很明白，只能对照着好几个看，所以干脆自己又写了一遍。下面的图均来自于参考资料中，然而参考资料的图也是来自于参考资料的参考资料中。&lt;/p&gt;
+&lt;h3 id=&quot;1-构建尺度空间&quot;&gt;&lt;a href=&quot;#1-构建尺度空间&quot; class=&quot;headerlink&quot; title=&quot;1. 构建尺度空间&quot;&gt;&lt;/a&gt;1. 构建尺度空间&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;定理1 对图像做 &lt;script type=&quot;math/tex&quot;&gt;\sigma = \sigma_1&lt;/script&gt; 的高斯平滑，再做一次 &lt;script type=&quot;math/tex&quot;&gt;\sigma = \sigma_2&lt;/script&gt; 的高斯平滑，等效于对原图像做一次 &lt;script type=&quot;math/tex&quot;&gt;\sigma = \sqrt{\sigma_1^2+\sigma_2^2}&lt;/script&gt; 的高斯平滑。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&quot;1-1-构建高斯金字塔&quot;&gt;&lt;a href=&quot;#1-1-构建高斯金字塔&quot; class=&quot;headerlink&quot; title=&quot;1.1 构建高斯金字塔&quot;&gt;&lt;/a&gt;1.1 构建高斯金字塔&lt;/h4&gt;&lt;p&gt;高斯卷积核是实现尺度变换的唯一线性核（Koenderink, 1984; Lindeberg, 1994）。&lt;/p&gt;
+&lt;p&gt;一幅图像的尺度空间被定义为对其做可变尺度的高斯卷积：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\begin{split}
+L(x,y,\sigma)&amp;=G(x,y,\sigma) * I(x,y)\\
+其中G(x,y,\sigma)&amp;=\frac{1}{2\pi\sigma^2}e^{-(x^2+y^2)/2\sigma^2}
+\end{split}&lt;/script&gt;&lt;p&gt;对于给定的彩色图像，转化为灰度图像，用不同大小的&lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt;做高斯平滑（按照 3&lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt; 准则，高斯核矩阵的大小设为 &lt;script type=&quot;math/tex&quot;&gt;(6\sigma+1)\cdot(6\sigma+1)&lt;/script&gt; ，并保证行和列为奇数），再此基础上将图像降采样得到不同大小的组(octave)，每组若干图像(interval)。详细描述如下：&lt;/p&gt;
+&lt;p&gt;为了得到更多的特征点，将图像扩大为原来的两倍。假设原图像已有 &lt;script type=&quot;math/tex&quot;&gt;\sigma=0.5&lt;/script&gt; 的高斯平滑，而我们需要第一个octave的第一张图像的 &lt;script type=&quot;math/tex&quot;&gt;\sigma=1.6&lt;/script&gt; ，按照定理1，我们要对扩大两倍的图像做一次高斯平滑，&lt;script type=&quot;math/tex&quot;&gt;\sigma=\sqrt{1.6^2-(0.5\times2)^2}&lt;/script&gt; 。&lt;/p&gt;
+&lt;p&gt;上一个octave的图像的长度和宽度分别是下一个octave的图像的两倍。因此图像组数(octaves)可由图像大小决定，将其设为 &lt;script type=&quot;math/tex&quot;&gt;log_2(min(height,width))&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;-\ 2&lt;/script&gt; ，这样将使顶层octave图像的长度和宽度最小值在8像素左右。&lt;/p&gt;
+&lt;p&gt;设第m个octave的第n张图像相对于原始图像的参数&lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt;为 &lt;script type=&quot;math/tex&quot;&gt;sigma(m,n)&lt;/script&gt;，则&lt;script type=&quot;math/tex&quot;&gt;sigma(1,1)=\sigma_0=1.6&lt;/script&gt;。每个octave有s+1张图像（即intervals），这样得到的高斯差分金字塔(DoG)每个octave将有s张图像，我们设s为3。为了满足在不同octave间尺度的连续性，并使 &lt;script type=&quot;math/tex&quot;&gt;sigma(m,n)=&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;2 \cdot sigma(m-1,n)&lt;/script&gt;，按照定理1，则：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\begin{split}
+sigma(1,n)&amp;=\sigma_0\cdot k^{n-1},其中k=2^{1/s}\\
+sigma(m,n)&amp;=\sigma_0\cdot 2^{m-1}\cdot k^{n-1}
+\end{split}&lt;/script&gt;&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/pyr.png&quot; alt=&quot;Parameter Sigma&quot;&gt;&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;如上图所示，在第一个octave中尺度为&lt;script type=&quot;math/tex&quot;&gt;k^3\cdot \sigma_0&lt;/script&gt;的“最后”一张图像进行下采样得到第二个octave的第一张图像，尺度仍为&lt;script type=&quot;math/tex&quot;&gt;k^3\cdot \sigma_0=2\cdot \sigma_0&lt;/script&gt;。&lt;/p&gt;
+&lt;p&gt;但实际上我们需要做出更多不同尺度的高斯平滑图像，这是因为在后续高斯差分金字塔的极值检测中，需要前后两级尺度都存在图像。如图中红框所示，高斯差分金字塔中每个octave有s幅图像，则需要高斯金字塔中每个octave包含s+3幅图像。其中第s+1幅图像用作下一个octave第一幅图像的降采样。&lt;/p&gt;
+&lt;p&gt;具体实现中并未对单幅图像多次进行高斯平滑，而是由上一幅图像进行高斯平滑得到下一幅图像并迭代之，按照定理1计算&lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt;。&lt;/p&gt;
+&lt;h4 id=&quot;1-2-构建高斯差分金字塔&quot;&gt;&lt;a href=&quot;#1-2-构建高斯差分金字塔&quot; class=&quot;headerlink&quot; title=&quot;1.2 构建高斯差分金字塔&quot;&gt;&lt;/a&gt;1.2 构建高斯差分金字塔&lt;/h4&gt;&lt;p&gt;对两幅高斯金字塔的图像作差。&lt;/p&gt;
+&lt;h4 id=&quot;1-3-检测极值点&quot;&gt;&lt;a href=&quot;#1-3-检测极值点&quot; class=&quot;headerlink&quot; title=&quot;1.3 检测极值点&quot;&gt;&lt;/a&gt;1.3 检测极值点&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/extrem
+um.png&quot; alt=&quot;Extremum&quot;&gt;&lt;/p&gt;
+&lt;p&gt;如上图，与前后两幅图像及自身的共26个邻域像素点比较灰度值检测极值。&lt;/p&gt;
+&lt;h3 id=&quot;2-关键点精确定位&quot;&gt;&lt;a href=&quot;#2-关键点精确定位&quot; class=&quot;headerlink&quot; title=&quot;2. 关键点精确定位&quot;&gt;&lt;/a&gt;2. 关键点精确定位&lt;/h3&gt;&lt;p&gt;检测到的极值点是离散的，通过三元二次函数拟合来精确确定关键点的位置和尺度，达到亚像素精度。以某关键点为中心的尺度空间函数 &lt;script type=&quot;math/tex&quot;&gt;D(x,y,intvl)&lt;/script&gt; 的二次泰勒展开式为：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+D(\mathbf{X}) = D + \frac{\partial D}{\partial\mathbf{X}}^T\mathbf{X} + \frac{1}{2}\mathbf{X}^T\frac{\partial ^2D}{\partial\mathbf{X}^2}\mathbf{X}&lt;/script&gt;&lt;p&gt;其中等号右边第一个D为某关键点处的灰度值， &lt;script type=&quot;math/tex&quot;&gt;\mathbf{X}=(x,y,intvl)^T&lt;/script&gt; 是以此点为中心的偏移量，由于 &lt;script type=&quot;math/tex&quot;&gt;D(\mathbf{X})&lt;/script&gt; 是离散的，其导数用差分法求得。令 &lt;script type=&quot;math/tex&quot;&gt;D(\mathbf{X})&lt;/script&gt; 导数为零，得到精确极值位置的偏移量为：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\mathbf{\hat{X}}=-\frac{\partial ^2D}{\partial \mathbf{X}^2}^{-1}\frac{\partial D}{\partial\mathbf{X}}&lt;/script&gt;&lt;p&gt;若&lt;script type=&quot;math/tex&quot;&gt;\mathbf{\hat{X}}&lt;/script&gt;在任意一个维度大于0.5，说明极值点精确位置距离另一个点更近，应该将关键点定位于更近的那个位置。定位到新点后再进行相同操作，若迭代5次位置仍不收敛，则不认为此点为关键点。设定图像边缘img_border，若关键点落在图像边缘区域（以img_border为宽度的矩形外框）也不认为此点为关键点。&lt;/p&gt;
+&lt;h4 id=&quot;2-1-去除低反差-low-contrast-的点&quot;&gt;&lt;a href=&quot;#2-1-去除低反差-low-contrast-的点&quot; class=&quot;headerlink&quot; title=&quot;2.1 去除低反差(low contrast)的点&quot;&gt;&lt;/a&gt;2.1 去除低反差(low contrast)的点&lt;/h4&gt;&lt;p&gt;精确极值点处函数值：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+D(\mathbf{\hat{X}}) = D + \frac{1}{2}\frac{\partial D}{\partial\mathbf{X}}^T\mathbf{\hat{X}}&lt;/script&gt;&lt;p&gt;若 &lt;script type=&quot;math/tex&quot;&gt;|D(\mathbf{\hat{X}})|&lt;0.04/s&lt;/script&gt; ，同样不认为此点是极值点。在此过程中保存极值点的数据ddata，为特征的构建做准备。计算出&lt;script type=&quot;math/tex&quot;&gt;\sigma\_octv&lt;/script&gt;，即位于一个相同的octave内的尺度，某个octave内第n张图像的 &lt;script type=&quot;math/tex&quot;&gt;\sigma\_octv= \sigma_0\cdot k^{intvl-1}&lt;/script&gt; ，此处intvl为精确定位后的intvl。&lt;/p&gt;
+&lt;h4 id=&quot;2-2-消除边缘响应&quot;&gt;&lt;a href=&quot;#2-2-消除边缘响应&quot; class=&quot;headerlink&quot; title=&quot;2.2 消除边缘响应&quot;&gt;&lt;/a&gt;2.2 消除边缘响应&lt;/h4&gt;&lt;p&gt;高斯差分函数有较强的边缘响应，对于比较像边缘的点应该去除掉。这样的点的特征为在某个方向有较大主曲率，而在垂直的方向主曲率很小。&lt;/p&gt;
+&lt;p&gt;设r为大主曲率与小主曲率的比值，H为关键点处的Hessian矩阵，则有（具体推导可见Lowe的论文）：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{Tr(H)^2}{Det(H)}=\frac{(r+1)^2}{r}&lt;/script&gt;&lt;p&gt;若满足：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\frac{Tr(H)^2}{Det(H)}&lt;\frac{(r_t+1)^2}{r_t},其中r_t为一阈值，设为10&lt;/script&gt;&lt;p&gt;说明此处r较小，认为此关键点不位于边缘，否则则去除该点。&lt;/p&gt;
+&lt;h3 id=&quot;3-方向指定&quot;&gt;&lt;a href=&quot;#3-方向指定&quot; class=&quot;headerlink&quot; title=&quot;3. 方向指定&quot;&gt;&lt;/a&gt;3. 方向指定&lt;/h3&gt;&lt;p&gt;根据关键点的局部特性为每个关键点指定一个方向，可以具备旋转不变性。关键点局部特性在检测到关键点的高斯差分金字塔图像临近的高斯金字塔图像中计算。在关键点3σ邻域窗口计算梯度和方向分布，计算方式如下：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\begin{split}
+m(x,y)&amp;=\sqrt{[L(x+1,y)-L(x-1,y)]^2+[L(x,y+1)-L(x,y-1)]^2}\\
+\theta(x,y)&amp;=tan^{-1}\{[L(x,y+1)-L(x,y-1)]/[L(x+1,y)-L(x-1,y)]\}
+\end{split}&lt;/script&gt;&lt;p&gt;此处的x正方向向右，y正方向向上。其中L为关键点在上述精确定位后所处尺度的灰度值，m(x,y)为梯度的幅值，&lt;script type=&quot;math/tex&quot;&gt;\theta(x,y)&lt;/script&gt;为关键点处梯度方向的弧度（范围为&lt;script type=&quot;math/tex&quot;&gt;(-\pi,\pi]&lt;/script&gt;）。将360度的方向划分为36个区域(bins),第一个区域的范围是&lt;script type=&quot;math/tex&quot;&gt;[\frac{35\pi}{36},\frac{37\pi}{36})&lt;/script&gt;,按逆时针方向依次划分。对m(x,y)按 &lt;script type=&quot;math/tex&quot;&gt;\sigma=1.5\sigma\_octv&lt;/script&gt; 的高斯分布，在 &lt;script type=&quot;math/tex&quot;&gt;3\sigma=3\cdot1.5\sigma\_octv&lt;/script&gt; 的邻域窗口加权计算，得到36个方向的直方图。然后对直方图进行两次平滑处理，即按0.25,0.5,0.25的大小对每3个连续的bin加权两次。&lt;/p&gt;
+&lt;p&gt;直方图最大值的方向代表该关键点的主方向，对于其他峰值，若大于或等于主方向值的80%，则再分配一个方向。所以对于一个关键点，可能会有多个对应的方向，将带有方向的关键点定义为feature，则一个关键点可能对应多个feature。由于第一个octave是双倍大小的图像，feature的坐标和尺度应转换到原始图像所在的octave处理。最后用抛物插值精确定位feature的方向。&lt;/p&gt;
+&lt;p&gt;对于x为-1,0,1，y为l,c,r的三个点来说，抛物插值得到极值点的x为：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+0.5\cdot\frac{l-r}{l-2c+r}&lt;/script&gt;&lt;h3 id=&quot;4-关键点描述子&quot;&gt;&lt;a href=&quot;#4-关键点描述子&quot; class=&quot;headerlink&quot; title=&quot;4. 关键点描述子&quot;&gt;&lt;/a&gt;4. 关键点描述子&lt;/h3&gt;&lt;p&gt;上一步已得到具有主方向的关键点，即feature，下一步是对feature的邻域进行采样，形成对该局部图像的描述，然后可用某种度量方法对描述进行匹配。&lt;br&gt;Lowe提出的sift描述子是一个 &lt;script type=&quot;math/tex&quot;&gt;4\times4\times8=128&lt;/script&gt; 维的向量。描述子的数学形式可定义为 &lt;script type=&quot;math/tex&quot;&gt;h(x,y,\theta)&lt;/script&gt; ，其中的x,y代表 &lt;script type=&quot;math/tex&quot;&gt;4\times4=16&lt;/script&gt; 个图像区域的位置，&lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;即梯度方向，只能取8个值。&lt;script type=&quot;math/tex&quot;&gt;h(x,y,\theta)&lt;/script&gt;的值就是在(x,y)代表的图像区域计算得到的在&lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;方向的梯度大小。&lt;/p&gt;
+&lt;h4 id=&quot;4-1-描述子采样区域&quot;&gt;&lt;a href=&quot;#4-1-描述子采样区域&quot; class=&quot;headerlink&quot; title=&quot;4.1 描述子采样区域&quot;&gt;&lt;/a&gt;4.1 描述子采样区域&lt;/h4&gt;&lt;p&gt;这16个图像区域中的每一个区域均为 &lt;script type=&quot;math/tex&quot;&gt;3\sigma\_octv&lt;/script&gt; 像素，因此16个区域的半边长为 &lt;script type=&quot;math/tex&quot;&gt;4\times3\sigma\_octv/2&lt;/script&gt; ，考虑到后续操作需要三线性插值，采样区域半边长设为 &lt;script type=&quot;math/tex&quot;&gt;(4+1)\times3\sigma\_octv/2&lt;/script&gt; ，又由于旋转操作，这个值需要乘以&lt;script type=&quot;math/tex&quot;&gt;\sqrt{2}&lt;/script&gt;，得到 &lt;script type=&quot;math/tex&quot;&gt;radius=(4+1)\times&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;\sqrt{2}\times3\sigma\_octv/2&lt;/script&gt; 。&lt;/p&gt;
+&lt;p&gt;如下图所示，图中 &lt;script type=&quot;math/tex&quot;&gt;m=3,&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;B_p=4,\sigma=\sigma\_octv&lt;/script&gt; 。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
+descr_sampling.png&quot; alt=&quot;Sampling Area&quot;&gt;&lt;/p&gt;
+&lt;h4 id=&quot;4-2-旋转至主方向&quot;&gt;&lt;a href=&quot;#4-2-旋转至主方向&quot; class=&quot;headerlink&quot; title=&quot;4.2 旋转至主方向&quot;&gt;&lt;/a&gt;4.2 旋转至主方向&lt;/h4&gt;&lt;p&gt;为了使描述符具有旋转不变性，将坐标轴旋转至关键点主方向。设i，j分别为采样点相对关键点的行偏移量和列偏移量，i = -radius:radius，j = -radius:radius，关键点左上角i和j均为负数。关键点主方向为&lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;，范围是&lt;script type=&quot;math/tex&quot;&gt;(-\pi,\pi]&lt;/script&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;定理2 在右手平面直角坐标系中，向量(x,y)逆时针旋转&lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;，得到的向量(x’,y’)为：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+  \begin{bmatrix}
+    x&#39;\\
+    y&#39;
+  \end{bmatrix}
+  =\begin{bmatrix}
+    cos\theta &amp; -sin\theta \\
+    sin\theta &amp; cos\theta
+  \end{bmatrix}
+  \begin{bmatrix}
+    x\\
+    y
+  \end{bmatrix}&lt;/script&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
+rotation.png&quot; alt=&quot;Rotation&quot;&gt;&lt;/p&gt;
+&lt;p&gt;在左图以关键点为中心建立右手平面直角坐标系o-uv，u的正方向与左图&lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt;方向相同，v的正方向与左图&lt;script type=&quot;math/tex&quot;&gt;\mathbf{y}&lt;/script&gt;方向相反。左图中&lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt;=(1,0),&lt;script type=&quot;math/tex&quot;&gt;\mathbf{y}&lt;/script&gt;=(0,-1)，将&lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt;,&lt;script type=&quot;math/tex&quot;&gt;\mathbf{y}&lt;/script&gt;代入定理2的公式，得到右图中 &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x&#39;}=(cos\theta,sin\theta),&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;\mathbf{y&#39;}=(sin\theta,-cos\theta)&lt;/script&gt; 。其中&lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;为左图坐标系旋转到右图坐标系的角度，在上图中为一负数。设图像中有一点按左图的&lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt;,&lt;script type=&quot;math/tex&quot;&gt;\mathbf{y}&lt;/script&gt;可表示为 &lt;script type=&quot;math/tex&quot;&gt;j \cdot\mathbf{x} + i\cdot\mathbf{y}&lt;/script&gt; ，按右图中的&lt;script type=&quot;math/tex&quot;&gt;\mathbf{x&#39;}&lt;/script&gt;,&lt;script type=&quot;math/tex&quot;&gt;\mathbf{y&#39;}&lt;/script&gt;可表示为 &lt;script type=&quot;math/tex&quot;&gt;j&#39;\cdot\mathbf{x&#39;}+i&#39;\cdot\mathbf{y&#39;}&lt;/script&gt; ，则有：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+  j\begin{bmatrix}
+  1\\
+  0
+  \end{bmatrix}
+  +i\begin{bmatrix}
+  0\\
+  -1
+  \end{bmatrix}
+  =j&#39;\begin{bmatrix}
+  cos\theta\\
+  sin\theta
+  \end{bmatrix}
+  +i&#39;\begin{bmatrix}
+  sin\theta\\
+  -cos\theta
+  \end{bmatrix}&lt;/script&gt;&lt;p&gt;解得 &lt;script type=&quot;math/tex&quot;&gt;j&#39;=j\cdot cosθ-i\cdot sinθ,&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;i&#39;=j\cdot sinθ+i\cdot cosθ&lt;/script&gt; 。&lt;/p&gt;
+&lt;p&gt;得到新的行、列偏移量后，将 &lt;script type=&quot;math/tex&quot;&gt;3\sigma\_octv&lt;/script&gt; 设为单位长度，并将中心转移至最左上角区域中心，得到新的坐标r_bin和c_bin。对梯度方向弧度值减去主方向弧度，并设 &lt;script type=&quot;math/tex&quot;&gt;\frac{2\pi}{8}&lt;/script&gt; 为一个单位，得到o_bin。&lt;/p&gt;
+&lt;p&gt;采样点的梯度幅值按照 &lt;script type=&quot;math/tex&quot;&gt;\sigma=0.5\cdot4\cdot3\sigma\_octv&lt;/script&gt; （即16个区域边长的一半）的高斯函数加权：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+w=m(a+j,b+i)\cdot e^{\frac{-j&#39;^2+i&#39;^2}{2\sigma^2}}&lt;/script&gt;&lt;p&gt;其中a，b为关键点在高斯金字塔图像中的位置坐标。&lt;/p&gt;
+&lt;h4 id=&quot;4-3-三线性插值&quot;&gt;&lt;a href=&quot;#4-3-三线性插值&quot; class=&quot;headerlink&quot; title=&quot;4.3 三线性插值&quot;&gt;&lt;/a&gt;4.3 三线性插值&lt;/h4&gt;&lt;p&gt;上述过程中构造了一个三维的bin空间，如4.1中右图所示，维度包括r_bin，c_bin和o_bin。注意最上层格子和最底层格子是相连的，因为0度等于360度。所有带有三维坐标的梯度幅值都将分配到三维格子里。&lt;/p&gt;
+&lt;p&gt;为了减少一个梯度幅值从一个格子漂移(shift)到另一个格子引起的描述子突变，需要对梯度值做三线性插值。也就是根据三维坐标计算距离周围格子的距离，按距离的倒数计算权重，将梯度幅值按权重分配到临近的格子里。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/i
+nterpolation.png&quot; alt=&quot;Trilinear Interpolation&quot;&gt;&lt;/p&gt;
+&lt;p&gt;某点在三维bin空间的坐标为&lt;script type=&quot;math/tex&quot;&gt;(r\_bin，c\_bin，o\_bin)&lt;/script&gt;，求出&lt;script type=&quot;math/tex&quot;&gt;r=\lfloor r\_bin\rfloor,&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;c=\lfloor c\_bin\rfloor,&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;o=\lfloor o\_bin\rfloor,&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;dr=r\_bin-r,&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;dc=c\_bin-c,&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;do=o\_bin-o&lt;/script&gt;，它的梯度幅值最多可能分配到周围的8个格子中。计算公式如下：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\begin{split}
+&amp;weightedValue[r+i+1][c+j+1][((o+k)\ mod\ 8)+1]\\
+=&amp;\ w\cdot dr^i\cdot(1-dr)^{1-i}\cdot dc^j\cdot(1-dc)^{1-j}\cdot do^k\cdot(1-do)^{1-k}
+\end{split}&lt;/script&gt;&lt;p&gt;其中i，j，k均可取0或1，weightedValue下标加1的目的是使下标从1开始。&lt;/p&gt;
+&lt;p&gt;为简化计算，可改为：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\begin{split}
+&amp;weightedValue[r+i+1][c+j+1][((o+k)\ mod\ 8)+1]\\
+=&amp;\ w\cdot(0.5+(dr-0.5)(2i-1))\cdot(0.5+(dc-0.5)(2j-1))\cdot\\
+&amp;\ (0.5+(do-0.5)(2k-1))
+\end{split}&lt;/script&gt;&lt;h4 id=&quot;4-4-生成描述子&quot;&gt;&lt;a href=&quot;#4-4-生成描述子&quot; class=&quot;headerlink&quot; title=&quot;4.4 生成描述子&quot;&gt;&lt;/a&gt;4.4 生成描述子&lt;/h4&gt;&lt;p&gt;将上述直方图数组按顺序排列可转换为一个128维的向量。&lt;/p&gt;
+&lt;p&gt;为了减少光照变化的影响，对该向量进行归一化处理。非线性光照变化仍可能导致梯度幅值的较大变化，然而影响梯度方向的可能性较小。因此对于超过阈值0.2的梯度幅值设为0.2，然后再进行一次归一化。最后将描述子按照对应高斯金字塔图像的尺度大小排序。&lt;/p&gt;
+&lt;h3 id=&quot;5-匹配&quot;&gt;&lt;a href=&quot;#5-匹配&quot; class=&quot;headerlink&quot; title=&quot;5. 匹配&quot;&gt;&lt;/a&gt;5. 匹配&lt;/h3&gt;&lt;p&gt;描述子向量已经归一化，所以可直接用向量之间的夹角进行匹配，相当于球面距离。图像A 的描述子匹配图像B最近的两个描述子点积之比小于0.6，则认为匹配成功。&lt;/p&gt;
+&lt;h3 id=&quot;6-一些废话&quot;&gt;&lt;a href=&quot;#6-一些废话&quot; class=&quot;headerlink&quot; title=&quot;6. 一些废话&quot;&gt;&lt;/a&gt;6. 一些废话&lt;/h3&gt;&lt;h4 id=&quot;6-1-性能优化&quot;&gt;&lt;a href=&quot;#6-1-性能优化&quot; class=&quot;headerlink&quot; title=&quot;6.1 性能优化&quot;&gt;&lt;/a&gt;6.1 性能优化&lt;/h4&gt;&lt;p&gt;因为用的是Matlab，所以不注重性能。然而又不得不注重性能，因为第一次跑通程序的时候跑了一晚上都没跑完一半！也就是一张图片的描述子都没算完。后来发现是因为在运行次数最多的for循环(描述子计算中的梯度计算)里用到了cell数组。把对这个cell数组的查询操作提到两重循环前以后，这个程序好像跑了半个小时左右跑出结果了。然而还是太慢，于是我又用Matlab的计时分析工具分析了程序最耗时的地方:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;把cell数组的查询尽可能减少&lt;/li&gt;
+&lt;li&gt;充分利用Matlab的向量操作&lt;/li&gt;
+&lt;li&gt;一些没用的参数给去掉了（如计算梯度时的三个返回值合并到了一个二维数组）&lt;/li&gt;
+&lt;li&gt;一个三维数组折叠成了一维的（hist）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;程序里用了很多全局变量，是因为我把函数分成了文件而不是放在一个文件，为了节省点内存（以及方便）只能这么做（虽然据说Matlab在不改变变量的情况下函数传值等于引用，然而我并不清楚究竟是怎样的）。把for循环换成parfor的时候提示，parfor里似乎不推荐用全局变量，而且实际运行的时候全局变量似乎也会影响性能，于是我把全局变量复制成了局部的再放进parfor里。&lt;/p&gt;
+&lt;p&gt;我还发现一个奇葩的问题，在运行次数最多的计算梯度的函数里用zeros(1,2)创建一个数组竟然也耗时非常多，改成[0 0]就好了。&lt;/p&gt;
+&lt;p&gt;经过这些修改后，在开启parallel pool的情况下运行时间缩短到了7分钟左右。&lt;dev&gt;（然而Lowe的C语言版本只要十几秒&lt;/dev&gt;&lt;/p&gt;
+&lt;h4 id=&quot;6-2-运行结果&quot;&gt;&lt;a href=&quot;#6-2-运行结果&quot; class=&quot;headerlink&quot; title=&quot;6.2 运行结果&quot;&gt;&lt;/a&gt;6.2 运行结果&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/book-result.png&quot; alt=&quot;Book&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/scene-result.png&quot; alt=&quot;Scene&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/match-result.png&quot; alt=&quot;Match&quot;&gt;&lt;/p&gt;
+&lt;p&gt;这次作业老师给的是两张768x1024的图片，分别检测到5288和4798个特征点，最后匹配了906对点。用Lowe的siftDemoV4跑出来的结果是1252对匹配。&lt;/p&gt;
+&lt;p&gt;这个程序的参数基本都是参照opensift，但最后的匹配用的是Lowe的方案。Lowe的实现毕竟不太一样，运行的结果和opensift有一些差异。以下是匹配&lt;code&gt;siftDemoV4.zip&lt;/code&gt;里的&lt;code&gt;scene.pgm&lt;/code&gt;和&lt;code&gt;book.pgm&lt;/code&gt;的结果：&lt;/p&gt;
+&lt;div class=&quot;table-container&quot;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;Item&lt;/th&gt;
+&lt;th style=&quot;text-align:right&quot;&gt;siftDemoV4&lt;/th&gt;
+&lt;th style=&quot;text-align:right&quot;&gt;opensift&lt;/th&gt;
+&lt;th style=&quot;text-align:right&quot;&gt;sw-sift&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;scene.pgm&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;1021&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;746&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;766&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;book.pgm&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;882&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;740&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;741&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;Matched&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;98&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;84&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;58&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;sw-sift和opensift的区别主要是在高斯平滑和匹配算法上。opensift的高斯平滑用的是OpenCV的CVSmooth函数，匹配用的是欧式距离（而且把描述子乘以512从double类型转成了int）。和opensift相比，sw-sift检测到的特征点数量很接近，但是匹配数量较少，所以可改进的地方主要是匹配算法（然而我不想改了==）。另外，我发现高斯平滑的核矩阵大小对结果有很大影响，根据&lt;script type=&quot;math/tex&quot;&gt;3\sigma&lt;/script&gt;准则它的宽度应该是 &lt;script type=&quot;math/tex&quot;&gt;(6\sigma+1)\cdot(6\sigma+1)&lt;/script&gt; ，然而有人设成 &lt;script type=&quot;math/tex&quot;&gt;(3\sigma+1)\cdot(3\sigma+1)&lt;/script&gt; 却取得了更多特征点，因此调整这个参数再用其它参数限制错误数量或许可以得到更好的结果。&lt;/p&gt;
+&lt;h4 id=&quot;6-3-源代码&quot;&gt;&lt;a href=&quot;#6-3-源代码&quot; class=&quot;headerlink&quot; title=&quot;6.3 源代码&quot;&gt;&lt;/a&gt;6.3 源代码&lt;/h4&gt;&lt;p&gt;代码发布在github: &lt;a href=&quot;https://github.com/sun11/sw-sift&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;sw-sift&lt;/a&gt;，请注意sift是有专利的。&lt;/p&gt;
+&lt;h3 id=&quot;参考资料&quot;&gt;&lt;a href=&quot;#参考资料&quot; class=&quot;headerlink&quot; title=&quot;参考资料&quot;&gt;&lt;/a&gt;参考资料&lt;/h3&gt;&lt;p&gt;David G. Lowe, “Distinctive image features from scale-invariant keypoints,” International Journal of Computer Vision, 60, 2 (2004), pp. 91-110. &lt;a href=&quot;http://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;[PDF]&lt;/a&gt; &lt;a href=&quot;http://www.cs.ubc.ca/~lowe/keypoints/siftDemoV4.zip&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;[CODE]&lt;/a&gt;&lt;br&gt;Rob Hess, OpenSIFT源码: &lt;a href=&quot;https://github.com/robwhess/opensift&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/robwhess/opensift&lt;/a&gt;&lt;br&gt;zddhub, SIFT算法详解: &lt;a href=&quot;http://blog.csdn.net/zddblog/article/details/7521424&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.csdn.net/zddblog/article/details/7521424&lt;/a&gt;&lt;br&gt;Rachel Zhang, SIFT特征提取分析: &lt;a href=&quot;http://blog.csdn.net/abcjennifer/article/details/7639681&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.csdn.net/abcjennifer/article/details/7639681&lt;/a&gt;&lt;br&gt;JiePro, SIFT算法：特征描述子: &lt;a href=&quot;http://www.cnblogs.com/JiePro/p/sift_4.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.cnblogs.com/JiePro/p/sift_4.html&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这是一次作业，内容是给出两张图像，检测特征点和匹配特征点。要求不能用诸如OpenCV的现成特征点检测函数。于是就只能造轮子了，写了这个Matlab版的sift。&lt;del&gt;（其实就是把c语言的opensift翻译成了matlab&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;以下是算法流程，其实网上的类似博文已经很多了，只不过我看的过程中也看得不很明白，只能对照着好几个看，所以干脆自己又写了一遍。下面的图均来自于参考资料中，然而参考资料的图也是来自于参考资料的参考资料中。&lt;/p&gt;
+&lt;h3 id=&quot;1-构建尺度空间&quot;&gt;&lt;a href=&quot;#1-构建尺度空间&quot; class=&quot;headerlink&quot; title=&quot;1. 构建尺度空间&quot;&gt;&lt;/a&gt;1. 构建尺度空间&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;定理1 对图像做 &lt;script type=&quot;math/tex&quot;&gt;\sigma = \sigma_1&lt;/script&gt; 的高斯平滑，再做一次 &lt;script type=&quot;math/tex&quot;&gt;\sigma = \sigma_2&lt;/script&gt; 的高斯平滑，等效于对原图像做一次 &lt;script type=&quot;math/tex&quot;&gt;\sigma = \sqrt{\sigma_1^2+\sigma_2^2}&lt;/script&gt; 的高斯平滑。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&quot;1-1-构建高斯金字塔&quot;&gt;&lt;a href=&quot;#1-1-构建高斯金字塔&quot; class=&quot;headerlink&quot; title=&quot;1.1 构建高斯金字塔&quot;&gt;&lt;/a&gt;1.1 构建高斯金字塔&lt;/h4&gt;&lt;p&gt;高斯卷积核是实现尺度变换的唯一线性核（Koenderink, 1984; Lindeberg, 1994）。&lt;/p&gt;
+&lt;p&gt;一幅图像的尺度空间被定义为对其做可变尺度的高斯卷积：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\begin{split}
+L(x,y,\sigma)&amp;=G(x,y,\sigma) * I(x,y)\\
+其中G(x,y,\sigma)&amp;=\frac{1}{2\pi\sigma^2}e^{-(x^2+y^2)/2\sigma^2}
+\end{split}&lt;/script&gt;&lt;p&gt;对于给定的彩色图像，转化为灰度图像，用不同大小的&lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt;做高斯平滑（按照 3&lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt; 准则，高斯核矩阵的大小设为 &lt;script type=&quot;math/tex&quot;&gt;(6\sigma+1)\cdot(6\sigma+1)&lt;/script&gt; ，并保证行和列为奇数），再此基础上将图像降采样得到不同大小的组(octave)，每组若干图像(interval)。详细描述如下：&lt;/p&gt;
+&lt;p&gt;为了得到更多的特征点，将图像扩大为原来的两倍。假设原图像已有 &lt;script type=&quot;math/tex&quot;&gt;\sigma=0.5&lt;/script&gt; 的高斯平滑，而我们需要第一个octave的第一张图像的 &lt;script type=&quot;math/tex&quot;&gt;\sigma=1.6&lt;/script&gt; ，按照定理1，我们要对扩大两倍的图像做一次高斯平滑，&lt;script type=&quot;math/tex&quot;&gt;\sigma=\sqrt{1.6^2-(0.5\times2)^2}&lt;/script&gt; 。&lt;/p&gt;
+&lt;p&gt;上一个octave的图像的长度和宽度分别是下一个octave的图像的两倍。因此图像组数(octaves)可由图像大小决定，将其设为 &lt;script type=&quot;math/tex&quot;&gt;log_2(min(height,width))&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;-\ 2&lt;/script&gt; ，这样将使顶层octave图像的长度和宽度最小值在8像素左右。&lt;/p&gt;
+&lt;p&gt;设第m个octave的第n张图像相对于原始图像的参数&lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt;为 &lt;script type=&quot;math/tex&quot;&gt;sigma(m,n)&lt;/script&gt;，则&lt;script type=&quot;math/tex&quot;&gt;sigma(1,1)=\sigma_0=1.6&lt;/script&gt;。每个octave有s+1张图像（即intervals），这样得到的高斯差分金字塔(DoG)每个octave将有s张图像，我们设s为3。为了满足在不同octave间尺度的连续性，并使 &lt;script type=&quot;math/tex&quot;&gt;sigma(m,n)=&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;2 \cdot sigma(m-1,n)&lt;/script&gt;，按照定理1，则：&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\begin{split}
+sigma(1,n)&amp;=\sigma_0\cdot k^{n-1},其中k=2^{1/s}\\
+sigma(m,n)&amp;=\sigma_0\cdot 2^{m-1}\cdot k^{n-1}
+\end{split}&lt;/script&gt;&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/pyr.png&quot; alt=&quot;Parameter Sigma&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="CV" scheme="http://www.sun11.me/tags/CV/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Ubuntu14.04 安装 Caffe+CUDA 7.5</title>
     <link href="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/"/>
     <id>http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/</id>
-    <published>2016-02-21T12:21:30.000Z</published>
-    <updated>2016-02-21T12:39:54.801Z</updated>
+    <published>2016-02-21T11:21:30.000Z</published>
+    <updated>2016-05-21T07:56:58.053Z</updated>
     
     <content type="html">&lt;p&gt;Caffe官网的 &lt;a href=&quot;http://caffe.berkeleyvision.org/installation.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安装说明&lt;/a&gt; 实在太简单了点，主要是参考的 &lt;a href=&quot;https://gist.github.com/bearpaw/c38ef18ec45ba6548ec0#file-caffe-ubuntu-14-04-64bit-cuda-6-5-md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明&lt;/a&gt; 和 &lt;a href=&quot;http://weibo.com/p/2304189db078090102vdvx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Ubuntu14.04下安装Caffe总结&lt;/a&gt; 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。&lt;/p&gt;
 &lt;h3 id=&quot;1-Caffe依赖包&quot;&gt;&lt;a href=&quot;#1-Caffe依赖包&quot; class=&quot;headerlink&quot; title=&quot;1. Caffe依赖包&quot;&gt;&lt;/a&gt;1. Caffe依赖包&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install build-essential  &lt;span class=&quot;comment&quot;&gt;# basic requirement&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev protobuf-compiler &lt;span class=&quot;comment&quot;&gt;#required by caffe&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -82,7 +285,7 @@ BLAS_INCLUDE := /usr/local/openblas/include
 BLAS_LIB := /usr/local/openblas/lib
 
 # Anaconda Python distribution is quite popular. Include path:
-# Verify anaconda location, sometimes it&amp;apos;s in root.
+# Verify anaconda location, sometimes it&amp;#39;s in root.
 ANACONDA_HOME := $(HOME)/.pyenv/versions/anaconda2-2.5.0
 PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
     $(ANACONDA_HOME)/include/python2.7 \
@@ -120,8 +323,8 @@ options nouveau modeset=0
     <title>Hexo主题Paperbox</title>
     <link href="http://www.sun11.me/blog/2016/hexo-theme-paperbox/"/>
     <id>http://www.sun11.me/blog/2016/hexo-theme-paperbox/</id>
-    <published>2016-02-12T15:56:11.000Z</published>
-    <updated>2016-02-13T04:05:27.041Z</updated>
+    <published>2016-02-12T14:56:11.000Z</published>
+    <updated>2016-05-22T07:34:54.567Z</updated>
     
     <content type="html">&lt;p&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/hexo-theme-paperbox/responsive-design.png&quot; alt=&quot;Responsive Design&quot;&gt;&lt;/p&gt;
 &lt;p&gt;基于基于Landscape主题的Landscape-Plus主题修改而来的主题，带有几张纸和一个会动的&lt;strong&gt;纸盒子&lt;/strong&gt;。&lt;/p&gt;
@@ -144,15 +347,13 @@ options nouveau modeset=0
 &lt;p&gt;另外对主题原生的分享按钮做了增强，把Pinterest换成了Linkedin，毕竟Pinterest上的大多都是图片。。。然后加上了国内的四个社交网站，微博，人人，QQ空间，微信，用jquery的qrcode插件生成文章链接的QR码用来做微信的分享。百度的那个分享感觉太累赘（而且还有js的warning），还和swiftype有冲突，干脆就删掉了。&lt;/p&gt;
 &lt;p&gt;文章目录（TOC）的添加是参考的&lt;a href=&quot;http://kuangqi.me/tricks/enable-table-of-contents-on-hexo/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这篇文章&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;最后来测试一下Mathjax的公式显示：&lt;/p&gt;
-&lt;span&gt;$$
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
 i\hbar\frac{\partial \psi}{\partial t}
 = \frac{-\hbar^2}{2m} \left(
 \frac{\partial^2}{\partial x^2}
 + \frac{\partial^2}{\partial y^2}
 + \frac{\partial^2}{\partial z^2}
-\right) \psi + V \psi.
-$$&lt;/span&gt;&lt;!-- Has MathJax --&gt;
-</content>
+\right) \psi + V \psi.&lt;/script&gt;</content>
     
     <summary type="html">
     
@@ -175,23 +376,27 @@ $$&lt;/span&gt;&lt;!-- Has MathJax --&gt;
     <title>Rosmin与Rossum</title>
     <link href="http://www.sun11.me/blog/2013/rosmin-and-rossum/"/>
     <id>http://www.sun11.me/blog/2013/rosmin-and-rossum/</id>
-    <published>2013-08-10T11:45:02.000Z</published>
+    <published>2013-08-10T10:45:02.000Z</published>
     <updated>2016-02-12T18:01:09.706Z</updated>
     
     <content type="html">&lt;p&gt;Rossum demo:&lt;/p&gt;
-&lt;div class=&quot;video-container&quot;&gt;&lt;br&gt;&lt;iframe height=&quot;270&quot; width=&quot;480&quot; src=&quot;http://player.youku.com/embed/XNTY0MTUwMTMy?x&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;br&gt;&lt;/div&gt;
+&lt;div class=&quot;video-container&quot;&gt;
+&lt;iframe height=&quot;270&quot; width=&quot;480&quot; src=&quot;http://player.youku.com/embed/XNTY0MTUwMTMy?x&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Rosmin demo:&lt;/p&gt;
-&lt;div class=&quot;video-container&quot;&gt;&lt;br&gt;&lt;iframe height=&quot;270&quot; width=&quot;480&quot; src=&quot;http://player.youku.com/embed/XNDg2OTMzNDEy&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;br&gt;&lt;/div&gt;
+&lt;div class=&quot;video-container&quot;&gt;
+&lt;iframe height=&quot;270&quot; width=&quot;480&quot; src=&quot;http://player.youku.com/embed/XNDg2OTMzNDEy&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;Rosmin&quot;&gt;&lt;a href=&quot;#Rosmin&quot; class=&quot;headerlink&quot; title=&quot;Rosmin&quot;&gt;&lt;/a&gt;Rosmin&lt;/h3&gt;&lt;p&gt;项目地址：&lt;a href=&quot;https://code.google.com/p/wtfrobot-rosmin/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://code.google.com/p/wtfrobot-rosmin/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;相关文章：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/8029640/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/8029640/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin—OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/8034640/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android下PocketSphinx的离线语音识别&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173609/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173619/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–两台Android手机的Socket双向通信&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173631/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–在Android上绘制小车行进路线图并标记&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173643/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–折腾USB Host Shield的日子&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173609/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin—OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173619/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin—两台Android手机的Socket双向通信&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173631/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin—在Android上绘制小车行进路线图并标记&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173643/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin—折腾USB Host Shield的日子&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Rosmin机器人是我们去年（2012年）制作的一个使用Arduino驱动的小型移动机器人，连接上Android手机，可以完成手机控制的基本运动，追踪乒乓球，以QR码为人工路标移动到指定区域，搜寻目标，视频监控等等。&lt;/p&gt;
 &lt;p&gt;硬件结构：&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/54389a22c578eb6789380abdc70ea156.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -214,26 +419,26 @@ $$&lt;/span&gt;&lt;!-- Has MathJax --&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;基本运动：用Android设备控制小车完成基本运动，可以用控制界面的按钮和语音来操控。如前进，后退，停止，左转，右转，车身左转90度，车身右转90度，舵机云台的转动等。&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;追踪乒乓球： 由小车上的Android手机做图像处理获取小球坐标，通过Arduino控制舵机对正小球。根据小球偏离中心位置的距离调整运动速度。详见这篇：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/8034294&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/c15d2ab7157f666de39873659dd37697.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;追踪乒乓球： 由小车上的Android手机做图像处理获取小球坐标，通过Arduino控制舵机对正小球。根据小球偏离中心位置的距离调整运动速度。详见这篇：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/8034294&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin—OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/c15d2ab7157f666de39873659dd37697.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;以QR码为人工路标的导航： 我们设计了一个以QR码作为人工路标的导航策略，根据超声波传感器检测拐角，利用QR码提供的信息和陀螺仪传感器的信息运动到指定区域。会有一篇水论文，不过现在还没发出来。&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/c6b152e0d811b66b675a416fe8ded013.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;绘制运动轨迹： 我们利用Android上的Google Maps控件做了一个绘制小车运动轨迹的程序，由小车上手机陀螺仪获取角加速度，计算出角度。不知是我们算法不行还是手机加速度计不够精确，用加速度计算出的里程误差太大根本用不了。于是我们就给小车一个恒定的速度，综合控制命令的信息（比如前进后退停止）来绘制轨迹。在客户端可以显示出小车的运行轨迹，还有QR码路标和目标的位置。详见这篇：&lt;a href=&quot;http://blog.csdn.net/f_season/article/details/9171523&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;在Android上绘制小车行进路线图并标记&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/2685dfa7f0443ccf12d4a01a1c3b2568.jpeg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;寻找目标： 不断转动寻找目标，发现目标以后就向目标前进。根据目标区域面积判断是否足够靠近，足够靠近了就认为到达了目标自动停止。关于怎么检测目标和计算目标区域面积仍然在：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/8034294&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/6d604c137f34654f216066332f1245e0.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;寻找目标： 不断转动寻找目标，发现目标以后就向目标前进。根据目标区域面积判断是否足够靠近，足够靠近了就认为到达了目标自动停止。关于怎么检测目标和计算目标区域面积仍然在：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/8034294&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rosmin—OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/6d604c137f34654f216066332f1245e0.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;视频监控： 用手机的WiFi Camera应用即可，可以通过PC端的Web界面控制。&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/2eb1613837654cb598482f7b495cc4ee.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id=&quot;Rossum&quot;&gt;&lt;a href=&quot;#Rossum&quot; class=&quot;headerlink&quot; title=&quot;Rossum&quot;&gt;&lt;/a&gt;Rossum&lt;/h3&gt;&lt;p&gt;项目地址：&lt;a href=&quot;https://code.google.com/p/wtfrobot-rossum/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://code.google.com/p/wtfrobot-rossum/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;相关文章：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173633/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–Android上ROS开发介绍与安装简介&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881749/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–PID与里程计&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881771/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–slam&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881815/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–Android上ROS开发——android_core创建一个android应用&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881859/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–ROSjava-android控制ROS机器人&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881889/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–ROSjava的消息发送&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881965/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–tpofinder 平面纹理物体识别&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173633/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum—Android上ROS开发介绍与安装简介&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881749/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum—PID与里程计&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881771/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum—slam&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881815/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum—Android上ROS开发——android_core创建一个android应用&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881859/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum—ROSjava-android控制ROS机器人&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881889/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum—ROSjava的消息发送&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9881965/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum—tpofinder 平面纹理物体识别&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Rossum是我们以ROS机器人操作系统为核心做的一个自主导航机器人，名字来自于《罗萨姆的万能机器人( Rossum’s Universal Robots)》里的Rossum一词。使用 Kinect 传感器模拟激光测距仪,Arduino 控制器驱动电机控制机器人运动,Atom上网本置于机器人内作为主要的处理设备。&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/7239941384c0d7713355636d212b0035.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;实现的功能：&lt;/p&gt;
 &lt;ol&gt;
@@ -247,7 +452,7 @@ $$&lt;/span&gt;&lt;!-- Has MathJax --&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;自主导航： 在构建出静态地图的基础上,实现机器人从一个位置运动到地图上的另一个指定位置。&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;物体识别： 利用tpofinder,实现识别有纹理特征的物体,如书本封面,咖啡盒等，识别后用TTS发声，通过舵机云台对准物体。详见：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/9180085&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum–tpofinder 平面纹理物体识别&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;物体识别： 利用tpofinder,实现识别有纹理特征的物体,如书本封面,咖啡盒等，识别后用TTS发声，通过舵机云台对准物体。详见：&lt;a href=&quot;http://blog.csdn.net/sununs11/article/details/9180085&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rossum—tpofinder 平面纹理物体识别&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;最开始确定方案的时候我们找到了&lt;a href=&quot;http://www.hessmer.org/blog/2011/04/10/2d-slam-with-ros-and-kinect/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Dr. Rainer Hessmer的一篇文章&lt;/a&gt;,它是用Kinect来模拟激光测距仪来做SLAM的，里程计只靠电机上的编码器。他的博客上讲得非常详细，Arduino的介绍，Kinect模拟激光测距仪，惯性导航，SLAM和路径规划的参数这些全都有。当时我们啥都不懂，就把他的博客打印出来一篇一篇地看。&lt;/p&gt;
@@ -263,19 +468,23 @@ $$&lt;/span&gt;&lt;!-- Has MathJax --&gt;
     <summary type="html">
     
       &lt;p&gt;Rossum demo:&lt;/p&gt;
-&lt;div class=&quot;video-container&quot;&gt;&lt;br&gt;&lt;iframe  height=270 width=480 src=&quot;http://player.youku.com/embed/XNTY0MTUwMTMy?x&quot; frameborder=0 allowfullscreen&gt;&lt;/iframe&gt;&lt;br&gt;&lt;/div&gt;
+&lt;div class=&quot;video-container&quot;&gt;
+&lt;iframe  height=270 width=480 src=&quot;http://player.youku.com/embed/XNTY0MTUwMTMy?x&quot; frameborder=0 allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Rosmin demo:&lt;/p&gt;
-&lt;div class=&quot;video-container&quot;&gt;&lt;br&gt;&lt;iframe  height=270 width=480 src=&quot;http://player.youku.com/embed/XNDg2OTMzNDEy&quot; frameborder=0 allowfullscreen&gt;&lt;/iframe&gt;&lt;br&gt;&lt;/div&gt;
+&lt;div class=&quot;video-container&quot;&gt;
+&lt;iframe  height=270 width=480 src=&quot;http://player.youku.com/embed/XNDg2OTMzNDEy&quot; frameborder=0 allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
 
 &lt;h3 id=&quot;Rosmin&quot;&gt;&lt;a href=&quot;#Rosmin&quot; class=&quot;headerlink&quot; title=&quot;Rosmin&quot;&gt;&lt;/a&gt;Rosmin&lt;/h3&gt;&lt;p&gt;项目地址：&lt;a href=&quot;https://code.google.com/p/wtfrobot-rosmin/&quot;&gt;https://code.google.com/p/wtfrobot-rosmin/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;相关文章：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/8029640/&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/8029640/&quot;&gt;Rosmin—OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/8034640/&quot;&gt;Android下PocketSphinx的离线语音识别&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173609/&quot;&gt;Rosmin–OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173619/&quot;&gt;Rosmin–两台Android手机的Socket双向通信&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173631/&quot;&gt;Rosmin–在Android上绘制小车行进路线图并标记&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173643/&quot;&gt;Rosmin–折腾USB Host Shield的日子&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173609/&quot;&gt;Rosmin—OpenCV Color Blob Tracker on Android&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173619/&quot;&gt;Rosmin—两台Android手机的Socket双向通信&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173631/&quot;&gt;Rosmin—在Android上绘制小车行进路线图并标记&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/wtfrobot/article/details/9173643/&quot;&gt;Rosmin—折腾USB Host Shield的日子&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Rosmin机器人是我们去年（2012年）制作的一个使用Arduino驱动的小型移动机器人，连接上Android手机，可以完成手机控制的基本运动，追踪乒乓球，以QR码为人工路标移动到指定区域，搜寻目标，视频监控等等。&lt;/p&gt;
 &lt;p&gt;硬件结构：&lt;br&gt;&lt;img src=&quot;http://7d9hqq.com1.z0.glb.clouddn.com/images/54389a22c578eb6789380abdc70ea156.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
     
@@ -290,7 +499,7 @@ $$&lt;/span&gt;&lt;!-- Has MathJax --&gt;
     <title>ROS on ARM--RK3066上本地编译ROS Groovy</title>
     <link href="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/"/>
     <id>http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/</id>
-    <published>2013-02-03T15:08:16.000Z</published>
+    <published>2013-02-03T14:08:16.000Z</published>
     <updated>2016-02-12T18:01:10.961Z</updated>
     
     <content type="html">&lt;h3 id=&quot;1-开源机器人操作系统ROS-Robot-Operating-System-简介&quot;&gt;&lt;a href=&quot;#1-开源机器人操作系统ROS-Robot-Operating-System-简介&quot; class=&quot;headerlink&quot; title=&quot;1. 开源机器人操作系统ROS(Robot Operating System)简介&quot;&gt;&lt;/a&gt;1. 开源机器人操作系统ROS(Robot Operating System)简介&lt;/h3&gt;&lt;p&gt;ROS（Robot Operating System）是一个开源的为机器人软件开发设计的软件框架，在异构计算机集群中提供类似操作系统的功能。它并不是一个计算机的操作系统，而是机器人的操作系统，或者称为元级操作系统（Meta Operating System）。据目前唯一一本比较官方的关于ROS的书《ROS By Example Volume 1》介绍，“The primary goal of ROS (pronounced “Ross”) is to provide a unified and open source&lt;br&gt;programming framework for controlling robots in a variety of real world and simulated&lt;br&gt;environments.”，ROS的原始目的就是为了在一系列真实和模拟的环境中控制机器人提供一个统一的开源编程框架。为了实现这一目标，ROS架构中有&lt;a href=&quot;http://www.ros.org/wiki/ROS/Concepts&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;三个层次&lt;/a&gt;的概念：文件系统级（Filesystem Level），计算图级（Computation Graph Level）和社区级（Community Level）。&lt;br&gt;具体可以查阅&lt;a href=&quot;http://zh.wikipedia.org/wiki/ROS&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;维基百科&lt;/a&gt;和&lt;a href=&quot;http://www.ros.org/wiki/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官网wiki&lt;/a&gt;，这里就不过多介绍了。&lt;/p&gt;
@@ -400,7 +609,7 @@ rosmake -a
     <title>ROS on ARM--Picuntu 安装配置</title>
     <link href="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/"/>
     <id>http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/</id>
-    <published>2013-01-28T15:11:32.000Z</published>
+    <published>2013-01-28T14:11:32.000Z</published>
     <updated>2016-02-07T12:12:34.000Z</updated>
     
     <content type="html">&lt;p&gt;上篇提到一个叫做Picuntu的项目，目的是为RK3066芯片的设备移植传统Linux，目前基本的使用已经没有什么问题，UG802/MK808（不含MK808B）已经可以使用内置的无线网卡，而其它型号，比如MK802 IIIS或者UG007，由于使用的是MTK的芯片，没有办法找到驱动（话说国内厂商有几个遵守了GPL协议的）所以只能外接USB网卡。另外是VPU和Mali 400，&lt;a href=&quot;http://www.slatedroid.com/topic/41654-pre-alpha-03-ubuntu-linux-for-mk802-iii-ug802-mk808-ug007-imito-mx1/page__st__380&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;slatedroid&lt;/a&gt;论坛里有人正在折腾。&lt;/p&gt;
@@ -491,7 +700,7 @@ rosmake -a
     <title>ROS on ARM--Linux For RK3066 Mini PC简介</title>
     <link href="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/"/>
     <id>http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/</id>
-    <published>2013-01-24T09:27:26.000Z</published>
+    <published>2013-01-24T08:27:26.000Z</published>
     <updated>2016-02-12T18:01:11.860Z</updated>
     
     <content type="html">&lt;p&gt;&lt;a href=&quot;http://www.cnbeta.com/articles/188613.htm&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;去年6月左右&lt;/a&gt;国内厂商（瑞科美 Rikomagic）推出了一款叫做MK802的Mini PC。采用Allwinner A10/ 1GHz Cortex-A8做处理器，运行Android 4.0系统，内存512MB或1G。实际上相当于一个没有触摸屏和电池的平板，不过可以用USB OTG连接鼠标键盘，通过HDMI接口输出音视频。&lt;/p&gt;
@@ -536,10 +745,12 @@ rosmake -a
     <title>WTFRobot Rosmin</title>
     <link href="http://www.sun11.me/blog/2012/wtfrobot-rosmin/"/>
     <id>http://www.sun11.me/blog/2012/wtfrobot-rosmin/</id>
-    <published>2012-12-15T03:27:35.000Z</published>
+    <published>2012-12-15T02:27:35.000Z</published>
     <updated>2016-02-12T18:01:05.673Z</updated>
     
-    <content type="html">&lt;div class=&quot;video-container&quot;&gt;&lt;br&gt;&lt;iframe height=&quot;270&quot; width=&quot;480&quot; src=&quot;http://player.youku.com/embed/XNDg2OTMzNDEy&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;br&gt;&lt;/div&gt;
+    <content type="html">&lt;div class=&quot;video-container&quot;&gt;
+&lt;iframe height=&quot;270&quot; width=&quot;480&quot; src=&quot;http://player.youku.com/embed/XNDg2OTMzNDEy&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
 
 &lt;p&gt;2012年8月，W、T、F三人陆续回到学校。&lt;/p&gt;
 &lt;p&gt;因为共同的机器人之梦，这个团队在今年5月份组建。&lt;/p&gt;
@@ -594,7 +805,9 @@ rosmake -a
     
     <summary type="html">
     
-      &lt;div class=&quot;video-container&quot;&gt;&lt;br&gt;&lt;iframe  height=270 width=480 src=&quot;http://player.youku.com/embed/XNDg2OTMzNDEy&quot; frameborder=0 allowfullscreen&gt;&lt;/iframe&gt;&lt;br&gt;&lt;/div&gt;
+      &lt;div class=&quot;video-container&quot;&gt;
+&lt;iframe  height=270 width=480 src=&quot;http://player.youku.com/embed/XNDg2OTMzNDEy&quot; frameborder=0 allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
 
 &lt;p&gt;2012年8月，W、T、F三人陆续回到学校。&lt;/p&gt;
 &lt;p&gt;因为共同的机器人之梦，这个团队在今年5月份组建。&lt;/p&gt;
@@ -638,7 +851,7 @@ rosmake -a
     <title>Tiny6410的OpenCV2.4.2移植笔记</title>
     <link href="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/"/>
     <id>http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/</id>
-    <published>2012-07-25T09:16:00.000Z</published>
+    <published>2012-07-25T08:16:00.000Z</published>
     <updated>2016-02-07T12:11:50.000Z</updated>
     
     <content type="html">&lt;p&gt;关于OpenCV在ARM上的移植最经典的应该就是这篇：&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/noodies/article/details/5798434&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;编译OpenCV for arm-linux&lt;/a&gt;&lt;/p&gt;
@@ -650,18 +863,18 @@ rosmake -a
 &lt;p&gt;cmake好后下一步是make,对于双核的机器加上-j4参数速度会快很多，但是也发烫，在系统监视器里看到四个线程的CPU都是接近100%,风扇一直呼呼地响。&lt;/p&gt;
 &lt;p&gt;然后是配置编译环境了，好像在2.3以后OpenCV的x86版安装好后都会有pkgconfig的.pc文件。//2.3以前的版本不清楚&lt;/p&gt;
 &lt;p&gt;所以比较方便的就是用pkgconfig来配置了，它的.pc文件是在/usr/local/lib/pkgconfig下面。这是适用于PC版本的OpenCV的（因为之前已经安装好了x86的OpenCV）。但是只要把那第一行的prefix路径改成ARM版OpenCV的安装路径（也就是上面CMAKE_INSTALL_PREFIX参数的值）就可以直接用了。&lt;a href=&quot;http://blog.csdn.net/yr119111/article/details/7732336&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;opencv2.3.1在arm端的移植&lt;/a&gt;这篇帖子说再Libs里要加上-lrt -lpthread参数，我的环境下似乎不需要，但是加上也没什么问题。&lt;/p&gt;
-&lt;p&gt;这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config –cflags –libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config –cflags –libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。&lt;br&gt;我用的主要是Qt，所以在.pro文件里加上：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;unix {
-    CONFIG += link_pkgconfig
-    PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc
-}
+&lt;p&gt;这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config —cflags —libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config —cflags —libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。&lt;br&gt;我用的主要是Qt，所以在.pro文件里加上：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    unix {
+        CONFIG += link_pkgconfig
+        PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc
+    }
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;但是编译成功后可能会显示一些警告，比如：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
+&lt;pre&gt;&lt;code&gt;    ../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
 &lt;/code&gt;&lt;/pre&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;p&gt;这个警告在我的情况下只要把opencv-arm/lib里的.so文件全部放到/opt/FriendlyARM/toolschain/4.5.1/arm-none-linux-gnueabi/sys-root/lib下面就可以解决，但事实上不管这条警告也不会出什么问题，不会影响到程序的运行。//去年移植的时候就一直没管&lt;/p&gt;
 &lt;p&gt;但是耗费我四天的根本就不是这些问题有木有啊！我要开始吐槽了有木有啊！&lt;/p&gt;
 &lt;p&gt;首先要吐槽一下u盘，有个以前编译好的程序放在u盘上一直不能运行，报错&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
+&lt;pre&gt;&lt;code&gt;    ../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;和编译时那个警告一样，害得我以为是那个警告必须解决掉。后来折腾了好久发现只要把程序拷到板子的存储介质上就直接能运行了！尼玛啊是文件系统还是权限的神马问题啊！于是我就换成用nfs挂载了。&lt;/p&gt;
 &lt;p&gt;现在去年编译的那个程序是能运行了，可是新编译的程序都不能和OpenCV库连上，也是报相同的错，好吧，我试过把.so文件放在/lib下，放在/usr/local/opencv-arm/lib下，两个都放，甚至还试过新建好多个文件夹，放在/opt/FriendlyARM/toolschain/4.5.1/arm-none-linux-gnueabi/sys-root/lib下，结果都一样！只有老的程序能运行，新编译的都不行。后来脑袋终于开窍了，既然老程序可以运行，说明我移植的OpenCV库没有问题。于是我尝试直接用armm-linux-gcc编译了一个简单的程序，发现运行正常？！然后不知什么想法让我把新编译的程序拷贝到/mnt下，也就是nfs挂载的那个目录，神奇的事情发生了，它正常运行了！！！&lt;/p&gt;
 &lt;p&gt;那么，这究竟是什么原理呢？我到现在还没搞明白。nfs挂载以后，所有挂载的文件都相当于自己原本文件系统里的文件么？还是有权限什么的问题呢？&lt;/p&gt;
@@ -678,13 +891,13 @@ rosmake -a
 &lt;p&gt;cmake好后下一步是make,对于双核的机器加上-j4参数速度会快很多，但是也发烫，在系统监视器里看到四个线程的CPU都是接近100%,风扇一直呼呼地响。&lt;/p&gt;
 &lt;p&gt;然后是配置编译环境了，好像在2.3以后OpenCV的x86版安装好后都会有pkgconfig的.pc文件。//2.3以前的版本不清楚&lt;/p&gt;
 &lt;p&gt;所以比较方便的就是用pkgconfig来配置了，它的.pc文件是在/usr/local/lib/pkgconfig下面。这是适用于PC版本的OpenCV的（因为之前已经安装好了x86的OpenCV）。但是只要把那第一行的prefix路径改成ARM版OpenCV的安装路径（也就是上面CMAKE_INSTALL_PREFIX参数的值）就可以直接用了。&lt;a href=&quot;http://blog.csdn.net/yr119111/article/details/7732336&quot;&gt;opencv2.3.1在arm端的移植&lt;/a&gt;这篇帖子说再Libs里要加上-lrt -lpthread参数，我的环境下似乎不需要，但是加上也没什么问题。&lt;/p&gt;
-&lt;p&gt;这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config –cflags –libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config –cflags –libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。&lt;br&gt;我用的主要是Qt，所以在.pro文件里加上：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;unix {
-    CONFIG += link_pkgconfig
-    PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc
-}
+&lt;p&gt;这样配置好后，arm-linux-gcc编译的时候加上参数`pkg-config —cflags —libs opencv-arm`就行了,比如arm-linux-gcc `pkg-config —cflags —libs opencv-arm` test.c -o test。//在这个情况下.pc文件名是opencv-arm，注意是两个反引号。&lt;br&gt;我用的主要是Qt，所以在.pro文件里加上：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    unix {
+        CONFIG += link_pkgconfig
+        PKGCONFIG += /usr/local/lib/pkgconfig/opencv-arm.pc
+    }
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;但是编译成功后可能会显示一些警告，比如：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
+&lt;pre&gt;&lt;code&gt;    ../../lib/libopencv_core.so, needed by /usr/local/opencv-arm/lib/libopencv_highgui.so, not found (try using -rpath or -rpath-link)
 &lt;/code&gt;&lt;/pre&gt;
     
     </summary>
@@ -700,7 +913,7 @@ rosmake -a
     <title>西电技物论坛</title>
     <link href="http://www.sun11.me/blog/2012/xdjw-forum/"/>
     <id>http://www.sun11.me/blog/2012/xdjw-forum/</id>
-    <published>2012-02-20T16:00:00.000Z</published>
+    <published>2012-02-20T15:00:00.000Z</published>
     <updated>2016-02-07T11:59:00.000Z</updated>
     
     <content type="html">&lt;p&gt;经过路由器和网关的两层端口映射和两个防火墙端口的开启，CentOS 6.2 + Apache + vsftpd 的小型论坛总算基本建好了。&lt;/p&gt;
@@ -728,7 +941,7 @@ rosmake -a
     <title>TL-WR703n挂载USB摄像头</title>
     <link href="http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/"/>
     <id>http://www.sun11.me/blog/2012/tl-wr703n-usb-camera/</id>
-    <published>2012-01-06T16:00:00.000Z</published>
+    <published>2012-01-06T15:00:00.000Z</published>
     <updated>2016-02-12T18:01:07.997Z</updated>
     
     <content type="html">&lt;p&gt;首先刷OpenWrt,我用的是&lt;a href=&quot;http://www.right.com.cn/forum/thread-71042-1-2.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这个帖子&lt;/a&gt;里的&lt;a href=&quot;http://ishare.iask.sina.com.cn/f/22200677.html&amp;quot; href=&amp;quot;http://ishare.iask.sina.com.cn/f/22200677.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这个版本&lt;/a&gt;，由于路由器容量较小，一定要先搞定U盘挂载，把安装ipk软件装在u盘上，否则没装几个软件路由器就空间不足了。&lt;/p&gt;
@@ -797,7 +1010,7 @@ opkg install usbutils
     <title>一个Quick and Dirty的记事本程序</title>
     <link href="http://www.sun11.me/blog/2011/quick-dirty-text-writer/"/>
     <id>http://www.sun11.me/blog/2011/quick-dirty-text-writer/</id>
-    <published>2011-08-20T16:00:00.000Z</published>
+    <published>2011-08-20T15:00:00.000Z</published>
     <updated>2016-02-07T11:48:20.000Z</updated>
     
     <content type="html">&lt;p&gt;最近在学QT编程，总算是能做出一个图形界面程序了。&lt;/p&gt;
@@ -831,7 +1044,7 @@ opkg install usbutils
     <title>Hello World</title>
     <link href="http://www.sun11.me/blog/2011/hello-world/"/>
     <id>http://www.sun11.me/blog/2011/hello-world/</id>
-    <published>2011-06-25T16:00:00.000Z</published>
+    <published>2011-06-25T15:00:00.000Z</published>
     <updated>2016-02-07T12:20:46.000Z</updated>
     
     <content type="html">&lt;p&gt;&lt;strong&gt;Hello World!&lt;/strong&gt;&lt;/p&gt;

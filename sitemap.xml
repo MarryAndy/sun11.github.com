@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/</loc>
+    <loc>http://www.sun11.me/blog/2016/sift-implementation-in-matlab/</loc>
     
-    <lastmod>2016-02-21T12:39:54.801Z</lastmod>
+    <lastmod>2016-05-22T08:47:56.734Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.sun11.me/blog/2016/hexo-theme-paperbox/</loc>
     
-    <lastmod>2016-02-13T04:05:27.041Z</lastmod>
+    <lastmod>2016-05-22T07:34:54.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/</loc>
+    
+    <lastmod>2016-05-21T07:56:58.053Z</lastmod>
     
   </url>
   
