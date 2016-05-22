@@ -16,18 +16,14 @@
 <meta property="og:description" content="这是一次作业，内容是给出两张图像，检测特征点和匹配特征点。要求不能用诸如OpenCV的现成特征点检测函数。于是就只能造轮子了，写了这个Matlab版的sift。（其实就是把c语言的opensift翻译成了matlab
 以下是算法流程，其实网上的类似博文已经很多了，只不过我看的过程中也看得不很明白，只能对照着好几个看，所以干脆自己又写了一遍。下面的图均来自于参考资料中，然而参考资料的图也是来自于参考">
 <meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/pyr.png">
-<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/extrem
-um.png">
-<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
-descr_sampling.png">
-<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
-rotation.png">
-<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/i
-nterpolation.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/extremum.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/descr_sampling.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/rotation.png">
+<meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/interpolation.png">
 <meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/book-result.png">
 <meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/scene-result.png">
 <meta property="og:image" content="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/match-result.png">
-<meta property="og:updated_time" content="2016-05-22T08:47:56.734Z">
+<meta property="og:updated_time" content="2016-05-22T10:00:21.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SIFT算法的Matlab实现">
 <meta name="twitter:description" content="这是一次作业，内容是给出两张图像，检测特征点和匹配特征点。要求不能用诸如OpenCV的现成特征点检测函数。于是就只能造轮子了，写了这个Matlab版的sift。（其实就是把c语言的opensift翻译成了matlab
@@ -169,8 +165,7 @@ sigma(m,n)&=\sigma_0\cdot 2^{m-1}\cdot k^{n-1}
 <p>但实际上我们需要做出更多不同尺度的高斯平滑图像，这是因为在后续高斯差分金字塔的极值检测中，需要前后两级尺度都存在图像。如图中红框所示，高斯差分金字塔中每个octave有s幅图像，则需要高斯金字塔中每个octave包含s+3幅图像。其中第s+1幅图像用作下一个octave第一幅图像的降采样。</p>
 <p>具体实现中并未对单幅图像多次进行高斯平滑，而是由上一幅图像进行高斯平滑得到下一幅图像并迭代之，按照定理1计算<script type="math/tex">\sigma</script>。</p>
 <h4 id="1-2-构建高斯差分金字塔"><a href="#1-2-构建高斯差分金字塔" class="headerlink" title="1.2 构建高斯差分金字塔"></a>1.2 构建高斯差分金字塔</h4><p>对两幅高斯金字塔的图像作差。</p>
-<h4 id="1-3-检测极值点"><a href="#1-3-检测极值点" class="headerlink" title="1.3 检测极值点"></a>1.3 检测极值点</h4><p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/extrem
-um.png" alt="Extremum"></p>
+<h4 id="1-3-检测极值点"><a href="#1-3-检测极值点" class="headerlink" title="1.3 检测极值点"></a>1.3 检测极值点</h4><p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/extremum.png" alt="Extremum"></p>
 <p>如上图，与前后两幅图像及自身的共26个邻域像素点比较灰度值检测极值。</p>
 <h3 id="2-关键点精确定位"><a href="#2-关键点精确定位" class="headerlink" title="2. 关键点精确定位"></a>2. 关键点精确定位</h3><p>检测到的极值点是离散的，通过三元二次函数拟合来精确确定关键点的位置和尺度，达到亚像素精度。以某关键点为中心的尺度空间函数 <script type="math/tex">D(x,y,intvl)</script> 的二次泰勒展开式为：</p>
 <script type="math/tex; mode=display">
@@ -197,8 +192,7 @@ m(x,y)&=\sqrt{[L(x+1,y)-L(x-1,y)]^2+[L(x,y+1)-L(x,y-1)]^2}\\
 0.5\cdot\frac{l-r}{l-2c+r}</script><h3 id="4-关键点描述子"><a href="#4-关键点描述子" class="headerlink" title="4. 关键点描述子"></a>4. 关键点描述子</h3><p>上一步已得到具有主方向的关键点，即feature，下一步是对feature的邻域进行采样，形成对该局部图像的描述，然后可用某种度量方法对描述进行匹配。<br>Lowe提出的sift描述子是一个 <script type="math/tex">4\times4\times8=128</script> 维的向量。描述子的数学形式可定义为 <script type="math/tex">h(x,y,\theta)</script> ，其中的x,y代表 <script type="math/tex">4\times4=16</script> 个图像区域的位置，<script type="math/tex">\theta</script>即梯度方向，只能取8个值。<script type="math/tex">h(x,y,\theta)</script>的值就是在(x,y)代表的图像区域计算得到的在<script type="math/tex">\theta</script>方向的梯度大小。</p>
 <h4 id="4-1-描述子采样区域"><a href="#4-1-描述子采样区域" class="headerlink" title="4.1 描述子采样区域"></a>4.1 描述子采样区域</h4><p>这16个图像区域中的每一个区域均为 <script type="math/tex">3\sigma\_octv</script> 像素，因此16个区域的半边长为 <script type="math/tex">4\times3\sigma\_octv/2</script> ，考虑到后续操作需要三线性插值，采样区域半边长设为 <script type="math/tex">(4+1)\times3\sigma\_octv/2</script> ，又由于旋转操作，这个值需要乘以<script type="math/tex">\sqrt{2}</script>，得到 <script type="math/tex">radius=(4+1)\times</script> <script type="math/tex">\sqrt{2}\times3\sigma\_octv/2</script> 。</p>
 <p>如下图所示，图中 <script type="math/tex">m=3,</script> <script type="math/tex">B_p=4,\sigma=\sigma\_octv</script> 。</p>
-<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
-descr_sampling.png" alt="Sampling Area"></p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/descr_sampling.png" alt="Sampling Area"></p>
 <h4 id="4-2-旋转至主方向"><a href="#4-2-旋转至主方向" class="headerlink" title="4.2 旋转至主方向"></a>4.2 旋转至主方向</h4><p>为了使描述符具有旋转不变性，将坐标轴旋转至关键点主方向。设i，j分别为采样点相对关键点的行偏移量和列偏移量，i = -radius:radius，j = -radius:radius，关键点左上角i和j均为负数。关键点主方向为<script type="math/tex">\theta</script>，范围是<script type="math/tex">(-\pi,\pi]</script>。</p>
 <blockquote>
 <p>定理2 在右手平面直角坐标系中，向量(x,y)逆时针旋转<script type="math/tex">\theta</script>，得到的向量(x’,y’)为：</p>
@@ -215,8 +209,7 @@ descr_sampling.png" alt="Sampling Area"></p>
     x\\
     y
   \end{bmatrix}</script></blockquote>
-<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/
-rotation.png" alt="Rotation"></p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/rotation.png" alt="Rotation"></p>
 <p>在左图以关键点为中心建立右手平面直角坐标系o-uv，u的正方向与左图<script type="math/tex">\mathbf{x}</script>方向相同，v的正方向与左图<script type="math/tex">\mathbf{y}</script>方向相反。左图中<script type="math/tex">\mathbf{x}</script>=(1,0),<script type="math/tex">\mathbf{y}</script>=(0,-1)，将<script type="math/tex">\mathbf{x}</script>,<script type="math/tex">\mathbf{y}</script>代入定理2的公式，得到右图中 <script type="math/tex">\mathbf{x'}=(cos\theta,sin\theta),</script> <script type="math/tex">\mathbf{y'}=(sin\theta,-cos\theta)</script> 。其中<script type="math/tex">\theta</script>为左图坐标系旋转到右图坐标系的角度，在上图中为一负数。设图像中有一点按左图的<script type="math/tex">\mathbf{x}</script>,<script type="math/tex">\mathbf{y}</script>可表示为 <script type="math/tex">j \cdot\mathbf{x} + i\cdot\mathbf{y}</script> ，按右图中的<script type="math/tex">\mathbf{x'}</script>,<script type="math/tex">\mathbf{y'}</script>可表示为 <script type="math/tex">j'\cdot\mathbf{x'}+i'\cdot\mathbf{y'}</script> ，则有：</p>
 <script type="math/tex; mode=display">
   j\begin{bmatrix}
@@ -241,8 +234,7 @@ rotation.png" alt="Rotation"></p>
 w=m(a+j,b+i)\cdot e^{\frac{-j'^2+i'^2}{2\sigma^2}}</script><p>其中a，b为关键点在高斯金字塔图像中的位置坐标。</p>
 <h4 id="4-3-三线性插值"><a href="#4-3-三线性插值" class="headerlink" title="4.3 三线性插值"></a>4.3 三线性插值</h4><p>上述过程中构造了一个三维的bin空间，如4.1中右图所示，维度包括r_bin，c_bin和o_bin。注意最上层格子和最底层格子是相连的，因为0度等于360度。所有带有三维坐标的梯度幅值都将分配到三维格子里。</p>
 <p>为了减少一个梯度幅值从一个格子漂移(shift)到另一个格子引起的描述子突变，需要对梯度值做三线性插值。也就是根据三维坐标计算距离周围格子的距离，按距离的倒数计算权重，将梯度幅值按权重分配到临近的格子里。</p>
-<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/i
-nterpolation.png" alt="Trilinear Interpolation"></p>
+<p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/interpolation.png" alt="Trilinear Interpolation"></p>
 <p>某点在三维bin空间的坐标为<script type="math/tex">(r\_bin，c\_bin，o\_bin)</script>，求出<script type="math/tex">r=\lfloor r\_bin\rfloor,</script> <script type="math/tex">c=\lfloor c\_bin\rfloor,</script> <script type="math/tex">o=\lfloor o\_bin\rfloor,</script> <script type="math/tex">dr=r\_bin-r,</script> <script type="math/tex">dc=c\_bin-c,</script> <script type="math/tex">do=o\_bin-o</script>，它的梯度幅值最多可能分配到周围的8个格子中。计算公式如下：</p>
 <script type="math/tex; mode=display">
 \begin{split}
@@ -267,7 +259,7 @@ nterpolation.png" alt="Trilinear Interpolation"></p>
 </ul>
 <p>程序里用了很多全局变量，是因为我把函数分成了文件而不是放在一个文件，为了节省点内存（以及方便）只能这么做（虽然据说Matlab在不改变变量的情况下函数传值等于引用，然而我并不清楚究竟是怎样的）。把for循环换成parfor的时候提示，parfor里似乎不推荐用全局变量，而且实际运行的时候全局变量似乎也会影响性能，于是我把全局变量复制成了局部的再放进parfor里。</p>
 <p>我还发现一个奇葩的问题，在运行次数最多的计算梯度的函数里用zeros(1,2)创建一个数组竟然也耗时非常多，改成[0 0]就好了。</p>
-<p>经过这些修改后，在开启parallel pool的情况下运行时间缩短到了7分钟左右。<dev>（然而Lowe的C语言版本只要十几秒</dev></p>
+<p>经过这些修改后，在开启parallel pool的情况下运行时间缩短到了7分钟左右。<del>（然而Lowe的C语言版本只要十几秒</del></p>
 <h4 id="6-2-运行结果"><a href="#6-2-运行结果" class="headerlink" title="6.2 运行结果"></a>6.2 运行结果</h4><p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/book-result.png" alt="Book"></p>
 <p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/scene-result.png" alt="Scene"></p>
 <p><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/sift-implementation-in-matlab/match-result.png" alt="Match"></p>
@@ -316,7 +308,7 @@ nterpolation.png" alt="Trilinear Interpolation"></p>
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CV/">CV</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/" data-id="cioie38f9000a4wtomne4p5dh" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/" data-id="cioif444c0009wctoqfotxciu" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/#disqus_thread" class="article-comment-link">Comments</a>
         
