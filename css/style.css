@@ -1034,11 +1034,12 @@ a.article-title:hover {
   max-width: 100px;
 }
 .article-entry .MathJax_Display,
-.article-entry .MJXc-display {
+.article-entry .MJXc-display,
+.article-entry .MathJax_SVG_Display {
   overflow-x: auto;
 }
-.article-entry .MathJax_Display >span,
-.article-entry .MJXc-display >span {
+.article-entry .MathJax_Display > span,
+.article-entry .MJXc-display > span {
   padding: 0.5em;
 }
 .toc-article {
@@ -1934,6 +1935,10 @@ pre .javascript .function {
 .widget ul li:last-child:hover {
   -webkit-border-radius: 0 0 3px 3px;
   border-radius: 0 0 3px 3px;
+}
+.widget ul li:only-child:hover {
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
 .widget ul,
 .widget ol {
