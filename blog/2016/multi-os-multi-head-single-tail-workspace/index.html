@@ -5,17 +5,21 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   
-  <title>Archives: 2016/5 | Starsky&#39;s Blog - 11zHexo</title>
+  <title>多系统多头单尾的工作环境 | Starsky&#39;s Blog - 11zHexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Starsky's Blog - 11zHexo">
-<meta property="og:url" content="http://www.sun11.me/archives/2016/05/index.html">
+  <meta name="description" content="我总会有一些 奇怪 的工作环境需求。比如因为很多软件只有Windows能用，我需要一台Windows，然而工作上的软件又运行在Ubuntu下，可能出于其它原因你甚至还需要一台Mac。除此以外，单个屏幕显然是不够用的，双显示器是必须的，其实三台显示器或许才够用，不过加上一台笔记本我的桌面几乎放不下了。实验室也不会给我辣么多显示器。。。
+而且，我还要在所有屏幕所有主机上共享一套鼠标和键盘！还要共享剪贴">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多系统多头单尾的工作环境">
+<meta property="og:url" content="http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/index.html">
 <meta property="og:site_name" content="Starsky's Blog - 11zHexo">
-<meta property="og:description">
+<meta property="og:description" content="我总会有一些 奇怪 的工作环境需求。比如因为很多软件只有Windows能用，我需要一台Windows，然而工作上的软件又运行在Ubuntu下，可能出于其它原因你甚至还需要一台Mac。除此以外，单个屏幕显然是不够用的，双显示器是必须的，其实三台显示器或许才够用，不过加上一台笔记本我的桌面几乎放不下了。实验室也不会给我辣么多显示器。。。
+而且，我还要在所有屏幕所有主机上共享一套鼠标和键盘！还要共享剪贴">
+<meta property="og:updated_time" content="2016-08-08T13:25:07.525Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Starsky's Blog - 11zHexo">
-<meta name="twitter:description">
+<meta name="twitter:title" content="多系统多头单尾的工作环境">
+<meta name="twitter:description" content="我总会有一些 奇怪 的工作环境需求。比如因为很多软件只有Windows能用，我需要一台Windows，然而工作上的软件又运行在Ubuntu下，可能出于其它原因你甚至还需要一台Mac。除此以外，单个屏幕显然是不够用的，双显示器是必须的，其实三台显示器或许才够用，不过加上一台笔记本我的桌面几乎放不下了。实验室也不会给我辣么多显示器。。。
+而且，我还要在所有屏幕所有主机上共享一套鼠标和键盘！还要共享剪贴">
   
     <link rel="alternative" href="/atom.xml" title="Starsky&#39;s Blog - 11zHexo" type="application/atom+xml">
   
@@ -109,40 +113,102 @@ if (isWX) {
 </header>
 
     <div class="outer">
-      <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <h3 href="/blog/2016/sift-implementation-in-matlab/" class="archive-article-date">
-  <time datetime="2016-05-16T15:52:46.000Z" itemprop="datePublished">May 17</time>
+      <section id="main"><article id="post-multi-os-multi-head-single-tail-workspace" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2016/multi-os-multi-head-single-tail-workspace/" class="article-date">
+  <time datetime="2016-08-08T12:07:49.000Z" itemprop="datePublished">Aug 8 2016</time>
 </h3>
-      
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2016/sift-implementation-in-matlab/">SIFT算法的Matlab实现</a>
+    <h1 class="article-title" itemprop="name">
+      多系统多头单尾的工作环境
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>我总会有一些 <strong>奇怪</strong> 的工作环境需求。比如因为很多软件只有Windows能用，我需要一台Windows，然而工作上的软件又运行在Ubuntu下，可能出于其它原因你甚至还需要一台Mac。除此以外，单个屏幕显然是不够用的，双显示器是必须的，其实三台显示器或许才够用，不过加上一台笔记本我的桌面几乎放不下了。<del>实验室也不会给我辣么多显示器。。。</del></p>
+<p>而且，我还要在所有屏幕所有主机上共享一套鼠标和键盘！还要共享剪贴板，让文本可以直接从一个系统复制粘贴到另一个系统！</p>
+<p>由于我有时用到自带屏幕的笔记本，我还需要有时台式机接双显示器，有时笔记本自带屏幕加一台显示器做双屏！</p>
+<p>经过一番折腾，上述奇怪的需求全都实现了。这可以叫做多系统、多头、单尾的工作环境。5年前B哥的<a href="https://bigeagle.me/2011/04/multihead/" target="_blank" rel="external">这篇文章</a>第一次让我知道了计算机的<code>头</code>和<code>尾</code>。</p>
+<p>Synergy是一个通过局域网实现的鼠标键盘共享软件。然而作为一个开源软件，它的下载竟然是收费的！虽然开源软件收费并不是什么坏事，然而开源软件本身是开源的，只要自己能编译出来或者使用别人编译的程序似乎也不违规？我对它的盈利模式深表怀疑。。。而且，Synergy也有Nightly Build是可以搜到的，也就是说你·根·本·就·可·以·免·费·下载到最新的版本（不过可能不够稳定）。</p>
+<p>我尝试了Synergy的很多个版本，发现并不是很稳定，而且如果服务器和客户端是不同的版本会有不兼容的问题。最后找了一个老的版本以<code>Daemon/Windows服务</code>的形式运行，大概图形界面就是罪魁祸首吧，我也懒得去确定最新版本用这种方式能否稳定工作了。</p>
+<a id="more"></a>
+<p>所需硬件：</p>
+<ul>
+<li>两台显示器</li>
+<li>一台台式机</li>
+<li>一台笔记本</li>
+<li>VGA切换器和若干线</li>
+<li>局域网环境</li>
+</ul>
+<p>所需软件：</p>
+<ul>
+<li>Synergy</li>
+</ul>
+<p>Windows Synergy 1.6.2 <a href="http://down.tech.sina.com.cn/content/50073.html" target="_blank" rel="external">http://down.tech.sina.com.cn/content/50073.html</a></p>
+<p>Ubuntu Synergy 1.6.2 <a href="https://launchpad.net/ubuntu/+source/synergy/1.6.2-0ubuntu1" target="_blank" rel="external">https://launchpad.net/ubuntu/+source/synergy/1.6.2-0ubuntu1</a></p>
+<p>我把Windows用作客户端，Ubuntu作为服务器。不过Ubuntu的这个版本原本是给Vivid，即15.04用的，它需要4.9版本的g++，而我用的是Ubuntu 14.04，g++版本是4.8。那么，就装一个：</p>
+<pre><code>sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install g++-4.9
+</code></pre><p>配置不多说，有图形界面，调一下hostname和显示器摆放位置就行了。调好配置文件保存一下，在/usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf中加入：</p>
+<pre><code>greeter-setup-script=/usr/bin/synergys -c &lt;CONFIG FILE&gt;
+</code></pre><p>这样，只要启动还未登录时鼠标和键盘就能共享了。</p>
+<p>Windows客户端配置就更简单了，安装完就有synergy的系统服务。不过最好不要开图形界面，一开似乎就是运行了多个synergy，端口冲突，需要重新启动服务。</p>
+<p>至于显示器的切换，我是在某宝上买了一个VGA切换器。其实某宝上还有卖鼠标键盘共享加多显示器切换的KVM切换器，但通过按按键让鼠标和键盘随显示器从一台主机切换到另一台主机更适合于多主机单头单尾的情况，而且听卖家说必须要接上两个主机供电，对于我来说显然用Synergy和VGA切换器更好一些。</p>
+<p>台式机连接一台固定的显示器，另外抽一根VGA线连到切换器的输入，笔记本也连一根VGA线到切换器的输入，然后切换器输出VGA线连上的显示器就能用切换器上的按键切换主机了。Done。</p>
+<p>（从右边屏幕Windows打开的pdf里复制一段代码移到左边屏幕Ubuntu的终端里粘贴执行，你知道这是多么巨大的工作效率提升么？！！！）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Customize/">Customize</a></li></ul>
+
+        <a data-url="http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/" data-id="cirm15swk000kzktob8lxxp82" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
   </div>
+  </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2016/sift-implementation-in-matlab/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SIFT算法的Matlab实现</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
-  
+
+
+  <section id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
 </section>
       
       <aside id="sidebar">
@@ -256,11 +322,13 @@ if (isWX) {
 <script>
   var disqus_shortname = '11zhexo';
   
+  var disqus_url = 'http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

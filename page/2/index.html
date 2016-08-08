@@ -111,6 +111,63 @@ if (isWX) {
     <div class="outer">
       <section id="main">
   
+    <article id="post-ros-on-arm--native-compilation-on-rk3066" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/" class="article-date">
+  <time datetime="2013-02-03T14:08:16.000Z" itemprop="datePublished">Feb 3 2013</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-开源机器人操作系统ROS-Robot-Operating-System-简介"><a href="#1-开源机器人操作系统ROS-Robot-Operating-System-简介" class="headerlink" title="1. 开源机器人操作系统ROS(Robot Operating System)简介"></a>1. 开源机器人操作系统ROS(Robot Operating System)简介</h3><p>ROS（Robot Operating System）是一个开源的为机器人软件开发设计的软件框架，在异构计算机集群中提供类似操作系统的功能。它并不是一个计算机的操作系统，而是机器人的操作系统，或者称为元级操作系统（Meta Operating System）。据目前唯一一本比较官方的关于ROS的书《ROS By Example Volume 1》介绍，“The primary goal of ROS (pronounced “Ross”) is to provide a unified and open source<br>programming framework for controlling robots in a variety of real world and simulated<br>environments.”，ROS的原始目的就是为了在一系列真实和模拟的环境中控制机器人提供一个统一的开源编程框架。为了实现这一目标，ROS架构中有<a href="http://www.ros.org/wiki/ROS/Concepts">三个层次</a>的概念：文件系统级（Filesystem Level），计算图级（Computation Graph Level）和社区级（Community Level）。<br>具体可以查阅<a href="http://zh.wikipedia.org/wiki/ROS">维基百科</a>和<a href="http://www.ros.org/wiki/">官网wiki</a>，这里就不过多介绍了。</p>
+<h3 id="2-ROS-Groovy-Galapagos"><a href="#2-ROS-Groovy-Galapagos" class="headerlink" title="2. ROS Groovy Galapagos"></a>2. ROS Groovy Galapagos</h3><p><a href="http://www.ros.org/news/2012/12/ros-groovy-galapagos-released.html">ROS Groovy Galapagos</a>是2012年12月31日发布的ROS最新版本，主要支持Ubuntu 11.10、Ubuntu 12.04和Ubuntu 12.10。提到这个版本的原因是它采用了新的构建系统——catkin，准备逐渐取代之前的rosbuild。它解决了rosbuild当中的几个问题，让ROS可以持续发展和扩大规模，相对于rosbuild更符合文件系统层次结构标准（Filesystem Hierarchy Standard，FHS），使在其它操作系统和架构上发布ROS包更加容易。正是这个原因让我在MK802 IIIS上编译ROS的时候轻松很多，如果编译之前的版本（比如fuerte）将会遇到更多问题。</p>
+<p>因为catkin的引入，ROS文件系统级的Stacks概念被移除了，原因是Package和Stack之间依赖性跟踪出现的问题，取代的是元包（metapackage）的概念。</p>
+<h3 id="3-Ubuntu-on-ARM"><a href="#3-Ubuntu-on-ARM" class="headerlink" title="3. Ubuntu on ARM"></a>3. Ubuntu on ARM</h3><p>ARM版Ubuntu的软件源是在<code>http://ports.ubuntu.com/</code>上，和桌面版的略有区别，我遇到的一个问题就是桌面版python-*的包ARM版几乎都没有，解决办法是使用python的包管理工具pip安装，比如桌面版上<code>apt-get install python-PACKAGENAME</code>，用<code>pip install PACKAGENAME</code>替代。据说easy_install的维护不够好，所以应该尽量用pip。</p>
+<p>我使用的是RK3066上的Picuntu，关于Picuntu请看前一篇文章。</p>
+<h3 id="4-编译ROS-for-ARM"><a href="#4-编译ROS-for-ARM" class="headerlink" title="4. 编译ROS for ARM"></a>4. 编译ROS for ARM</h3>
+        
+          <p class="article-more-link">
+            <a href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/">ROS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
+
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/" data-id="cirm15svz0007zkto19oknt61" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-ros-on-arm--picuntu-configuration" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2013/ros-on-arm--picuntu-configuration/" class="article-date">
@@ -160,7 +217,7 @@ if (isWX) {
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/" data-id="cipni8nsf000jxgto08cw6jrh" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/" data-id="cirm15svw0005zktofoh24gph" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/ros-on-arm--picuntu-configuration/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -217,7 +274,7 @@ if (isWX) {
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/" data-id="cipni8nr40003xgtot23d9ygv" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/" data-id="cirm15svt0004zkto3ovrrzdh" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2013/ros-on-arm--linux-for-rk3066/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -300,7 +357,7 @@ if (isWX) {
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/wtfrobot-rosmin/" data-id="cipni8nrt000bxgtot28jclkw" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/wtfrobot-rosmin/" data-id="cirm15swf000hzkto9eacemlc" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/wtfrobot-rosmin/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -368,64 +425,9 @@ if (isWX) {
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cipni8nsa000hxgtogwt9qffh" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/" data-id="cirm15swb000ezktob9tdrmpz" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2012/opencv-242-porting-to-tiny6410/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-xdjw-forum" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2012/xdjw-forum/" class="article-date">
-  <time datetime="2012-02-20T15:00:00.000Z" itemprop="datePublished">Feb 21 2012</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2012/xdjw-forum/">西电技物论坛</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <p>经过路由器和网关的两层端口映射和两个防火墙端口的开启，CentOS 6.2 + Apache + vsftpd 的小型论坛总算基本建好了。</p>
-<p><del>地址是<a href="http://210.27.10.208/" target="_blank" rel="external">http://210.27.10.208/</a>,仅供西电校内访问。</del></p>
-<p>现在校内外均可访问<a href="http://f120.tk/" target="_blank" rel="external">http://f120.tk/</a>，ftp服务只有校内可以访问。</p>
-<p>这可折腾了好久时间。我想我把路由器，网关之类的概念算是理解透了。</p>
-<p>碰到各种各样的问题，linux的用户权限，防火墙，端口映射，配置文件…</p>
-<p>还好最后都一一解决了。</p>
-<p>采用wordpress做模板，用了v2press主题，于是它就变身论坛。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2012/xdjw-forum/" data-id="cipni8ns5000gxgtoksp41tt3" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2012/xdjw-forum/#disqus_thread" class="article-comment-link">Comments</a>
         
       </div>
     </footer>
@@ -454,6 +456,10 @@ if (isWX) {
       <ul>
         
           <li>
+            <a href="/blog/2016/multi-os-multi-head-single-tail-workspace/">多系统多头单尾的工作环境</a>
+          </li>
+        
+          <li>
             <a href="/blog/2016/sift-implementation-in-matlab/">SIFT算法的Matlab实现</a>
           </li>
         
@@ -469,10 +475,6 @@ if (isWX) {
             <a href="/blog/2013/rosmin-and-rossum/">Rosmin与Rossum</a>
           </li>
         
-          <li>
-            <a href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -482,7 +484,7 @@ if (isWX) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CV/">CV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CV/">CV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -491,7 +493,7 @@ if (isWX) {
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 

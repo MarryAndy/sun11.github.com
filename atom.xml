@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sun11.me/"/>
-  <updated>2016-05-22T10:00:21.921Z</updated>
+  <updated>2016-08-08T13:25:07.525Z</updated>
   <id>http://www.sun11.me/</id>
   
   <author>
@@ -14,6 +14,63 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>多系统多头单尾的工作环境</title>
+    <link href="http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/"/>
+    <id>http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/</id>
+    <published>2016-08-08T12:07:49.000Z</published>
+    <updated>2016-08-08T13:25:07.525Z</updated>
+    
+    <content type="html">&lt;p&gt;我总会有一些 &lt;strong&gt;奇怪&lt;/strong&gt; 的工作环境需求。比如因为很多软件只有Windows能用，我需要一台Windows，然而工作上的软件又运行在Ubuntu下，可能出于其它原因你甚至还需要一台Mac。除此以外，单个屏幕显然是不够用的，双显示器是必须的，其实三台显示器或许才够用，不过加上一台笔记本我的桌面几乎放不下了。&lt;del&gt;实验室也不会给我辣么多显示器。。。&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;而且，我还要在所有屏幕所有主机上共享一套鼠标和键盘！还要共享剪贴板，让文本可以直接从一个系统复制粘贴到另一个系统！&lt;/p&gt;
+&lt;p&gt;由于我有时用到自带屏幕的笔记本，我还需要有时台式机接双显示器，有时笔记本自带屏幕加一台显示器做双屏！&lt;/p&gt;
+&lt;p&gt;经过一番折腾，上述奇怪的需求全都实现了。这可以叫做多系统、多头、单尾的工作环境。5年前B哥的&lt;a href=&quot;https://bigeagle.me/2011/04/multihead/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这篇文章&lt;/a&gt;第一次让我知道了计算机的&lt;code&gt;头&lt;/code&gt;和&lt;code&gt;尾&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;Synergy是一个通过局域网实现的鼠标键盘共享软件。然而作为一个开源软件，它的下载竟然是收费的！虽然开源软件收费并不是什么坏事，然而开源软件本身是开源的，只要自己能编译出来或者使用别人编译的程序似乎也不违规？我对它的盈利模式深表怀疑。。。而且，Synergy也有Nightly Build是可以搜到的，也就是说你·根·本·就·可·以·免·费·下载到最新的版本（不过可能不够稳定）。&lt;/p&gt;
+&lt;p&gt;我尝试了Synergy的很多个版本，发现并不是很稳定，而且如果服务器和客户端是不同的版本会有不兼容的问题。最后找了一个老的版本以&lt;code&gt;Daemon/Windows服务&lt;/code&gt;的形式运行，大概图形界面就是罪魁祸首吧，我也懒得去确定最新版本用这种方式能否稳定工作了。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;所需硬件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;两台显示器&lt;/li&gt;
+&lt;li&gt;一台台式机&lt;/li&gt;
+&lt;li&gt;一台笔记本&lt;/li&gt;
+&lt;li&gt;VGA切换器和若干线&lt;/li&gt;
+&lt;li&gt;局域网环境&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所需软件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Synergy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Windows Synergy 1.6.2 &lt;a href=&quot;http://down.tech.sina.com.cn/content/50073.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://down.tech.sina.com.cn/content/50073.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Ubuntu Synergy 1.6.2 &lt;a href=&quot;https://launchpad.net/ubuntu/+source/synergy/1.6.2-0ubuntu1&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://launchpad.net/ubuntu/+source/synergy/1.6.2-0ubuntu1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;我把Windows用作客户端，Ubuntu作为服务器。不过Ubuntu的这个版本原本是给Vivid，即15.04用的，它需要4.9版本的g++，而我用的是Ubuntu 14.04，g++版本是4.8。那么，就装一个：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install g++-4.9
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;配置不多说，有图形界面，调一下hostname和显示器摆放位置就行了。调好配置文件保存一下，在/usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf中加入：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;greeter-setup-script=/usr/bin/synergys -c &amp;lt;CONFIG FILE&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样，只要启动还未登录时鼠标和键盘就能共享了。&lt;/p&gt;
+&lt;p&gt;Windows客户端配置就更简单了，安装完就有synergy的系统服务。不过最好不要开图形界面，一开似乎就是运行了多个synergy，端口冲突，需要重新启动服务。&lt;/p&gt;
+&lt;p&gt;至于显示器的切换，我是在某宝上买了一个VGA切换器。其实某宝上还有卖鼠标键盘共享加多显示器切换的KVM切换器，但通过按按键让鼠标和键盘随显示器从一台主机切换到另一台主机更适合于多主机单头单尾的情况，而且听卖家说必须要接上两个主机供电，对于我来说显然用Synergy和VGA切换器更好一些。&lt;/p&gt;
+&lt;p&gt;台式机连接一台固定的显示器，另外抽一根VGA线连到切换器的输入，笔记本也连一根VGA线到切换器的输入，然后切换器输出VGA线连上的显示器就能用切换器上的按键切换主机了。Done。&lt;/p&gt;
+&lt;p&gt;（从右边屏幕Windows打开的pdf里复制一段代码移到左边屏幕Ubuntu的终端里粘贴执行，你知道这是多么巨大的工作效率提升么？！！！）&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;我总会有一些 &lt;strong&gt;奇怪&lt;/strong&gt; 的工作环境需求。比如因为很多软件只有Windows能用，我需要一台Windows，然而工作上的软件又运行在Ubuntu下，可能出于其它原因你甚至还需要一台Mac。除此以外，单个屏幕显然是不够用的，双显示器是必须的，其实三台显示器或许才够用，不过加上一台笔记本我的桌面几乎放不下了。&lt;del&gt;实验室也不会给我辣么多显示器。。。&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;而且，我还要在所有屏幕所有主机上共享一套鼠标和键盘！还要共享剪贴板，让文本可以直接从一个系统复制粘贴到另一个系统！&lt;/p&gt;
+&lt;p&gt;由于我有时用到自带屏幕的笔记本，我还需要有时台式机接双显示器，有时笔记本自带屏幕加一台显示器做双屏！&lt;/p&gt;
+&lt;p&gt;经过一番折腾，上述奇怪的需求全都实现了。这可以叫做多系统、多头、单尾的工作环境。5年前B哥的&lt;a href=&quot;https://bigeagle.me/2011/04/multihead/&quot;&gt;这篇文章&lt;/a&gt;第一次让我知道了计算机的&lt;code&gt;头&lt;/code&gt;和&lt;code&gt;尾&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;Synergy是一个通过局域网实现的鼠标键盘共享软件。然而作为一个开源软件，它的下载竟然是收费的！虽然开源软件收费并不是什么坏事，然而开源软件本身是开源的，只要自己能编译出来或者使用别人编译的程序似乎也不违规？我对它的盈利模式深表怀疑。。。而且，Synergy也有Nightly Build是可以搜到的，也就是说你·根·本·就·可·以·免·费·下载到最新的版本（不过可能不够稳定）。&lt;/p&gt;
+&lt;p&gt;我尝试了Synergy的很多个版本，发现并不是很稳定，而且如果服务器和客户端是不同的版本会有不兼容的问题。最后找了一个老的版本以&lt;code&gt;Daemon/Windows服务&lt;/code&gt;的形式运行，大概图形界面就是罪魁祸首吧，我也懒得去确定最新版本用这种方式能否稳定工作了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Customize" scheme="http://www.sun11.me/tags/Customize/"/>
+    
+  </entry>
   
   <entry>
     <title>SIFT算法的Matlab实现</title>
