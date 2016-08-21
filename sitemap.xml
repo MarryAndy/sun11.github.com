@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/</loc>
+    
+    <lastmod>2016-08-21T15:04:09.889Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/</loc>
     
     <lastmod>2016-08-08T13:25:07.525Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://www.sun11.me/blog/2016/hexo-theme-paperbox/</loc>
     
     <lastmod>2016-05-22T07:34:54.567Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/</loc>
-    
-    <lastmod>2016-05-21T07:56:58.053Z</lastmod>
     
   </url>
   

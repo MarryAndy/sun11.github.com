@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Starsky's Blog - 11zHexo">
 <meta property="og:description" content="Caffe官网的 安装说明 实在太简单了点，主要是参考的 Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明 和 Ubuntu14.04下安装Caffe总结 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。
 1. Caffe依赖包12sudo apt-get install build-essential  # basic requireme">
-<meta property="og:updated_time" content="2016-05-21T07:56:58.053Z">
+<meta property="og:updated_time" content="2016-08-21T15:04:09.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu14.04 安装 Caffe+CUDA 7.5">
 <meta name="twitter:description" content="Caffe官网的 安装说明 实在太简单了点，主要是参考的 Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明 和 Ubuntu14.04下安装Caffe总结 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。
@@ -167,16 +167,24 @@ options nouveau modeset=0
 <h3 id="3-安装cuDNN"><a href="#3-安装cuDNN" class="headerlink" title="3. 安装cuDNN"></a>3. 安装cuDNN</h3><p>cuDNN要注册NVIDIA开发者账号才能下载，我注册了下很快就收到邮件可以下载了，但是蛋疼的intel MKL至今都没收到回复下载不了。。。</p>
 <p>这个比较简单，下载下来直接是编译好的lib和include，丢进<code>/usr/local/cuda</code>里就行了：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> cudnn-* <span class="comment">#下载解压后的文件夹</span></span><br><span class="line">sudo cp lib64/* /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line">sudo cp include/* /usr/<span class="built_in">local</span>/cuda/include/</span><br><span class="line">sudo ldconfig</span><br></pre></td></tr></table></figure>
-<h3 id="4-安装BLAS"><a href="#4-安装BLAS" class="headerlink" title="4. 安装BLAS"></a>4. 安装BLAS</h3><p>因为在intel网站申请学生版始终没回复，所以就只有用OpenBLAS了。。。</p>
+<p>如果你遇到<code>/sbin/ldconfig.real: /usr/local/cuda/lib64/libcudnn.so.5 is not a symbolic link</code>这样的问题，重新链接一下(根据版本自行调整)：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/cuda/lib64</span><br><span class="line">sudo ln -sf libcudnn.so.5.1.3 libcudnn.so.5</span><br><span class="line">sudo ln -sf libcudnn.so.5 libcudnn.so</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-安装BLAS"><a href="#4-安装BLAS" class="headerlink" title="4. 安装BLAS"></a>4. 安装BLAS</h3><p><del>为在intel网站申请学生版始终没回复，所以就只有用OpenBLAS了。。。</del><br>Intel的MKL在<a href="https://software.intel.com/en-us/articles/free_mkl" target="_blank" rel="external">这里</a>注册一下也能用，有图形界面，安装完成之后创建文件<code>/etc/ld.so.conf.d/intel_mkl.conf</code>：</p>
+<pre><code>/opt/intel/lib/intel64
+/opt/intel/mkl/lib/intel64
+</code></pre><p>然后<code>sudo ldconfig</code>。</p>
+<p>OpenBLAS安装如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/xianyi/OpenBLAS.git</span><br><span class="line"><span class="built_in">cd</span> OpenBLAS</span><br><span class="line">make -j4</span><br><span class="line">sudo make install PREFIX=/usr/<span class="built_in">local</span>/openblas</span><br></pre></td></tr></table></figure>
 <p>创建文件<code>/etc/ld.conf.d/openblas.conf</code>:</p>
 <pre><code>/usr/local/openblas/lib
-</code></pre><h3 id="5-安装Anaconda"><a href="#5-安装Anaconda" class="headerlink" title="5. 安装Anaconda"></a>5. 安装Anaconda</h3><p>我是直接用pyenv安装的，因为在多个python环境下切换。<del>其实一开始直接编译安装了Anaconda后来发现pyenv又删掉了…</del></p>
+</code></pre><h3 id="5-安装Anaconda"><a href="#5-安装Anaconda" class="headerlink" title="5. 安装Anaconda"></a>5. 安装Anaconda</h3><p>我是直接用pyenv安装的，因为需要在多个python环境下切换。<del>其实一开始直接编译安装了Anaconda后来发现pyenv又删掉了…</del></p>
 <h4 id="5-1-安装pyenv"><a href="#5-1-安装pyenv" class="headerlink" title="5.1 安装pyenv"></a>5.1 安装pyenv</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/yyuu/pyenv.git ~/.pyenv</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'export PYENV_ROOT="$HOME/.pyenv"'</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'export PATH="$PYENV_ROOT/bin:$PATH"'</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'eval "$(pyenv init -)"'</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">exec</span> <span class="variable">$SHELL</span> <span class="_">-l</span></span><br></pre></td></tr></table></figure>
 <h4 id="5-2-用pyenv安装Anaconda"><a href="#5-2-用pyenv安装Anaconda" class="headerlink" title="5.2 用pyenv安装Anaconda"></a>5.2 用pyenv安装Anaconda</h4><p>如果觉得网络不好可以直接把anaconda的sh文件下载下来放到~/.pyenv/cache里。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pyenv install anaconda2-2.5.0</span><br><span class="line">pyenv global anaconda2-2.5.0</span><br><span class="line">pyenv versions</span><br></pre></td></tr></table></figure>
-<p>这时你应该可以看到你切换到anaconda2-2.5.0了。另外还可以用<a href="https://github.com/yyuu/pyenv-virtualenv" target="_blank" rel="external">pyenv-virtualenv</a>，不过我没有折腾。</p>
-<h3 id="6-安装OpenCV"><a href="#6-安装OpenCV" class="headerlink" title="6. 安装OpenCV"></a>6. 安装OpenCV</h3><p>有个<a href="https://github.com/jayrambhia/Install-OpenCV/blob/master/Ubuntu/2.4/opencv2_4_10.sh" target="_blank" rel="external">安装脚本</a>，不过靠脚本安装OpenCV毕竟太不靠谱，我是看着脚本一点点自己敲命令装好的。直接把脚本贴上来吧：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pyenv install anaconda2-4.1.0</span><br><span class="line">pyenv global anaconda2-4.1.0</span><br><span class="line">pyenv versions</span><br></pre></td></tr></table></figure>
+<p>这时你应该可以看到你切换到anaconda2-4.1.0了。另外还可以用<a href="https://github.com/yyuu/pyenv-virtualenv" target="_blank" rel="external">pyenv-virtualenv</a>，不过我没有折腾。</p>
+<h3 id="6-安装OpenCV"><a href="#6-安装OpenCV" class="headerlink" title="6. 安装OpenCV"></a>6. 安装OpenCV</h3><p>方案一：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository --yes ppa:xqms/opencv-nonfree</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install libopencv-nonfree-dev libopencv-nonfree2.4</span><br></pre></td></tr></table></figure>
+<p>方案二：</p>
+<p>有个<a href="https://github.com/jayrambhia/Install-OpenCV/blob/master/Ubuntu/2.4/opencv2_4_10.sh" target="_blank" rel="external">安装脚本</a>，不过靠脚本安装OpenCV毕竟太不靠谱，我是看着脚本一点点自己敲命令装好的。直接把脚本贴上来吧：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">arch=$(uname -m)</span><br><span class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$arch</span>"</span> == <span class="string">"i686"</span> -o <span class="string">"<span class="variable">$arch</span>"</span> == <span class="string">"i386"</span> -o <span class="string">"<span class="variable">$arch</span>"</span> == <span class="string">"i486"</span> -o <span class="string">"<span class="variable">$arch</span>"</span> == <span class="string">"i586"</span> ]; <span class="keyword">then</span></span><br><span class="line">flag=1</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">flag=0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Installing OpenCV 2.4.10"</span></span><br><span class="line">mkdir OpenCV</span><br><span class="line"><span class="built_in">cd</span> OpenCV</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Removing any pre-installed ffmpeg and x264"</span></span><br><span class="line">sudo apt-get -y remove ffmpeg x264 libx264-dev</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Installing Dependenices"</span></span><br><span class="line">sudo apt-get -y install libopencv-dev</span><br><span class="line">sudo apt-get -y install build-essential checkinstall cmake pkg-config yasm</span><br><span class="line">sudo apt-get -y install libtiff4-dev libjpeg-dev libjasper-dev</span><br><span class="line">sudo apt-get -y install libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev</span><br><span class="line">sudo apt-get -y install python-dev python-numpy</span><br><span class="line">sudo apt-get -y install libtbb-dev libeigen3-dev</span><br><span class="line">sudo apt-get -y install libqt4-dev libgtk2.0-dev</span><br><span class="line">sudo apt-get -y install libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev</span><br><span class="line">sudo apt-get -y install x264 v4l-utils ffmpeg</span><br><span class="line">sudo apt-get -y install libgtk2.0-dev</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Downloading OpenCV 2.4.10"</span></span><br><span class="line"><span class="keyword">if</span> ! [ <span class="_">-f</span> <span class="string">"OpenCV-2.4.10.zip"</span> ]; <span class="keyword">then</span></span><br><span class="line">  wget -O OpenCV-2.4.10.zip http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.10/opencv-2.4.10.zip/download</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Installing OpenCV 2.4.10"</span></span><br><span class="line"><span class="keyword">if</span> ! [ <span class="_">-d</span> <span class="string">"opencv-2.4.10"</span> ]; <span class="keyword">then</span></span><br><span class="line">  unzip OpenCV-2.4.10.zip</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">rm OpenCV-2.4.10.zip</span><br><span class="line"><span class="built_in">cd</span> opencv-2.4.10</span><br><span class="line">rm -rf build</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake -D CUDA_ARCH_BIN=3.2 -D CUDA_ARCH_PTX=3.2 -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/<span class="built_in">local</span> -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D BUILD_TIFF=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..</span><br><span class="line">make -j</span><br><span class="line">sudo make install</span><br><span class="line">sudo sh -c <span class="string">'echo "/usr/local/lib" &gt; /etc/ld.so.conf.d/opencv.conf'</span></span><br><span class="line">sudo ldconfig</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"OpenCV 2.4.10 ready to be used"</span></span><br></pre></td></tr></table></figure>
 <p>前面的安装依赖包倒没什么，到了25行<code>wget opencv</code>的时候发现sourceforge的下载链接已经变了，下不下来，于是到sourceforge.net把OpenCV 2.4.10下下来，再命名成脚本需要的<code>OpenCV-2.4.10.zip</code>（注意大小写，如果你需要按脚本来的话）。</p>
 <p>其实已经基本不需要这个脚本文件了，直接一点点敲命令来吧。</p>
@@ -184,7 +192,7 @@ options nouveau modeset=0
 <h3 id="7-安装Caffe"><a href="#7-安装Caffe" class="headerlink" title="7. 安装Caffe"></a>7. 安装Caffe</h3><p>终于能装Caffe了，不过先要安装python依赖库。进入caffe安装目录下的python文件夹：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> req <span class="keyword">in</span> $(cat requirements.txt); <span class="keyword">do</span> pip install <span class="variable">$req</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
 <p>至于Matlab接口什么的，我并没有装。</p>
-<p>修改<code>Makefile.config</code>，注意需要的几项就行:</p>
+<p>修改<code>Makefile.config</code>，注意需要的几项就行：</p>
 <pre><code># cuDNN acceleration switch (uncomment to build with cuDNN).
 USE_CUDNN := 1
 
@@ -195,23 +203,39 @@ CUDA_DIR := /usr/local/cuda
 # atlas for ATLAS (default)
 # mkl for MKL
 # open for OpenBlas
-BLAS := open
-# Custom (MKL/ATLAS/OpenBLAS) include and lib directories.
+BLAS := mkl
+
+# Anaconda Python distribution is quite popular. Include path:
+# Verify anaconda location, sometimes it&#39;s in root.
+ANACONDA_HOME := $(HOME)/.pyenv/versions/anaconda2-4.1.0
+PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
+    $(ANACONDA_HOME)/include/python2.7 \
+    $(ANACONDA_HOME)/lib/python2.7/site-packages/numpy/core/include \
+# PYTHON_LIB := /usr/lib
+PYTHON_LIB := $(ANACONDA_HOME)/lib
+</code></pre><p>上面的并不是完整文件，只是贴出来需要修改的几项。如果你的BLAS选择的是openblas，那在<code>BLAS := open</code>后面应该加上:</p>
+<pre><code># Custom (MKL/ATLAS/OpenBLAS) include and lib directories.
 # Leave commented to accept the defaults for your choice of BLAS
 # (which should work)!
 BLAS_INCLUDE := /usr/local/openblas/include
 BLAS_LIB := /usr/local/openblas/lib
-
-# Anaconda Python distribution is quite popular. Include path:
-# Verify anaconda location, sometimes it&#39;s in root.
-ANACONDA_HOME := $(HOME)/.pyenv/versions/anaconda2-2.5.0
-PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
-    $(ANACONDA_HOME)/include/python2.7 \
-    $(ANACONDA_HOME)/lib/python2.7/site-packages/numpy/core/include \
-</code></pre><p>上面的并不是完整文件，只是贴出来需要修改的几项。</p>
-<p>最后编译caffe:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make all -j4</span><br><span class="line">make <span class="built_in">test</span></span><br><span class="line">make runtest</span><br></pre></td></tr></table></figure>
-<p>在我的渣本上需要挺长时间的。。。</p>
+</code></pre><p>最后编译caffe:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make all -j4</span><br><span class="line">make <span class="built_in">test</span> -j4</span><br><span class="line">make runtest</span><br></pre></td></tr></table></figure>
+<p>如果在<code>make runtest</code>的时候遇到<code>error while loading shared libraries: libhdf5_hl.so.10: cannot open shared object file: No such file or directory</code>类似的错误，为了避免冲突尽量不要把anaconda的lib路径(即上面的<code>~/.pyenv/versions/anaconda2-4.1.0/lib</code>)添加到<code>LD_LIBRARY_PATH</code>，因为其它软件可能需要系统自带的python而不是anaconda。在<code>/usr/lib/x86_64-linux-gnu</code>下面可能有<code>libhdf5_hl.so.7</code>，版本太低了。</p>
+<p>我是这样做的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/lib/x86_64-linux-gnu/</span><br><span class="line">sudo cp ~/.pyenv/versions/anaconda2-4.1.0/lib/libhdf5.so.10* .</span><br><span class="line">sudo cp ~/.pyenv/versions/anaconda2-4.1.0/lib/libhdf5_hl.so.10* .</span><br><span class="line"><span class="built_in">cd</span> /usr/lib/x86_64-linux-gnu/</span><br><span class="line">sudo ln -sf libhdf5.so.10.1.0 libhdf5.so.10</span><br><span class="line">sudo ln -sf libhdf5_hl.so.10.0.2 libhdf5_hl.so.10</span><br></pre></td></tr></table></figure>
+<p>或者更直接的方法是修改caffe的Makefile？</p>
+<p>如果还有部分runtest失败：</p>
+<pre><code>[  FAILED  ] SGDSolverTest/0.TestSnapshotShare, where TypeParam = caffe::CPUDevice&lt;float&gt;
+[  FAILED  ] AdaGradSolverTest/0.TestSnapshotShare, where TypeParam = caffe::CPUDevice&lt;float&gt;
+[  FAILED  ] NesterovSolverTest/0.TestSnapshot, where TypeParam = caffe::CPUDevice&lt;float&gt;
+[  FAILED  ] NesterovSolverTest/0.TestSnapshotShare, where TypeParam = caffe::CPUDevice&lt;float&gt;
+[  FAILED  ] AdaDeltaSolverTest/0.TestSnapshotShare, where TypeParam = caffe::CPUDevice&lt;float&gt;
+[  FAILED  ] AdamSolverTest/0.TestSnapshotShare, where TypeParam = caffe::CPUDevice&lt;float&gt;
+[  FAILED  ] RMSPropSolverTest/0.TestSnapshotShare, where TypeParam = caffe::CPUDevice&lt;float&gt;
+</code></pre><p>在<code>/etc/profile</code>加入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> CUDA_VISIBLE_DEVICES=0</span><br><span class="line"><span class="built_in">export</span> MKL_CBWR=AUTO</span><br></pre></td></tr></table></figure>
+<p>别忘了<code>source /etc/profile</code>。</p>
 
       
     </div>
@@ -220,7 +244,7 @@ PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PRML/">PRML</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cirm15swe000gzktokeoezo2q" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cis4jlv5k000hewtonilkqdku" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/#disqus_thread" class="article-comment-link">Comments</a>
         
