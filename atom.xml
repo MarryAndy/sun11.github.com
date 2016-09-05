@@ -45,11 +45,11 @@
     </summary>
     
     
+      <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
+    
       <category term="ROS" scheme="http://www.sun11.me/tags/ROS/"/>
     
       <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
-    
-      <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
     
   </entry>
   
@@ -426,9 +426,9 @@ options nouveau modeset=0
     </summary>
     
     
-      <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
-    
       <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
+    
+      <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
     
       <category term="PRML" scheme="http://www.sun11.me/tags/PRML/"/>
     
@@ -706,17 +706,17 @@ rosmake -a
     </summary>
     
     
-      <category term="ROS" scheme="http://www.sun11.me/tags/ROS/"/>
-    
       <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
     
-      <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
-    
       <category term="Android" scheme="http://www.sun11.me/tags/Android/"/>
+    
+      <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
     
       <category term="Robot" scheme="http://www.sun11.me/tags/Robot/"/>
     
       <category term="Ubuntu" scheme="http://www.sun11.me/tags/Ubuntu/"/>
+    
+      <category term="ROS" scheme="http://www.sun11.me/tags/ROS/"/>
     
   </entry>
   
@@ -801,9 +801,9 @@ rosmake -a
     
       <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
     
-      <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
-    
       <category term="Android" scheme="http://www.sun11.me/tags/Android/"/>
+    
+      <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
     
       <category term="Robot" scheme="http://www.sun11.me/tags/Robot/"/>
     
@@ -846,9 +846,9 @@ rosmake -a
     
       <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
     
-      <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
-    
       <category term="Android" scheme="http://www.sun11.me/tags/Android/"/>
+    
+      <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
     
       <category term="Robot" scheme="http://www.sun11.me/tags/Robot/"/>
     
@@ -1018,9 +1018,9 @@ rosmake -a
     </summary>
     
     
-      <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
-    
       <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
+    
+      <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
     
   </entry>
   
