@@ -5,17 +5,18 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   
-  <title>Tag: Linux | Starsky&#39;s Blog - 11zHexo</title>
+  <title>How to make linemod work with ROS Indigo? | Starsky&#39;s Blog - 11zHexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Starsky's Blog - 11zHexo">
-<meta property="og:url" content="http://www.sun11.me/tags/Linux/index.html">
+  <meta name="description" content="I’m using Ubuntu 14.04.5 with ROS Indigo, and I want to make ork work with linemod, a fairly simple need. But sometimes if some packages are not maintained well (especially in ROS), you have to invest">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to make linemod work with ROS Indigo?">
+<meta property="og:url" content="http://www.sun11.me/blog/2016/howto-linemod-indigo/index.html">
 <meta property="og:site_name" content="Starsky's Blog - 11zHexo">
-<meta property="og:description">
+<meta property="og:description" content="I’m using Ubuntu 14.04.5 with ROS Indigo, and I want to make ork work with linemod, a fairly simple need. But sometimes if some packages are not maintained well (especially in ROS), you have to invest">
+<meta property="og:updated_time" content="2016-09-05T03:31:59.839Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Starsky's Blog - 11zHexo">
-<meta name="twitter:description">
+<meta name="twitter:title" content="How to make linemod work with ROS Indigo?">
+<meta name="twitter:description" content="I’m using Ubuntu 14.04.5 with ROS Indigo, and I want to make ork work with linemod, a fairly simple need. But sometimes if some packages are not maintained well (especially in ROS), you have to invest">
   
     <link rel="alternative" href="/atom.xml" title="Starsky&#39;s Blog - 11zHexo" type="application/atom+xml">
   
@@ -109,155 +110,84 @@ if (isWX) {
 </header>
 
     <div class="outer">
-      <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <h3 href="/blog/2016/howto-linemod-indigo/" class="archive-article-date">
-  <time datetime="2016-09-05T02:10:16.000Z" itemprop="datePublished">Sep 5</time>
+      <section id="main"><article id="post-howto-linemod-indigo" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2016/howto-linemod-indigo/" class="article-date">
+  <time datetime="2016-09-05T02:10:16.000Z" itemprop="datePublished">Sep 5 2016</time>
 </h3>
-      
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2016/howto-linemod-indigo/">How to make linemod work with ROS Indigo?</a>
+    <h1 class="article-title" itemprop="name">
+      How to make linemod work with ROS Indigo?
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <h3 href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" class="archive-article-date">
-  <time datetime="2016-02-21T11:21:30.000Z" itemprop="datePublished">Feb 21</time>
-</h3>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/">Ubuntu14.04 安装 Caffe+CUDA 7.5</a>
-    </h1>
-  
+        
+        <p>I’m using Ubuntu 14.04.5 with ROS Indigo, and I want to make ork work with linemod, a fairly simple need. But sometimes if some packages are not maintained well (especially in ROS), you have to investigate the problem and even to contribute code to the project…</p>
+<p>Following the <a href="http://wg-perception.github.io/object_recognition_core/install.html#install" target="_blank" rel="external">installation guide</a> to install ork is very simple, don’t forget to install <a href="http://wg-perception.github.io/object_recognition_core/infrastructure/couch.html#object-recognition-core-db" target="_blank" rel="external">couchdb</a>. Building from source is the only choice now, you have to modify the code to make it work as you wish.</p>
+<p>In my case, tabletop method works well with KinectV1, even with KinectV2. However, linemod caused a huge memory leak, nearly 1GB/s, and it didn’t publish /recognized_object_array topic. At the beginning I thought it is the problem is in linemod, but it turned out to be in ork_renderer. A <a href="https://groups.google.com/d/msg/object-recognition-kitchen/aS9YlKJxOnc/du_7gXpxDwAJ" target="_blank" rel="external">thread</a> in <a href="https://groups.google.com/forum/#!forum/object-recognition-kitchen" target="_blank" rel="external">ORK Google Group</a> said,</p>
+<blockquote>
+<p>Currently LINEMOD uses ork_renderer for its training phase. ork_renderer uses either GLUT or osmesa to generate synthetic images of the training data. It seems that the ork_renderer in your computer is linked to osmesa.</p>
+</blockquote>
+<p>Fortunately now we just can change CMakeLists.txt to use GLUT. Just change <code>option(USE_GLUT &quot;Use GLUT instead of OSMesa&quot; OFF)</code> to <code>option(USE_GLUT &quot;Use GLUT instead of OSMesa&quot; ON)</code>.</p>
+<p>But the current linemod version still have some problem related to assimp_devel, it seems the developer is working on it, you have to revert linemod to the previous version(35aebd).</p>
+<p>So I just created a repo <a href="https://github.com/sun11/ork" target="_blank" rel="external">here</a> to make the whole thing work. When linemod is training it will show a assimp window, but it do not contain anything in my case, not a serious problem, linemod works anyway with KinectV1, but not with KinectV2, because KinectV2 has a special resolution, causing an OpenCV error in linearMemoryPyramid. Fortunately again <a href="https://github.com/wg-perception/linemod/issues/28" target="_blank" rel="external">some brilliant guy has worked it out</a> . I need to use KinectV2 in my work, so I’ll continue to make linemod work with KinectV2.</p>
+<p>Tips:</p>
+<ul>
+<li>If you used linemod to train, you’d better delete the whole object_recognition database in CouchDB.</li>
+<li>Use coke.stl to train but not coke.obj.</li>
+</ul>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
       
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2013" class="archive-year">2013</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <h3 href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/" class="archive-article-date">
-  <time datetime="2013-02-03T14:08:16.000Z" itemprop="datePublished">Feb 3</time>
-</h3>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2013/ros-on-arm--native-compilation-on-rk3066/">ROS on ARM--RK3066上本地编译ROS Groovy</a>
-    </h1>
-  
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/">ROS</a></li></ul>
 
-    </header>
+        <a data-url="http://www.sun11.me/blog/2016/howto-linemod-indigo/" data-id="cispi11gr0001d4to6di2uzdn" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2016/howto-linemod-indigo/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
   </div>
-</article>
+  </div>
+  </div>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <h3 href="/blog/2013/ros-on-arm--picuntu-configuration/" class="archive-article-date">
-  <time datetime="2013-01-28T14:11:32.000Z" itemprop="datePublished">Jan 28</time>
-</h3>
-      
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2013/ros-on-arm--picuntu-configuration/">ROS on ARM--Picuntu 安装配置</a>
-    </h1>
   
+    <a href="/blog/2016/multi-os-multi-head-single-tail-workspace/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">多系统多头单尾的工作环境</div>
+    </a>
+  
+</nav>
 
-    </header>
-  </div>
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <h3 href="/blog/2013/ros-on-arm--linux-for-rk3066/" class="archive-article-date">
-  <time datetime="2013-01-24T08:27:26.000Z" itemprop="datePublished">Jan 24</time>
-</h3>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2013/ros-on-arm--linux-for-rk3066/">ROS on ARM--Linux For RK3066 Mini PC简介</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2012" class="archive-year">2012</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <h3 href="/blog/2012/tl-wr703n-usb-camera/" class="archive-article-date">
-  <time datetime="2012-01-06T15:00:00.000Z" itemprop="datePublished">Jan 7</time>
-</h3>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2012/tl-wr703n-usb-camera/">TL-WR703n挂载USB摄像头</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-  
+  <section id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
 </section>
       
       <aside id="sidebar">
@@ -371,11 +301,13 @@ if (isWX) {
 <script>
   var disqus_shortname = '11zhexo';
   
+  var disqus_url = 'http://www.sun11.me/blog/2016/howto-linemod-indigo/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//ghsite.disqus.com/count.js';
+    dsq.src = '//ghsite.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

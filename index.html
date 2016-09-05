@@ -111,6 +111,68 @@ if (isWX) {
     <div class="outer">
       <section id="main">
   
+    <article id="post-howto-linemod-indigo" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2016/howto-linemod-indigo/" class="article-date">
+  <time datetime="2016-09-05T02:10:16.000Z" itemprop="datePublished">Sep 5 2016</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/howto-linemod-indigo/">How to make linemod work with ROS Indigo?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>I’m using Ubuntu 14.04.5 with ROS Indigo, and I want to make ork work with linemod, a fairly simple need. But sometimes if some packages are not maintained well (especially in ROS), you have to investigate the problem and even to contribute code to the project…</p>
+<p>Following the <a href="http://wg-perception.github.io/object_recognition_core/install.html#install" target="_blank" rel="external">installation guide</a> to install ork is very simple, don’t forget to install <a href="http://wg-perception.github.io/object_recognition_core/infrastructure/couch.html#object-recognition-core-db" target="_blank" rel="external">couchdb</a>. Building from source is the only choice now, you have to modify the code to make it work as you wish.</p>
+<p>In my case, tabletop method works well with KinectV1, even with KinectV2. However, linemod caused a huge memory leak, nearly 1GB/s, and it didn’t publish /recognized_object_array topic. At the beginning I thought it is the problem is in linemod, but it turned out to be in ork_renderer. A <a href="https://groups.google.com/d/msg/object-recognition-kitchen/aS9YlKJxOnc/du_7gXpxDwAJ" target="_blank" rel="external">thread</a> in <a href="https://groups.google.com/forum/#!forum/object-recognition-kitchen" target="_blank" rel="external">ORK Google Group</a> said,</p>
+<blockquote>
+<p>Currently LINEMOD uses ork_renderer for its training phase. ork_renderer uses either GLUT or osmesa to generate synthetic images of the training data. It seems that the ork_renderer in your computer is linked to osmesa.</p>
+</blockquote>
+<p>Fortunately now we just can change CMakeLists.txt to use GLUT. Just change <code>option(USE_GLUT &quot;Use GLUT instead of OSMesa&quot; OFF)</code> to <code>option(USE_GLUT &quot;Use GLUT instead of OSMesa&quot; ON)</code>.</p>
+<p>But the current linemod version still have some problem related to assimp_devel, it seems the developer is working on it, you have to revert linemod to the previous version(35aebd).</p>
+<p>So I just created a repo <a href="https://github.com/sun11/ork" target="_blank" rel="external">here</a> to make the whole thing work. When linemod is training it will show a assimp window, but it do not contain anything in my case, not a serious problem, linemod works anyway with KinectV1, but not with KinectV2, because KinectV2 has a special resolution, causing an OpenCV error in linearMemoryPyramid. Fortunately again <a href="https://github.com/wg-perception/linemod/issues/28" target="_blank" rel="external">some brilliant guy has worked it out</a> . I need to use KinectV2 in my work, so I’ll continue to make linemod work with KinectV2.</p>
+<p>Tips:</p>
+<ul>
+<li>If you used linemod to train, you’d better delete the whole object_recognition database in CouchDB.</li>
+<li>Use coke.stl to train but not coke.obj.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/">ROS</a></li></ul>
+
+        <a data-url="http://www.sun11.me/blog/2016/howto-linemod-indigo/" data-id="cispi11gr0001d4to6di2uzdn" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2016/howto-linemod-indigo/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-multi-os-multi-head-single-tail-workspace" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2016/multi-os-multi-head-single-tail-workspace/" class="article-date">
@@ -153,7 +215,7 @@ if (isWX) {
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Customize/">Customize</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/" data-id="cis4jlv5g000fewtolagt4o1j" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/" data-id="cispi11hp000cd4to95mopbqu" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -224,7 +286,7 @@ sigma(m,n)&=\sigma_0\cdot 2^{m-1}\cdot k^{n-1}
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CV/">CV</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/" data-id="cis4jlv5n000jewto6jnvgwrm" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/" data-id="cispi11hz000jd4tomp1gtspg" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/sift-implementation-in-matlab/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -284,7 +346,7 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PRML/">PRML</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cis4jlv5k000hewtonilkqdku" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cispi11h80005d4tov7f4untx" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/#disqus_thread" class="article-comment-link">Comments</a>
         
@@ -340,80 +402,9 @@ options nouveau modeset=0
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Customize/">Customize</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/hexo-theme-paperbox/" data-id="cis4jlv4m0003ewtoicxx2s7p" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/hexo-theme-paperbox/" data-id="cispi11jk0025d4tohgt812nb" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/hexo-theme-paperbox/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-rosmin-and-rossum" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2013/rosmin-and-rossum/" class="article-date">
-  <time datetime="2013-08-10T10:45:02.000Z" itemprop="datePublished">Aug 10 2013</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2013/rosmin-and-rossum/">Rosmin与Rossum</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Rossum demo:</p>
-<div class="video-container">
-<iframe  height=270 width=480 src="http://player.youku.com/embed/XNTY0MTUwMTMy?x" frameborder=0 allowfullscreen></iframe>
-</div>
-
-<p>Rosmin demo:</p>
-<div class="video-container">
-<iframe  height=270 width=480 src="http://player.youku.com/embed/XNDg2OTMzNDEy" frameborder=0 allowfullscreen></iframe>
-</div>
-
-<h3 id="Rosmin"><a href="#Rosmin" class="headerlink" title="Rosmin"></a>Rosmin</h3><p>项目地址：<a href="https://code.google.com/p/wtfrobot-rosmin/">https://code.google.com/p/wtfrobot-rosmin/</a></p>
-<p>相关文章：</p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/8029640/">Rosmin—OpenCV Color Blob Tracker on Android</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/8034640/">Android下PocketSphinx的离线语音识别</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173609/">Rosmin—OpenCV Color Blob Tracker on Android</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173619/">Rosmin—两台Android手机的Socket双向通信</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173631/">Rosmin—在Android上绘制小车行进路线图并标记</a></p>
-<p><a href="http://blog.csdn.net/wtfrobot/article/details/9173643/">Rosmin—折腾USB Host Shield的日子</a></p>
-<p>Rosmin机器人是我们去年（2012年）制作的一个使用Arduino驱动的小型移动机器人，连接上Android手机，可以完成手机控制的基本运动，追踪乒乓球，以QR码为人工路标移动到指定区域，搜寻目标，视频监控等等。</p>
-<p>硬件结构：<br><img src="http://7d9hqq.com1.z0.glb.clouddn.com/images/54389a22c578eb6789380abdc70ea156.png" alt=""></p>
-        
-          <p class="article-more-link">
-            <a href="/blog/2013/rosmin-and-rossum/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Robot/">Robot</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2013/rosmin-and-rossum/" data-id="cis4jlv550009ewtoxuuhmt5k" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2013/rosmin-and-rossum/#disqus_thread" class="article-comment-link">Comments</a>
         
       </div>
     </footer>
@@ -442,6 +433,10 @@ options nouveau modeset=0
       <ul>
         
           <li>
+            <a href="/blog/2016/howto-linemod-indigo/">How to make linemod work with ROS Indigo?</a>
+          </li>
+        
+          <li>
             <a href="/blog/2016/multi-os-multi-head-single-tail-workspace/">多系统多头单尾的工作环境</a>
           </li>
         
@@ -457,10 +452,6 @@ options nouveau modeset=0
             <a href="/blog/2016/hexo-theme-paperbox/">Hexo主题Paperbox</a>
           </li>
         
-          <li>
-            <a href="/blog/2013/rosmin-and-rossum/">Rosmin与Rossum</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -470,7 +461,7 @@ options nouveau modeset=0
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CV/">CV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CV/">CV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -479,7 +470,7 @@ options nouveau modeset=0
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -548,7 +539,7 @@ options nouveau modeset=0
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//ghsite.disqus.com/count.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
