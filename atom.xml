@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sun11.me/"/>
-  <updated>2016-09-05T03:31:59.839Z</updated>
+  <updated>2016-10-05T11:39:07.403Z</updated>
   <id>http://www.sun11.me/</id>
   
   <author>
@@ -16,25 +16,28 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>How to make linemod work with ROS Indigo?</title>
-    <link href="http://www.sun11.me/blog/2016/howto-linemod-indigo/"/>
-    <id>http://www.sun11.me/blog/2016/howto-linemod-indigo/</id>
+    <title>How to make linemod and KinectV2 work with ROS Indigo?</title>
+    <link href="http://www.sun11.me/blog/2016/howto-linemod-kinectv2-indigo/"/>
+    <id>http://www.sun11.me/blog/2016/howto-linemod-kinectv2-indigo/</id>
     <published>2016-09-05T02:10:16.000Z</published>
-    <updated>2016-09-05T03:31:59.839Z</updated>
+    <updated>2016-10-05T11:39:07.403Z</updated>
     
     <content type="html">&lt;p&gt;I’m using Ubuntu 14.04.5 with ROS Indigo, and I want to make ork work with linemod, a fairly simple need. But sometimes if some packages are not maintained well (especially in ROS), you have to investigate the problem and even to contribute code to the project…&lt;/p&gt;
 &lt;p&gt;Following the &lt;a href=&quot;http://wg-perception.github.io/object_recognition_core/install.html#install&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;installation guide&lt;/a&gt; to install ork is very simple, don’t forget to install &lt;a href=&quot;http://wg-perception.github.io/object_recognition_core/infrastructure/couch.html#object-recognition-core-db&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;couchdb&lt;/a&gt;. Building from source is the only choice now, you have to modify the code to make it work as you wish.&lt;/p&gt;
-&lt;p&gt;In my case, tabletop method works well with KinectV1, even with KinectV2. However, linemod caused a huge memory leak, nearly 1GB/s, and it didn’t publish /recognized_object_array topic. At the beginning I thought it is the problem is in linemod, but it turned out to be in ork_renderer. A &lt;a href=&quot;https://groups.google.com/d/msg/object-recognition-kitchen/aS9YlKJxOnc/du_7gXpxDwAJ&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;thread&lt;/a&gt; in &lt;a href=&quot;https://groups.google.com/forum/#!forum/object-recognition-kitchen&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ORK Google Group&lt;/a&gt; said,&lt;/p&gt;
+&lt;p&gt;In my case, tabletop method works well with KinectV1, even with KinectV2(but only the hd resolution config worked). However, linemod caused a huge memory leak, nearly 1GB/s, and it didn’t publish /recognized_object_array topic. At the beginning I thought it is the problem is in linemod, but it turned out to be in ork_renderer. A &lt;a href=&quot;https://groups.google.com/d/msg/object-recognition-kitchen/aS9YlKJxOnc/du_7gXpxDwAJ&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;thread&lt;/a&gt; in &lt;a href=&quot;https://groups.google.com/forum/#!forum/object-recognition-kitchen&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ORK Google Group&lt;/a&gt; said,&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Currently LINEMOD uses ork_renderer for its training phase. ork_renderer uses either GLUT or osmesa to generate synthetic images of the training data. It seems that the ork_renderer in your computer is linked to osmesa.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Fortunately now we just can change CMakeLists.txt to use GLUT. Just change &lt;code&gt;option(USE_GLUT &amp;quot;Use GLUT instead of OSMesa&amp;quot; OFF)&lt;/code&gt; to &lt;code&gt;option(USE_GLUT &amp;quot;Use GLUT instead of OSMesa&amp;quot; ON)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: Now I just use the version from &lt;a href=&quot;https://github.com/JimmyDaSilva/linemod/tree/fix_glut&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JimmyDaSilva&lt;/a&gt; but not the official wg-perception.&lt;/p&gt;
 &lt;p&gt;But the current linemod version still have some problem related to assimp_devel, it seems the developer is working on it, you have to revert linemod to the previous version(35aebd).&lt;/p&gt;
-&lt;p&gt;So I just created a repo &lt;a href=&quot;https://github.com/sun11/ork&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;here&lt;/a&gt; to make the whole thing work. When linemod is training it will show a assimp window, but it do not contain anything in my case, not a serious problem, linemod works anyway with KinectV1, but not with KinectV2, because KinectV2 has a special resolution, causing an OpenCV error in linearMemoryPyramid. Fortunately again &lt;a href=&quot;https://github.com/wg-perception/linemod/issues/28&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;some brilliant guy has worked it out&lt;/a&gt; . I need to use KinectV2 in my work, so I’ll continue to make linemod work with KinectV2.&lt;/p&gt;
+&lt;p&gt;So I just created a repo &lt;a href=&quot;https://github.com/sun11/ork&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;here&lt;/a&gt; to make the whole thing work. When linemod is training it will show a assimp window, but it do not contain anything in my case, not a serious problem, linemod works anyway with KinectV1, but not with KinectV2, because KinectV2 has a special resolution, causing an OpenCV error in linearMemoryPyramid. Fortunately again &lt;a href=&quot;https://github.com/wg-perception/linemod/issues/28&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;an awesome guy has worked it out&lt;/a&gt;, and he also fixed many other issues. I need to use KinectV2 in my work, so I followed &lt;a href=&quot;https://github.com/wg-perception/linemod/issues/28#issuecomment-200927751&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;this guy’s modification&lt;/a&gt; and successfully made it work on KinectV2 with QHD resolution. If you want to use SD resolution, you can &lt;code&gt;set T={2,4}&lt;/code&gt; in &lt;code&gt;linemod_detect.cpp&lt;/code&gt; and &lt;code&gt;renderer_width: 512 renderer_height: 424&lt;/code&gt; in &lt;code&gt;training.ork&lt;/code&gt; as &lt;a href=&quot;https://github.com/wg-perception/linemod/issues/28#issuecomment-200927751&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JimmyDaSilva said&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;This &lt;a href=&quot;https://github.com/sun11/ork&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ork repo&lt;/a&gt; integrated all of them, just to make it easier to work on ork, maybe for myself in the future.&lt;/p&gt;
 &lt;p&gt;Tips:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;If you used linemod to train, you’d better delete the whole object_recognition database in CouchDB.&lt;/li&gt;
-&lt;li&gt;Use coke.stl to train but not coke.obj.&lt;/li&gt;
+&lt;li&gt;Using &lt;code&gt;coke.stl&lt;/code&gt; is simpler, using &lt;code&gt;coke.obj&lt;/code&gt; with texture will get a better result.&lt;/li&gt;
+&lt;li&gt;When training linemod, make sure you are in the folder which contains the obj, mtl and image files.&lt;/li&gt;
 &lt;/ul&gt;
 </content>
     
@@ -45,11 +48,11 @@
     </summary>
     
     
-      <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
-    
       <category term="ROS" scheme="http://www.sun11.me/tags/ROS/"/>
     
       <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
+    
+      <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
     
   </entry>
   
@@ -426,9 +429,9 @@ options nouveau modeset=0
     </summary>
     
     
-      <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
-    
       <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
+    
+      <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
     
       <category term="PRML" scheme="http://www.sun11.me/tags/PRML/"/>
     
@@ -706,6 +709,8 @@ rosmake -a
     </summary>
     
     
+      <category term="ROS" scheme="http://www.sun11.me/tags/ROS/"/>
+    
       <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
     
       <category term="Android" scheme="http://www.sun11.me/tags/Android/"/>
@@ -715,8 +720,6 @@ rosmake -a
       <category term="Robot" scheme="http://www.sun11.me/tags/Robot/"/>
     
       <category term="Ubuntu" scheme="http://www.sun11.me/tags/Ubuntu/"/>
-    
-      <category term="ROS" scheme="http://www.sun11.me/tags/ROS/"/>
     
   </entry>
   
@@ -1018,9 +1021,9 @@ rosmake -a
     </summary>
     
     
-      <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
-    
       <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
+    
+      <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
     
   </entry>
   
