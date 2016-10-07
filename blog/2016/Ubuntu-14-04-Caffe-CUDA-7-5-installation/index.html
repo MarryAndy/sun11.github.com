@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Starsky's Blog - 11zHexo">
 <meta property="og:description" content="Caffe官网的 安装说明 实在太简单了点，主要是参考的 Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明 和 Ubuntu14.04下安装Caffe总结 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。
 1. Caffe依赖包12sudo apt-get install build-essential  # basic requireme">
-<meta property="og:updated_time" content="2016-08-21T15:04:09.889Z">
+<meta property="og:updated_time" content="2016-10-06T15:15:00.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu14.04 安装 Caffe+CUDA 7.5">
 <meta name="twitter:description" content="Caffe官网的 安装说明 实在太简单了点，主要是参考的 Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明 和 Ubuntu14.04下安装Caffe总结 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。
@@ -191,7 +191,6 @@ options nouveau modeset=0
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> opencv-2.4.10</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake -D CUDA_ARCH_BIN=3.2 -D CUDA_ARCH_PTX=3.2 -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/<span class="built_in">local</span> -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D BUILD_TIFF=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..</span><br><span class="line">make -j4</span><br><span class="line">sudo make install</span><br><span class="line">sudo sh -c <span class="string">'echo "/usr/local/lib" &gt; /etc/ld.so.conf.d/opencv.conf'</span></span><br><span class="line">sudo ldconfig</span><br></pre></td></tr></table></figure>
 <h3 id="7-安装Caffe"><a href="#7-安装Caffe" class="headerlink" title="7. 安装Caffe"></a>7. 安装Caffe</h3><p>终于能装Caffe了，不过先要安装python依赖库。进入caffe安装目录下的python文件夹：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> req <span class="keyword">in</span> $(cat requirements.txt); <span class="keyword">do</span> pip install <span class="variable">$req</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<p>至于Matlab接口什么的，我并没有装。</p>
 <p>修改<code>Makefile.config</code>，注意需要的几项就行：</p>
 <pre><code># cuDNN acceleration switch (uncomment to build with cuDNN).
 USE_CUDNN := 1
@@ -205,6 +204,10 @@ CUDA_DIR := /usr/local/cuda
 # open for OpenBlas
 BLAS := mkl
 
+# This is required only if you will compile the matlab interface.
+# MATLAB directory should contain the mex binary in /bin.
+MATLAB_DIR := /usr/local/MATLAB/R2016b
+
 # Anaconda Python distribution is quite popular. Include path:
 # Verify anaconda location, sometimes it&#39;s in root.
 ANACONDA_HOME := $(HOME)/.pyenv/versions/anaconda2-4.1.0
@@ -213,7 +216,7 @@ PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
     $(ANACONDA_HOME)/lib/python2.7/site-packages/numpy/core/include \
 # PYTHON_LIB := /usr/lib
 PYTHON_LIB := $(ANACONDA_HOME)/lib
-</code></pre><p>上面的并不是完整文件，只是贴出来需要修改的几项。如果你的BLAS选择的是openblas，那在<code>BLAS := open</code>后面应该加上:</p>
+</code></pre><p>上面的并不是完整文件，只是贴出来需要修改的几项。若使用matlab，注意要把matlab加入PATH环境变量，如在<code>/etc/profile</code>中加入<code>export PATH=$PATH:/usr/local/MATLAB/R2016b/bin</code>。如果你的BLAS选择的是openblas，那在<code>BLAS := open</code>后面应该加上:</p>
 <pre><code># Custom (MKL/ATLAS/OpenBLAS) include and lib directories.
 # Leave commented to accept the defaults for your choice of BLAS
 # (which should work)!
@@ -221,6 +224,8 @@ BLAS_INCLUDE := /usr/local/openblas/include
 BLAS_LIB := /usr/local/openblas/lib
 </code></pre><p>最后编译caffe:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make all -j4</span><br><span class="line">make <span class="built_in">test</span> -j4</span><br><span class="line">make runtest</span><br></pre></td></tr></table></figure>
+<p>如果还需要python或者matlab接口(需确保Makefile.config中的python和matlab路径正确)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make pycaffe</span><br><span class="line">make matcaffe</span><br></pre></td></tr></table></figure>
 <p>如果在<code>make runtest</code>的时候遇到<code>error while loading shared libraries: libhdf5_hl.so.10: cannot open shared object file: No such file or directory</code>类似的错误，为了避免冲突尽量不要把anaconda的lib路径(即上面的<code>~/.pyenv/versions/anaconda2-4.1.0/lib</code>)添加到<code>LD_LIBRARY_PATH</code>，因为其它软件可能需要系统自带的python而不是anaconda。在<code>/usr/lib/x86_64-linux-gnu</code>下面可能有<code>libhdf5_hl.so.7</code>，版本太低了。</p>
 <p>我是这样做的：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/lib/x86_64-linux-gnu/</span><br><span class="line">sudo cp ~/.pyenv/versions/anaconda2-4.1.0/lib/libhdf5.so.10* .</span><br><span class="line">sudo cp ~/.pyenv/versions/anaconda2-4.1.0/lib/libhdf5_hl.so.10* .</span><br><span class="line"><span class="built_in">cd</span> /usr/lib/x86_64-linux-gnu/</span><br><span class="line">sudo ln -sf libhdf5.so.10.1.0 libhdf5.so.10</span><br><span class="line">sudo ln -sf libhdf5_hl.so.10.0.2 libhdf5_hl.so.10</span><br></pre></td></tr></table></figure>
@@ -244,7 +249,7 @@ BLAS_LIB := /usr/local/openblas/lib
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PRML/">PRML</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="citwug00d000qw4tou26kdbq6" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/" data-id="cityhha9v0009yktot971z9mt" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/#disqus_thread" class="article-comment-link">Comments</a>
         
