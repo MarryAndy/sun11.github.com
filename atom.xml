@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sun11.me/"/>
-  <updated>2016-10-05T11:39:07.403Z</updated>
+  <updated>2017-03-15T13:34:44.235Z</updated>
   <id>http://www.sun11.me/</id>
   
   <author>
@@ -14,6 +14,43 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>解决数据集导致的大内存占用和磁盘IO问题</title>
+    <link href="http://www.sun11.me/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/"/>
+    <id>http://www.sun11.me/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/</id>
+    <published>2017-03-15T09:26:42.000Z</published>
+    <updated>2017-03-15T13:34:44.235Z</updated>
+    
+    <content type="html">&lt;p&gt;看到Ubuntu上的磁盘IO和内存占用出奇的高，忍无可忍，决定必须解决一下了。&lt;/p&gt;
+&lt;p&gt;内存占用最高的是chrome和gvfsd-metadata，前者1.6G没办法，后者竟然有1.8G。查了一下&lt;a href=&quot;https://en.wikipedia.org/wiki/GVfs&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;维基百科&lt;/a&gt;：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;gvfsd-metadata is a daemon acting as a write serialiser to the internal gvfs metadata storage. It is autostarted by GIO clients when they make metadata changes. Read operations are done by client-side GIO code directly, and don’t require the daemon to be running. The gvfs metadata capabilities are used by the GNOME Files file manager, for example.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;虽然仍然没搞懂它是个什么东西，但是罪魁祸首就是它没跑了，形成的原因大概是我打开过很多大的数据集的文件夹，比如pascal voc、shapenet、pascal3d，要是还有imagenet就更恐怖了。从&lt;a href=&quot;https://ubuntuforums.org/showthread.php?t=1421580&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这个帖子&lt;/a&gt;来看，它还导致了100%的CPU占用。后面给出了临时的解决办法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rm -rf ~/.local/share/gvfs-metadata
+pkill gvfsd-metadata
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果这种情况继续出现，那么直接按照&lt;a href=&quot;https://bugs.launchpad.net/ubuntu/+source/gvfs/+bug/517021/comments/92&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;所说取消&lt;code&gt;gvfsd-metadata&lt;/code&gt;的执行权限即可：&lt;code&gt;sudo chmod -x /usr/lib/gvfs/gvfsd-metadata&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;另外，iowait也达到了27%左右，我只不过开了个sublime-text而已。原因仍然是数据集，有好几个&lt;code&gt;sublime_text --crawl&lt;/code&gt;的进程在不停地读磁盘，给文件做索引。这些数据集的文件格式大多是图片，所以只要按照&lt;a href=&quot;http://stackoverflow.com/questions/29260350/sublimetext-3-using-100-cpu-stuck-while-processing-file&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这个帖子&lt;/a&gt;给sublime-text的配置加上：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot;folder_exclude_patterns&amp;quot;: [&amp;quot;.svn&amp;quot;, &amp;quot;.git&amp;quot;, &amp;quot;.hg&amp;quot;, &amp;quot;CVS&amp;quot;, &amp;quot;node_modules/*&amp;quot;],
+&amp;quot;binary_file_patterns&amp;quot;: [&amp;quot;*.mat&amp;quot;,&amp;quot;*.jpg&amp;quot;, &amp;quot;*.jpeg&amp;quot;, &amp;quot;*.png&amp;quot;, &amp;quot;*.gif&amp;quot;, &amp;quot;*.ttf&amp;quot;, &amp;quot;*.tga&amp;quot;, &amp;quot;*.dds&amp;quot;, &amp;quot;*.ico&amp;quot;, &amp;quot;*.eot&amp;quot;, &amp;quot;*.pdf&amp;quot;, &amp;quot;*.swf&amp;quot;, &amp;quot;*.jar&amp;quot;, &amp;quot;*.zip&amp;quot;],
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;问题就解决了。&lt;/p&gt;
+&lt;p&gt;不过对于ShapeNet这样的仍然没有办法==，所以最好还是避免用sublime-text打开带有数据集的文件夹（这种需要却并不少见，因为用软链接方便）。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;看到Ubuntu上的磁盘IO和内存占用出奇的高，忍无可忍，决定必须解决一下了。&lt;/p&gt;
+&lt;p&gt;内存占用最高的是chrome和gvfsd-metadata，前者1.6G没办法，后者竟然有1.8G。查了一下&lt;a href=&quot;https://en.wikipedia.org/wi
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
+    
+      <category term="Ubuntu" scheme="http://www.sun11.me/tags/Ubuntu/"/>
+    
+  </entry>
   
   <entry>
     <title>How to make linemod and KinectV2 work with ROS Indigo?</title>
@@ -48,11 +85,11 @@
     </summary>
     
     
+      <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
+    
       <category term="ROS" scheme="http://www.sun11.me/tags/ROS/"/>
     
       <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
-    
-      <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
     
   </entry>
   
@@ -317,7 +354,7 @@ sigma(m,n)&amp;=\sigma_0\cdot 2^{m-1}\cdot k^{n-1}
     <link href="http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/"/>
     <id>http://www.sun11.me/blog/2016/Ubuntu-14-04-Caffe-CUDA-7-5-installation/</id>
     <published>2016-02-21T11:21:30.000Z</published>
-    <updated>2016-10-06T15:15:00.380Z</updated>
+    <updated>2016-12-30T08:43:19.532Z</updated>
     
     <content type="html">&lt;p&gt;Caffe官网的 &lt;a href=&quot;http://caffe.berkeleyvision.org/installation.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安装说明&lt;/a&gt; 实在太简单了点，主要是参考的 &lt;a href=&quot;https://gist.github.com/bearpaw/c38ef18ec45ba6548ec0#file-caffe-ubuntu-14-04-64bit-cuda-6-5-md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Caffe + Ubuntu 14.04 64bit + CUDA 6.5 配置说明&lt;/a&gt; 和 &lt;a href=&quot;http://weibo.com/p/2304189db078090102vdvx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Ubuntu14.04下安装Caffe总结&lt;/a&gt; 。系统是Ubuntu 14.04 64bit，显卡是GTX 950M。&lt;/p&gt;
 &lt;h3 id=&quot;1-Caffe依赖包&quot;&gt;&lt;a href=&quot;#1-Caffe依赖包&quot; class=&quot;headerlink&quot; title=&quot;1. Caffe依赖包&quot;&gt;&lt;/a&gt;1. Caffe依赖包&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install build-essential  &lt;span class=&quot;comment&quot;&gt;# basic requirement&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev protobuf-compiler &lt;span class=&quot;comment&quot;&gt;#required by caffe&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -392,6 +429,7 @@ PYTHON_INCLUDE := $(ANACONDA_HOME)/include \
     $(ANACONDA_HOME)/lib/python2.7/site-packages/numpy/core/include \
 # PYTHON_LIB := /usr/lib
 PYTHON_LIB := $(ANACONDA_HOME)/lib
+WITH_PYTHON_LAYER := 1
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面的并不是完整文件，只是贴出来需要修改的几项。若使用matlab，注意要把matlab加入PATH环境变量，如在&lt;code&gt;/etc/profile&lt;/code&gt;中加入&lt;code&gt;export PATH=$PATH:/usr/local/MATLAB/R2016b/bin&lt;/code&gt;。如果你的BLAS选择的是openblas，那在&lt;code&gt;BLAS := open&lt;/code&gt;后面应该加上:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;# Custom (MKL/ATLAS/OpenBLAS) include and lib directories.
 # Leave commented to accept the defaults for your choice of BLAS
@@ -434,9 +472,9 @@ options nouveau modeset=0
     </summary>
     
     
-      <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
-    
       <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
+    
+      <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
     
       <category term="PRML" scheme="http://www.sun11.me/tags/PRML/"/>
     
@@ -714,8 +752,6 @@ rosmake -a
     </summary>
     
     
-      <category term="ROS" scheme="http://www.sun11.me/tags/ROS/"/>
-    
       <category term="Linux" scheme="http://www.sun11.me/tags/Linux/"/>
     
       <category term="Android" scheme="http://www.sun11.me/tags/Android/"/>
@@ -725,6 +761,8 @@ rosmake -a
       <category term="Robot" scheme="http://www.sun11.me/tags/Robot/"/>
     
       <category term="Ubuntu" scheme="http://www.sun11.me/tags/Ubuntu/"/>
+    
+      <category term="ROS" scheme="http://www.sun11.me/tags/ROS/"/>
     
   </entry>
   
@@ -1026,9 +1064,9 @@ rosmake -a
     </summary>
     
     
-      <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
-    
       <category term="Embedded Linux" scheme="http://www.sun11.me/tags/Embedded-Linux/"/>
+    
+      <category term="OpenCV" scheme="http://www.sun11.me/tags/OpenCV/"/>
     
   </entry>
   
