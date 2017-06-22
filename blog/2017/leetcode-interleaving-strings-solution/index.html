@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  
+  <title>LeetCode-Interleaving Strings 解题报告 | Starsky&#39;s Blog - 11zHexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Question
+Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+For example,Given:s1 = “aabcc”,s2 = “dbbca”,
+When s3 = “aadbbcbcac”, return true.When s3 = “aadbbbaccc”, return f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode-Interleaving Strings 解题报告">
+<meta property="og:url" content="http://www.sun11.me/blog/2017/leetcode-interleaving-strings-solution/index.html">
+<meta property="og:site_name" content="Starsky's Blog - 11zHexo">
+<meta property="og:description" content="Question
+Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+For example,Given:s1 = “aabcc”,s2 = “dbbca”,
+When s3 = “aadbbcbcac”, return true.When s3 = “aadbbbaccc”, return f">
+<meta property="og:updated_time" content="2017-06-22T11:47:13.649Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode-Interleaving Strings 解题报告">
+<meta name="twitter:description" content="Question
+Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+For example,Given:s1 = “aabcc”,s2 = “dbbca”,
+When s3 = “aadbbcbcac”, return true.When s3 = “aadbbbaccc”, return f">
+  
+    <link rel="alternative" href="/atom.xml" title="Starsky&#39;s Blog - 11zHexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link href="//7d9hqq.com1.z0.glb.clouddn.com/css/fonts.css" rel="stylesheet" type="text/css">
+  
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-31707826-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+  
+<script type="text/javascript">
+var isWX = /micromessenger/i.test(navigator.userAgent);
+if (isWX) {
+  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请选择在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
+  window.stop ? window.stop() : document.execCommand("Stop");
+}
+</script>
+
+
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <nav id="upper-nav" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <div class="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+          <a id="nav-github" class="nav-icon" href="https://github.com/sun11"></a>
+        
+      </div>
+    </nav>
+    <div id="header-title">
+      
+        <h1 id="blog-title-wrap">
+          Starsky&#39;s Blog
+        </h1>
+      
+    </div>
+    <div id="contenedor">
+      <ul class="cube">
+        <li class="cara">
+         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="100" width="100" viewBox="-50 -50 200 200">
+          <circle cx="50" cy="50" r="45" stroke-width="5" stroke="black" stroke-opacity="0.5" fill-opacity="0"/>
+          <rect x="47.5" y="27.5" width="5" height="25" rx="2.5" ry="2.5" fill="black" fill-opacity="0.5" transform="rotate(330 50 50)"/>
+          <rect x="48.5" y="16.5" width="3" height="35" rx="1.5" ry="1.5" fill="black" fill-opacity="0.5"/>
+        </svg>
+        </li>
+        <li class="cara">11z</li>
+        <li class="cara">H</li>
+        <li class="cara">E</li>
+        <li class="cara">X</li>
+        <li class="cara">O</li>
+      </ul>
+    </div>
+    <nav id="main-nav">
+      
+        <a class="main-nav-link" href="/">Home</a>
+      
+        <a class="main-nav-link" href="/archives">Archives</a>
+      
+        <a class="main-nav-link" href="/about">About</a>
+      
+      <!--
+      <a class="main-nav-link st-search-show-outputs">Search</a>
+      -->
+    </nav>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-leetcode-interleaving-strings-solution" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/blog/2017/leetcode-interleaving-strings-solution/" class="article-date">
+  <time datetime="2017-06-22T07:19:20.000Z" itemprop="datePublished">Jun 22 2017</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      LeetCode-Interleaving Strings 解题报告
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.</p>
+<p>For example,<br>Given:<br>s1 = “aabcc”,<br>s2 = “dbbca”,</p>
+<p>When s3 = “aadbbcbcac”, return true.<br>When s3 = “aadbbbaccc”, return false.</p>
+</blockquote>
+<p>首先想到的是一个回溯的方法。可以看作一个二叉树的遍历过程，匹配到s1的字符就是走左子节点，匹配到s2的字符就是走右子节点。若s1和s2中的两个字符都和s3相同，就有两种选择，直接都取s1的，并且把这时s1和s2的索引存下来，遇到后面匹配失败的时候找前一个存下来的索引，从s2走，也就是回溯了。无奈，超时了。时间复杂度应该是<script type="math/tex">O(2^{m+n})</script>，m和n分别是s1和s2的长度。</p>
+<a id="more"></a>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">bool</span> <span class="title">isInterleave</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2, <span class="built_in">string</span> s3)</span> </span>&#123;</span><br><span class="line">     <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; st;</span><br><span class="line">     <span class="keyword">int</span> idx1 = <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">int</span> idx2 = <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">int</span> n1 = s1.size();</span><br><span class="line">     <span class="keyword">int</span> n2 = s2.size();</span><br><span class="line">     <span class="keyword">int</span> n3 = s3.size();</span><br><span class="line">     <span class="keyword">if</span> (n1 + n2 != n3) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n3; i++) &#123;</span><br><span class="line">         <span class="keyword">if</span> (idx1 &lt; n1 &amp;&amp; s3[i] == s1[idx1]) &#123;</span><br><span class="line">             <span class="keyword">if</span> (s1[idx1] == s2[idx2]) &#123;</span><br><span class="line">                 st.push(idx1);</span><br><span class="line">                 st.push(idx2);</span><br><span class="line">                 st.push(i);</span><br><span class="line">             &#125;</span><br><span class="line">             idx1++;</span><br><span class="line">         &#125; <span class="keyword">else</span> <span class="keyword">if</span> (idx2 &lt; n2 &amp;&amp; s3[i] == s2[idx2]) &#123;</span><br><span class="line">             idx2++;</span><br><span class="line">         &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!st.empty()) &#123;</span><br><span class="line">             i = st.top();</span><br><span class="line">             st.pop();</span><br><span class="line">             idx2 = st.top()+<span class="number">1</span>;</span><br><span class="line">             st.pop();</span><br><span class="line">             idx1 = st.top();</span><br><span class="line">             st.pop();</span><br><span class="line">         &#125; <span class="keyword">else</span></span><br><span class="line">             <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="comment">// 回溯，TLE</span></span><br></pre></td></tr></table></figure>
+<p>然后又无脑地换成了广搜，结果更加TLE，时间复杂度跟回溯一样，空间复杂度倒更大了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isInterleave</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2, <span class="built_in">string</span> s3)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> idx1, idx2, idx3;</span><br><span class="line">    <span class="keyword">int</span> n1 = s1.size();</span><br><span class="line">    <span class="keyword">int</span> n2 = s2.size();</span><br><span class="line">    <span class="keyword">int</span> n3 = s3.size();</span><br><span class="line">    <span class="keyword">if</span> (n1 + n2 != n3) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (n1 == <span class="number">0</span> &amp;&amp; n2 == <span class="number">0</span> &amp;&amp; n3 == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="built_in">queue</span>&lt; <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt; route;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; temp = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    route.push(temp);</span><br><span class="line">    <span class="keyword">while</span>(!route.empty()) &#123;</span><br><span class="line">        idx1 = route.front()[<span class="number">0</span>];</span><br><span class="line">        idx2 = route.front()[<span class="number">1</span>];</span><br><span class="line">        idx3 = route.front()[<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">if</span> (idx1 &lt; n1 &amp;&amp; s3[idx3] == s1[idx1]) &#123;</span><br><span class="line"><span class="comment">//            cout &lt;&lt; idx1 &lt;&lt; " " &lt;&lt; idx2 &lt;&lt; " " &lt;&lt; idx3 &lt;&lt; endl;</span></span><br><span class="line">            <span class="keyword">if</span> (idx3 == n3<span class="number">-1</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            temp = &#123;idx1+<span class="number">1</span>, idx2, idx3+<span class="number">1</span>&#125;;</span><br><span class="line">            route.push(temp);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (idx2 &lt; n2 &amp;&amp; s3[idx3] == s2[idx2]) &#123;</span><br><span class="line"><span class="comment">//            cout &lt;&lt; idx1 &lt;&lt; " " &lt;&lt; idx2 &lt;&lt; " " &lt;&lt; idx3 &lt;&lt; endl;</span></span><br><span class="line">            <span class="keyword">if</span> (idx3 == n3<span class="number">-1</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            temp = &#123;idx1, idx2+<span class="number">1</span>, idx3+<span class="number">1</span>&#125;;</span><br><span class="line">            route.push(temp);</span><br><span class="line">        &#125;</span><br><span class="line">        route.pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// BFS，更加TLE</span></span><br></pre></td></tr></table></figure>
+<p>最后瞄了一眼答案的时间复杂度是O(m*n)，硬着头皮还是写出了动态规划的解法。用<code>bool dp[i][j]</code>表示可以从头匹配到s1的第i个位置和s2的第j个位置。注意取了一个<code>dp[0][0] = true</code>作为dummy head。当<code>dp[i][j]</code>为真且<code>s1[i] == s3[i+j]</code>，也就是匹配到了s1的第i个位置和s2的第j个位置（从1开始），下一个要匹配的字符是s3[i+j]，即s3的第i+j+1个字符，而s1的第i+1个字符和它相等，所以<code>dp[i+1][j]</code>为真。匹配s2的时候同理。最后一个位置n1和n2的时候要判断一下以免下标越界。时间和空间复杂度都是O(m*n)。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isInterleave</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2, <span class="built_in">string</span> s3)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n1 = s1.size();</span><br><span class="line">    <span class="keyword">int</span> n2 = s2.size();</span><br><span class="line">    <span class="keyword">int</span> n3 = s3.size();</span><br><span class="line">    <span class="keyword">if</span> (n1 + n2 != n3) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (n1 == <span class="number">0</span> &amp;&amp; n2 == <span class="number">0</span> &amp;&amp; n3 == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt; <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; &gt; dp(n1+<span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;(n2+<span class="number">1</span>));</span><br><span class="line">    dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="literal">true</span>; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n1+<span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n2+<span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == n1 &amp;&amp; j == n2)</span><br><span class="line">                <span class="keyword">return</span> dp[n1][n2];</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (i != n1 &amp;&amp; dp[i][j] &amp;&amp; s1[i] == s3[i+j])</span><br><span class="line">                    dp[i+<span class="number">1</span>][j] = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">if</span> (j != n2 &amp;&amp; dp[i][j] &amp;&amp; s2[j] == s3[i+j])</span><br><span class="line">                    dp[i][j+<span class="number">1</span>] = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n1][n2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假如把动态规划的这个方法也<strong>看成一个二叉树的遍历过程</strong>，在这个特定问题里，下一个匹配的字符的判断并不依赖于之前访问的路径而只依赖于之前访问的结果，即向左一步向右两步和向右两步向左一步是等价的。相比回溯和BFS，它的效率提升在于两个地方：</p>
+<ol>
+<li>节省了通过不同路径重复获取同一结果的运算；</li>
+<li>在j的for循环中，每一个j的迭代可以访问多条路径（如在多种<code>dp[i][j] == true</code>的二叉树访问路径的case下求<code>dp[i][j+1]</code>）。回溯和BFS访问的顺序并不能满足这样多条路径的递推求解条件。</li>
+</ol>
+<p><a href="https://leetcode.com/articles/interleaving-strings/" target="_blank" rel="external">Editorial Solution</a>中的<a href="https://leetcode.com/articles/interleaving-strings/#approach-2-recursion-with-memoization-accepted" target="_blank" rel="external">Approach 2</a>通过存储访问结果解决了1。动态规划的方法<a href="https://leetcode.com/articles/interleaving-strings/#approach-4-using-1-d-dynamic-programming-accepted" target="_blank" rel="external">Approach 4</a>把二维数组换成了一维数组，空间复杂度变成了O(n)。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithms/">Algorithms</a></li></ul>
+
+        <a data-url="http://www.sun11.me/blog/2017/leetcode-interleaving-strings-solution/" data-id="cj483rfl200058ctoh55nxnbx" class="article-share-link">Share</a>
+        
+          <a href="http://www.sun11.me/blog/2017/leetcode-interleaving-strings-solution/#disqus_thread" class="article-comment-link">Comments</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">解决数据集导致的大内存占用和磁盘IO问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2017/leetcode-interleaving-strings-solution/">LeetCode-Interleaving Strings 解题报告</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/">解决数据集导致的大内存占用和磁盘IO问题</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/howto-linemod-kinectv2-indigo/">How to make linemod and KinectV2 work with ROS Indigo?</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/multi-os-multi-head-single-tail-workspace/">多系统多头单尾的工作环境</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/sift-implementation-in-matlab/">SIFT算法的Matlab实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithms/">Algorithms</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CV/">CV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/">Customize</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Embedded-Linux/">Embedded Linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV/">OpenCV</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenWrt/">OpenWrt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/">Qt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ROS/">ROS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Robot/">Robot</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/07/">July 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/02/">February 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/08/">August 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Starsky Wong<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+  <!--
+  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
+  -->
+</nav>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    menuSettings: {
+      zoom: "None"
+    },
+    showMathMenu: false,
+    jax: ["input/TeX","output/CommonHTML"],
+    extensions: ["tex2jax.js"],
+    TeX: {
+      extensions: ["AMSmath.js","AMSsymbols.js"],
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [["\\(", "\\)"]],
+      displayMath: [["\\[", "\\]"]]
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js"></script>
+
+
+
+<!-- totop start -->
+<div id="totop">
+	<a title="To Top"></a>
+</div>
+<!-- totop end -->
+
+
+<script>
+  var disqus_shortname = '11zhexo';
+  
+  var disqus_url = 'http://www.sun11.me/blog/2017/leetcode-interleaving-strings-solution/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//ghsite.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
