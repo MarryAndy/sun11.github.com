@@ -9,16 +9,16 @@
   
   <title>How to use 10,582 trainaug images on DeeplabV3 code? | Starsky&#39;s Blog - 11zHexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="You know what I mean if you have experience on training segmentation network models on Pascal VOC dataset. The dataset only provide 1464 pixel-level image annotations for training. But every paper use">
+  <meta name="description" content="You know what I mean if you have experience on training segmentation network models on Pascal VOC dataset. The dataset only provides 1464 pixel-level image annotations for training. But every paper us">
 <meta property="og:type" content="article">
 <meta property="og:title" content="How to use 10,582 trainaug images on DeeplabV3 code?">
 <meta property="og:url" content="http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/index.html">
 <meta property="og:site_name" content="Starsky's Blog - 11zHexo">
-<meta property="og:description" content="You know what I mean if you have experience on training segmentation network models on Pascal VOC dataset. The dataset only provide 1464 pixel-level image annotations for training. But every paper use">
-<meta property="og:updated_time" content="2018-03-16T16:10:03.733Z">
+<meta property="og:description" content="You know what I mean if you have experience on training segmentation network models on Pascal VOC dataset. The dataset only provides 1464 pixel-level image annotations for training. But every paper us">
+<meta property="og:updated_time" content="2018-03-16T16:15:47.009Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="How to use 10,582 trainaug images on DeeplabV3 code?">
-<meta name="twitter:description" content="You know what I mean if you have experience on training segmentation network models on Pascal VOC dataset. The dataset only provide 1464 pixel-level image annotations for training. But every paper use">
+<meta name="twitter:description" content="You know what I mean if you have experience on training segmentation network models on Pascal VOC dataset. The dataset only provides 1464 pixel-level image annotations for training. But every paper us">
   
     <link rel="alternative" href="/atom.xml" title="Starsky&#39;s Blog - 11zHexo" type="application/atom+xml">
   
@@ -137,7 +137,7 @@ if (isWX) {
     <div class="article-entry" itemprop="articleBody">
       
         
-        <p>You know what I mean if you have experience on training segmentation network models on <a href="http://host.robots.ox.ac.uk:8080/pascal/VOC/" target="_blank" rel="external">Pascal VOC dataset</a>. The dataset only provide 1464 pixel-level image annotations for training. But every paper uses 10,582 images for training, which is usually called <code>trainaug</code>. The additional annotations are from <a href="http://home.bharathh.info/pubs/codes/SBD/download.html" target="_blank" rel="external">SBD</a>, but the annotation format is not the same as Pascal VOC. Fortunately <a href="https://github.com/DrSleep/tensorflow-deeplab-resnet" target="_blank" rel="external">someone</a> has already made a converted version, which is <a href="https://www.dropbox.com/s/oeu149j8qtbs1x0/SegmentationClassAug.zip?dl=0" target="_blank" rel="external">SegmentationClassAug</a>.</p>
+        <p>You know what I mean if you have experience on training segmentation network models on <a href="http://host.robots.ox.ac.uk:8080/pascal/VOC/" target="_blank" rel="external">Pascal VOC dataset</a>. The dataset only provides 1464 pixel-level image annotations for training. But every paper uses 10,582 images for training, which is usually called <code>trainaug</code>. The additional annotations are from <a href="http://home.bharathh.info/pubs/codes/SBD/download.html" target="_blank" rel="external">SBD</a>, but the annotation format is not the same as Pascal VOC. Fortunately <a href="https://github.com/DrSleep/tensorflow-deeplab-resnet" target="_blank" rel="external">someone</a> has already made a converted version, which is <a href="https://www.dropbox.com/s/oeu149j8qtbs1x0/SegmentationClassAug.zip?dl=0" target="_blank" rel="external">SegmentationClassAug</a>.</p>
 <p><a href="https://github.com/tensorflow/models/tree/master/research/deeplab" target="_blank" rel="external">DeeplabV3 code</a> do not contain SBD annotations for some reasons that we can understand. So I wrote a simple script to solve this.</p>
 <p><strong>To use 10,582 trainaug images on DeeplabV3 code, you just need to do the following steps:</strong></p>
 <p><strong>1. Create a script named <code>convert_voc2012_aug.sh</code>.</strong></p>
@@ -159,7 +159,7 @@ if (isWX) {
         
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Segmentation/">Segmentation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tensorflow/">Tensorflow</a></li></ul>
 
-        <a data-url="http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/" data-id="cjeu53lip0002j8to5qu1gunv" class="article-share-link">Share</a>
+        <a data-url="http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/" data-id="cjeu5ax7x001wlstoplr4kjic" class="article-share-link">Share</a>
         
           <a href="http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/#disqus_thread" class="article-comment-link">Comments</a>
         

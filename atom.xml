@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.sun11.me/"/>
-  <updated>2018-03-16T16:10:03.733Z</updated>
+  <updated>2018-03-16T16:15:47.009Z</updated>
   <id>http://www.sun11.me/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/"/>
     <id>http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/</id>
     <published>2018-03-16T14:57:00.000Z</published>
-    <updated>2018-03-16T16:10:03.733Z</updated>
+    <updated>2018-03-16T16:15:47.009Z</updated>
     
-    <content type="html">&lt;p&gt;You know what I mean if you have experience on training segmentation network models on &lt;a href=&quot;http://host.robots.ox.ac.uk:8080/pascal/VOC/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Pascal VOC dataset&lt;/a&gt;. The dataset only provide 1464 pixel-level image annotations for training. But every paper uses 10,582 images for training, which is usually called &lt;code&gt;trainaug&lt;/code&gt;. The additional annotations are from &lt;a href=&quot;http://home.bharathh.info/pubs/codes/SBD/download.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SBD&lt;/a&gt;, but the annotation format is not the same as Pascal VOC. Fortunately &lt;a href=&quot;https://github.com/DrSleep/tensorflow-deeplab-resnet&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;someone&lt;/a&gt; has already made a converted version, which is &lt;a href=&quot;https://www.dropbox.com/s/oeu149j8qtbs1x0/SegmentationClassAug.zip?dl=0&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SegmentationClassAug&lt;/a&gt;.&lt;/p&gt;
+    <content type="html">&lt;p&gt;You know what I mean if you have experience on training segmentation network models on &lt;a href=&quot;http://host.robots.ox.ac.uk:8080/pascal/VOC/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Pascal VOC dataset&lt;/a&gt;. The dataset only provides 1464 pixel-level image annotations for training. But every paper uses 10,582 images for training, which is usually called &lt;code&gt;trainaug&lt;/code&gt;. The additional annotations are from &lt;a href=&quot;http://home.bharathh.info/pubs/codes/SBD/download.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SBD&lt;/a&gt;, but the annotation format is not the same as Pascal VOC. Fortunately &lt;a href=&quot;https://github.com/DrSleep/tensorflow-deeplab-resnet&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;someone&lt;/a&gt; has already made a converted version, which is &lt;a href=&quot;https://www.dropbox.com/s/oeu149j8qtbs1x0/SegmentationClassAug.zip?dl=0&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SegmentationClassAug&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/tensorflow/models/tree/master/research/deeplab&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DeeplabV3 code&lt;/a&gt; do not contain SBD annotations for some reasons that we can understand. So I wrote a simple script to solve this.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;To use 10,582 trainaug images on DeeplabV3 code, you just need to do the following steps:&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;1. Create a script named &lt;code&gt;convert_voc2012_aug.sh&lt;/code&gt;.&lt;/strong&gt;&lt;/p&gt;
