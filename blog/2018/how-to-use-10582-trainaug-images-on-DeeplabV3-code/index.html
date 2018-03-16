@@ -7,17 +7,18 @@
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
   
-  <title>Starsky&#39;s Blog - 11zHexo</title>
+  <title>How to use 10,582 trainaug images on DeeplabV3 code? | Starsky&#39;s Blog - 11zHexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Starsky's Blog - 11zHexo">
-<meta property="og:url" content="http://www.sun11.me/index.html">
+  <meta name="description" content="You know what I mean if you have experience on training segmentation network models on Pascal VOC dataset. The dataset only provide 1464 pixel-level image annotations for training. But every paper use">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to use 10,582 trainaug images on DeeplabV3 code?">
+<meta property="og:url" content="http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/index.html">
 <meta property="og:site_name" content="Starsky's Blog - 11zHexo">
-<meta property="og:description">
+<meta property="og:description" content="You know what I mean if you have experience on training segmentation network models on Pascal VOC dataset. The dataset only provide 1464 pixel-level image annotations for training. But every paper use">
+<meta property="og:updated_time" content="2018-03-16T16:10:03.733Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Starsky's Blog - 11zHexo">
-<meta name="twitter:description">
+<meta name="twitter:title" content="How to use 10,582 trainaug images on DeeplabV3 code?">
+<meta name="twitter:description" content="You know what I mean if you have experience on training segmentation network models on Pascal VOC dataset. The dataset only provide 1464 pixel-level image annotations for training. But every paper use">
   
     <link rel="alternative" href="/atom.xml" title="Starsky&#39;s Blog - 11zHexo" type="application/atom+xml">
   
@@ -111,9 +112,7 @@ if (isWX) {
 </header>
 
     <div class="outer">
-      <section id="main">
-  
-    <article id="post-how-to-use-10582-trainaug-images-on-DeeplabV3-code" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-how-to-use-10582-trainaug-images-on-DeeplabV3-code" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <h3 href="/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/" class="article-date">
   <time datetime="2018-03-16T14:57:00.000Z" itemprop="datePublished">Mar 16 2018</time>
@@ -128,8 +127,8 @@ if (isWX) {
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/">How to use 10,582 trainaug images on DeeplabV3 code?</a>
+    <h1 class="article-title" itemprop="name">
+      How to use 10,582 trainaug images on DeeplabV3 code?
     </h1>
   
 
@@ -170,257 +169,27 @@ if (isWX) {
   </div>
   </div>
   
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2017/leetcode-interleaving-strings-solution/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">LeetCode-Interleaving Strings 解题报告</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 
-
-  
-    <article id="post-leetcode-interleaving-strings-solution" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2017/leetcode-interleaving-strings-solution/" class="article-date">
-  <time datetime="2017-06-22T07:19:20.000Z" itemprop="datePublished">Jun 22 2017</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2017/leetcode-interleaving-strings-solution/">LeetCode-Interleaving Strings 解题报告</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
-<p>Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.</p>
-<p>For example,<br>Given:<br>s1 = “aabcc”,<br>s2 = “dbbca”,</p>
-<p>When s3 = “aadbbcbcac”, return true.<br>When s3 = “aadbbbaccc”, return false.</p>
-</blockquote>
-<p>首先想到的是一个回溯的方法。可以看作一个二叉树的遍历过程，匹配到s1的字符就是走左子节点，匹配到s2的字符就是走右子节点。若s1和s2中的两个字符都和s3相同，就有两种选择，直接都取s1的，并且把这时s1和s2的索引存下来，遇到后面匹配失败的时候找前一个存下来的索引，从s2走，也就是回溯了。无奈，超时了。时间复杂度应该是<script type="math/tex">O(2^{m+n})</script>，m和n分别是s1和s2的长度。</p>
-        
-          <p class="article-more-link">
-            <a href="/blog/2017/leetcode-interleaving-strings-solution/#more">Read More</a>
-          </p>
-        
-      
+  <section id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithms/">Algorithms</a></li></ul>
+  </section>
 
-        <a data-url="http://www.sun11.me/blog/2017/leetcode-interleaving-strings-solution/" data-id="cjeu53lj40007j8to67q1k025" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2017/leetcode-interleaving-strings-solution/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-fix-dataset-caused-high-memory-usage-and-disk-io" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/" class="article-date">
-  <time datetime="2017-03-15T09:26:42.000Z" itemprop="datePublished">Mar 15 2017</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/">解决数据集导致的大内存占用和磁盘IO问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <p>看到Ubuntu上的磁盘IO和内存占用出奇的高，忍无可忍，决定必须解决一下了。</p>
-<p>内存占用最高的是chrome和gvfsd-metadata，前者1.6G没办法，后者竟然有1.8G。查了一下<a href="https://en.wikipedia.org/wiki/GVfs" target="_blank" rel="external">维基百科</a>：</p>
-<blockquote>
-<p>gvfsd-metadata is a daemon acting as a write serialiser to the internal gvfs metadata storage. It is autostarted by GIO clients when they make metadata changes. Read operations are done by client-side GIO code directly, and don’t require the daemon to be running. The gvfs metadata capabilities are used by the GNOME Files file manager, for example.</p>
-</blockquote>
-<p>虽然仍然没搞懂它是个什么东西，但是罪魁祸首就是它没跑了，形成的原因大概是我打开过很多大的数据集的文件夹，比如pascal voc、shapenet、pascal3d，要是还有imagenet就更恐怖了。从<a href="https://ubuntuforums.org/showthread.php?t=1421580" target="_blank" rel="external">这个帖子</a>来看，它还导致了100%的CPU占用。后面给出了临时的解决办法：</p>
-<pre><code>rm -rf ~/.local/share/gvfs-metadata
-pkill gvfsd-metadata
-</code></pre><p>如果这种情况继续出现，那么直接按照<a href="https://bugs.launchpad.net/ubuntu/+source/gvfs/+bug/517021/comments/92" target="_blank" rel="external">这里</a>所说取消<code>gvfsd-metadata</code>的执行权限即可：<code>sudo chmod -x /usr/lib/gvfs/gvfsd-metadata</code>。</p>
-<p>另外，iowait也达到了27%左右，我只不过开了个sublime-text而已。原因仍然是数据集，有好几个<code>sublime_text --crawl</code>的进程在不停地读磁盘，给文件做索引。这些数据集的文件格式大多是图片，所以只要按照<a href="http://stackoverflow.com/questions/29260350/sublimetext-3-using-100-cpu-stuck-while-processing-file" target="_blank" rel="external">这个帖子</a>给sublime-text的配置加上：</p>
-<pre><code>&quot;folder_exclude_patterns&quot;: [&quot;.svn&quot;, &quot;.git&quot;, &quot;.hg&quot;, &quot;CVS&quot;, &quot;node_modules/*&quot;],
-&quot;binary_file_patterns&quot;: [&quot;*.mat&quot;,&quot;*.jpg&quot;, &quot;*.jpeg&quot;, &quot;*.png&quot;, &quot;*.gif&quot;, &quot;*.ttf&quot;, &quot;*.tga&quot;, &quot;*.dds&quot;, &quot;*.ico&quot;, &quot;*.eot&quot;, &quot;*.pdf&quot;, &quot;*.swf&quot;, &quot;*.jar&quot;, &quot;*.zip&quot;],
-</code></pre><p>问题就解决了。</p>
-<p>不过对于ShapeNet这样的仍然没有办法==，所以最好还是避免用sublime-text打开带有数据集的文件夹（这种需要却并不少见，因为用软链接方便）。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/" data-id="cjeu53llg0029j8to1rjt57jc" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-howto-linemod-kinectv2-indigo" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2016/howto-linemod-kinectv2-indigo/" class="article-date">
-  <time datetime="2016-09-05T02:10:16.000Z" itemprop="datePublished">Sep 5 2016</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/howto-linemod-kinectv2-indigo/">How to make linemod and KinectV2 work with ROS Indigo?</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <p>I’m using Ubuntu 14.04.5 with ROS Indigo, and I want to make ork work with linemod, a fairly simple need. But sometimes if some packages are not maintained well (especially in ROS), you have to investigate the problem and even to contribute code to the project…</p>
-<p>Following the <a href="http://wg-perception.github.io/object_recognition_core/install.html#install" target="_blank" rel="external">installation guide</a> to install ork is very simple, don’t forget to install <a href="http://wg-perception.github.io/object_recognition_core/infrastructure/couch.html#object-recognition-core-db" target="_blank" rel="external">couchdb</a>. Building from source is the only choice now, you have to modify the code to make it work as you wish.</p>
-<p>In my case, tabletop method works well with KinectV1, even with KinectV2(but only the hd resolution config worked). However, linemod caused a huge memory leak, nearly 1GB/s, and it didn’t publish /recognized_object_array topic. At the beginning I thought it is the problem is in linemod, but it turned out to be in ork_renderer. A <a href="https://groups.google.com/d/msg/object-recognition-kitchen/aS9YlKJxOnc/du_7gXpxDwAJ" target="_blank" rel="external">thread</a> in <a href="https://groups.google.com/forum/#!forum/object-recognition-kitchen" target="_blank" rel="external">ORK Google Group</a> said,</p>
-<blockquote>
-<p>Currently LINEMOD uses ork_renderer for its training phase. ork_renderer uses either GLUT or osmesa to generate synthetic images of the training data. It seems that the ork_renderer in your computer is linked to osmesa.</p>
-</blockquote>
-<p>Fortunately now we just can change CMakeLists.txt to use GLUT. Just change <code>option(USE_GLUT &quot;Use GLUT instead of OSMesa&quot; OFF)</code> to <code>option(USE_GLUT &quot;Use GLUT instead of OSMesa&quot; ON)</code>.</p>
-<p><strong>Update</strong>: Now I just use the version from <a href="https://github.com/JimmyDaSilva/linemod/tree/fix_glut" target="_blank" rel="external">JimmyDaSilva</a> but not the official wg-perception.</p>
-<p>But the current linemod version still have some problem related to assimp_devel, it seems the developer is working on it, you have to revert linemod to the previous version(35aebd).</p>
-<p>So I just created a repo <a href="https://github.com/sun11/ork" target="_blank" rel="external">here</a> to make the whole thing work. When linemod is training it will show a assimp window, but it do not contain anything in my case, not a serious problem, linemod works anyway with KinectV1, but not with KinectV2, because KinectV2 has a special resolution, causing an OpenCV error in linearMemoryPyramid. Fortunately again <a href="https://github.com/wg-perception/linemod/issues/28" target="_blank" rel="external">an awesome guy has worked it out</a>, and he also fixed many other issues. I need to use KinectV2 in my work, so I followed <a href="https://github.com/wg-perception/linemod/issues/28#issuecomment-200927751" target="_blank" rel="external">this guy’s modification</a> and successfully made it work on KinectV2 with QHD resolution. If you want to use SD resolution, you can <code>set T={2,4}</code> in <code>linemod_detect.cpp</code> and <code>renderer_width: 512 renderer_height: 424</code> in <code>training.ork</code> as <a href="https://github.com/wg-perception/linemod/issues/28#issuecomment-200927751" target="_blank" rel="external">JimmyDaSilva said</a>. </p>
-<p>This <a href="https://github.com/sun11/ork" target="_blank" rel="external">ork repo</a> integrated all of them, just to make it easier to work on ork, maybe for myself in the future.</p>
-<p>Tips:</p>
-<ul>
-<li>If you used linemod to train, you’d better delete the whole object_recognition database in CouchDB.</li>
-<li>Using <code>coke.stl</code> is simpler, using <code>coke.obj</code> with texture will get a better result.</li>
-<li>When training linemod, make sure you are in the folder which contains the obj, mtl and image files.</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ROS/">ROS</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2016/howto-linemod-kinectv2-indigo/" data-id="cjeu53lij0001j8towrrw3y9h" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2016/howto-linemod-kinectv2-indigo/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-multi-os-multi-head-single-tail-workspace" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/blog/2016/multi-os-multi-head-single-tail-workspace/" class="article-date">
-  <time datetime="2016-08-08T12:07:49.000Z" itemprop="datePublished">Aug 8 2016</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/multi-os-multi-head-single-tail-workspace/">多系统多头单尾的工作环境</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我总会有一些 <strong>奇怪</strong> 的工作环境需求。比如因为很多软件只有Windows能用，我需要一台Windows，然而工作上的软件又运行在Ubuntu下，可能出于其它原因你甚至还需要一台Mac。除此以外，单个屏幕显然是不够用的，双显示器是必须的，其实三台显示器或许才够用，不过加上一台笔记本我的桌面几乎放不下了。<del>实验室也不会给我辣么多显示器。。。</del></p>
-<p>而且，我还要在所有屏幕所有主机上共享一套鼠标和键盘！还要共享剪贴板，让文本可以直接从一个系统复制粘贴到另一个系统！</p>
-<p>由于我有时用到自带屏幕的笔记本，我还需要有时台式机接双显示器，有时笔记本自带屏幕加一台显示器做双屏！</p>
-<p>经过一番折腾，上述奇怪的需求全都实现了。这可以叫做多系统、多头、单尾的工作环境。5年前B哥的<a href="https://bigeagle.me/2011/04/multihead/">这篇文章</a>第一次让我知道了计算机的<code>头</code>和<code>尾</code>。</p>
-<p>Synergy是一个通过局域网实现的鼠标键盘共享软件。然而作为一个开源软件，它的下载竟然是收费的！虽然开源软件收费并不是什么坏事，然而开源软件本身是开源的，只要自己能编译出来或者使用别人编译的程序似乎也不违规？我对它的盈利模式深表怀疑。。。而且，Synergy也有Nightly Build是可以搜到的，也就是说你·根·本·就·可·以·免·费·下载到最新的版本（不过可能不够稳定）。</p>
-<p>我尝试了Synergy的很多个版本，发现并不是很稳定，而且如果服务器和客户端是不同的版本会有不兼容的问题。最后找了一个老的版本以<code>Daemon/Windows服务</code>的形式运行，大概图形界面就是罪魁祸首吧，我也懒得去确定最新版本用这种方式能否稳定工作了。</p>
-        
-          <p class="article-more-link">
-            <a href="/blog/2016/multi-os-multi-head-single-tail-workspace/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
-        
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Customize/">Customize</a></li></ul>
-
-        <a data-url="http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/" data-id="cjeu53ll80022j8tokbeo6n1e" class="article-share-link">Share</a>
-        
-          <a href="http://www.sun11.me/blog/2016/multi-os-multi-head-single-tail-workspace/#disqus_thread" class="article-comment-link">Comments</a>
-        
-      </div>
-    </footer>
-  </div>
-  </div>
-  </div>
-  
-</article>
-
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
 </section>
       
       <aside id="sidebar">
@@ -538,11 +307,13 @@ pkill gvfsd-metadata
 <script>
   var disqus_shortname = '11zhexo';
   
+  var disqus_url = 'http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/';
+  
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//ghsite.disqus.com/count.js';
+    dsq.src = '//ghsite.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>

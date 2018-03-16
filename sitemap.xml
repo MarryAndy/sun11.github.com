@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/</loc>
+    
+    <lastmod>2018-03-16T16:10:03.733Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.sun11.me/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/</loc>
+    
+    <lastmod>2018-03-16T15:59:00.409Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sun11.me/blog/2017/leetcode-interleaving-strings-solution/</loc>
     
     <lastmod>2017-06-22T11:47:13.649Z</lastmod>
@@ -12,13 +26,6 @@
     <loc>http://www.sun11.me/blog/2013/ros-on-arm--native-compilation-on-rk3066/</loc>
     
     <lastmod>2017-06-22T07:57:48.649Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sun11.me/blog/2017/fix-dataset-caused-high-memory-usage-and-disk-io/</loc>
-    
-    <lastmod>2017-03-15T13:34:44.235Z</lastmod>
     
   </url>
   
