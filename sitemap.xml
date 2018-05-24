@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.sun11.me/about/index.html</loc>
+    
+    <lastmod>2018-05-24T22:41:52.493Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.sun11.me/blog/2018/how-to-use-10582-trainaug-images-on-DeeplabV3-code/</loc>
     
     <lastmod>2018-03-16T16:15:47.009Z</lastmod>
@@ -89,13 +96,6 @@
     <loc>http://www.sun11.me/blog/2012/wtfrobot-rosmin/</loc>
     
     <lastmod>2016-02-12T18:01:05.673Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.sun11.me/about/index.html</loc>
-    
-    <lastmod>2016-02-10T08:04:31.488Z</lastmod>
     
   </url>
   
